@@ -1,0 +1,98 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "../VERSION"
+pattern = "(?P<version>.+)"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+
+[project]
+name = "peerhub-api"
+dynamic = ["version"]
+description = "Backend API for PeerHub"
+license = { text = "AGPL-3.0-only" }
+authors = [
+    {name = "PeerHub BDFL", email = "peerhub.dev@gmail.com"},
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pymongo>=4.13.0",
+    "fastapi[standard]>=0.115.12",
+    "motor>=3.7.1",
+    "pydantic>=2.11.4",
+    "email-validator>=2.2.0",
+    "PyJWT>=2.10.0",
+    "beanie>=1.29.0",
+    "python-dotenv>=1.1.0",
+    "fastapi-sso>=0.18.0",
+    "pydantic-settings>=2.9.1",
+    "httpx>=0.28.1",
+    "slowapi>=0.1.9",
+    "opentelemetry-api>=1.39.1",
+    "opentelemetry-sdk>=1.39.1",
+    "opentelemetry-exporter-otlp>=1.39.1",
+    "posthog>=7.8.6",
+]
+
+[project.urls]
+"Homepage" = "https://peerhub.dev"
+"Repository" = "https://github.com/peerhub-org/peerhub"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "mypy>=1.15.0",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.10",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "testcontainers[mongodb]>=4.9.0",
+    "pytest-env>=1.2.0",
+]
+
+[tool.black]
+line_length = 90
+target_version = ['py312']
+
+[tool.ruff]
+exclude = [
+    ".venv",
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    "venv",
+]
+src = ["app"]
+line-length = 90
+
+[tool.ruff.lint]
+ignore = [
+    "B008",  # Depends() in function defaults is standard FastAPI pattern
+]
+select = [
+    "E",
+    "F",
+    "W",
+    "I001",
+    "S",
+    "B",
+]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]
+"tests/**/*.py" = ["S101", "S105", "S106"]
+
+[tool.isort]
+known_first_party = ["app"]
+
+[tool.mypy]
+files = ["app"]
+disable_error_code = ["import-untyped"]
+disallow_untyped_defs = true

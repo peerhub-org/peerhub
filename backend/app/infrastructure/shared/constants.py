@@ -1,0 +1,8 @@
+GITHUB_OAUTH_AUTHORIZE_URL = "https://github.com/login/oauth/authorize"
+GITHUB_OAUTH_SCOPE = "read:user"
+GITHUB_API_TIMEOUT_SECONDS = 10.0
+
+RATE_LIMIT_AUTH_EXCHANGE = "5/minute"
+RATE_LIMIT_REVIEW_WRITE = "5/minute"
+RATE_LIMIT_USER_SEARCH = "30/minute"
+RATE_LIMIT_USER_REFRESH = "1/hour"

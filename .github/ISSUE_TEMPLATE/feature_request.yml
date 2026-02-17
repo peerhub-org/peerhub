@@ -1,0 +1,44 @@
+name: Feature request
+description: Propose a new capability or meaningful improvement.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Describe the problem and the outcome you want.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What user or contributor pain does this solve?
+      placeholder: As a contributor, I cannot ...
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the API/UI/behavior you want.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other approaches you considered and why not.
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and impact
+      description: Note affected backend/frontend areas, tests, and docs.
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched for existing issues and discussions.
+          required: true
+        - label: I can help test or implement this feature.
+          required: false

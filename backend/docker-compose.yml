@@ -1,0 +1,13 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    container_name: peerhub-backend
+    env_file:
+      - .env.development
+    environment:
+      ENVIRONMENT: development
+    ports:
+      - "8000:8000"
+    restart: unless-stopped

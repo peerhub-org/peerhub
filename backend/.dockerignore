@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+.env
+.env.*
+
+# Git and tooling
+.git/
+.gitignore
+.claude/
+.vscode/
+.idea/
+
+# Local/test artifacts
+tests/
+*.log

@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible problem with expected vs actual behavior.
+title: "bug: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for filing a bug. Please provide enough detail for us to reproduce quickly.
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: One-line description of the issue.
+      placeholder: API returns 500 when submitting anonymous review
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: List exact steps.
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, browser, Node/Python versions, and commit/tag if known.
+      placeholder: Windows 11, Chrome 131, Node 22, Python 3.13, main@abcdef1
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste logs and traces (redact secrets).
+      render: shell
