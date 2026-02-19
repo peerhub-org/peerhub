@@ -35,13 +35,14 @@ export const TimelineLine = styled(Box)(({ theme }) => ({
 // Status circle for timeline
 export const StatusCircle = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'statusColor',
-})<{ statusColor: string }>(({ statusColor }) => ({
+})<{ statusColor: string }>(({ statusColor, theme }) => ({
   width: 32,
   height: 32,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: statusColor,
+  color: theme.palette.getContrastText(statusColor),
   borderRadius: '50%',
   zIndex: 1,
   position: 'relative',
@@ -129,7 +130,7 @@ export const SecondaryButton = styled(Button)(({ theme }) => ({
 }))
 
 export const DeleteButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: theme.palette.getContrastText(theme.palette.error.main),
   backgroundColor: theme.palette.error.main,
   boxShadow: 'none',
   '&:hover': {

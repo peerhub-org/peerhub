@@ -5,6 +5,7 @@ const baseStyles = {
   fontSize: '0.75rem',
   lineHeight: 1,
   minHeight: 32,
+  boxShadow: 'none',
   '& .MuiButton-startIcon': {
     marginRight: '6px',
     marginTop: '-1px',
@@ -20,6 +21,7 @@ export const getWatchedStyles = (theme: Theme) => ({
   borderColor: theme.palette.divider,
   '&:hover': {
     bgcolor: theme.palette.action.hover,
+    boxShadow: 'none',
   },
 })
 
@@ -28,5 +30,6 @@ export const getUnwatchedStyles = (theme: Theme) => ({
   bgcolor: theme.palette.background.highlight,
   '&:hover': {
     bgcolor: theme.palette.background.grey,
+    boxShadow: 'none',
   },
 })

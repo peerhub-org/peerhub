@@ -2,6 +2,7 @@ import { AppBar, Toolbar, styled } from '@mui/material'
 
 export const StyledAppBar = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
+  color: theme.palette.text.primary,
   backgroundImage: 'none',
   borderBottom: `1px solid ${theme.palette.divider}`,
 }))

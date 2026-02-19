@@ -44,6 +44,7 @@ export const StatusCircle = styled(Box, {
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: statusColor,
+  color: theme.palette.getContrastText(statusColor),
   borderRadius: '50%',
   border: `2px solid ${theme.palette.background.default}`,
 }))

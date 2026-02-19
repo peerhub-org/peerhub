@@ -1,9 +1,8 @@
 import { ReactElement } from 'react'
 import { act, render, RenderOptions } from '@testing-library/react'
-import { ThemeProvider } from '@mui/material/styles'
 import { MemoryRouter } from 'react-router'
-import theme from '@shared/ui/foundations/theme'
 import { SnackBarProvider } from '@shared/ui/hooks/useSnackbar'
+import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode'
 import { AuthProvider } from '@domains/authentication/application/hooks/useAuthentication'
 
 interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
@@ -19,11 +18,11 @@ function AllProviders({
 }) {
   return (
     <MemoryRouter initialEntries={initialEntries}>
-      <ThemeProvider theme={theme}>
+      <ThemeModeProvider>
         <SnackBarProvider>
           <AuthProvider>{children}</AuthProvider>
         </SnackBarProvider>
-      </ThemeProvider>
+      </ThemeModeProvider>
     </MemoryRouter>
   )
 }

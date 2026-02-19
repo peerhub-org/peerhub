@@ -2,9 +2,8 @@ import { beforeAll, describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { createMemoryRouter, RouterProvider } from 'react-router'
-import { ThemeProvider } from '@mui/material/styles'
-import theme from '@shared/ui/foundations/theme'
 import { SnackBarProvider } from '@shared/ui/hooks/useSnackbar'
+import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode'
 import ProfilePage, { loader } from './ProfilePage'
 
 // Mock IntersectionObserver (not available in jsdom)
@@ -86,15 +85,17 @@ vi.mock('@domains/reviews/application/services/reviewService', () => ({
 function renderWithRouter() {
   const router = createMemoryRouter(
     [{ path: '/:username', element: <ProfilePage />, loader, HydrateFallback: () => null }],
-    { initialEntries: ['/johndoe'] },
+    {
+      initialEntries: ['/johndoe'],
+    },
   )
 
   return render(
-    <ThemeProvider theme={theme}>
+    <ThemeModeProvider>
       <SnackBarProvider>
         <RouterProvider router={router} />
       </SnackBarProvider>
-    </ThemeProvider>,
+    </ThemeModeProvider>,
   )
 }
 
@@ -102,6 +103,7 @@ describe('ProfilePage screen', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     localStorage.setItem('token', 'test-token')
+    localStorage.removeItem('theme-mode')
   })
 
   it('renders user profile with reviews', async () => {

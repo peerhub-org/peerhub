@@ -2,8 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
-import { ThemeProvider } from '@mui/material/styles'
-import theme from '@shared/ui/foundations/theme'
+import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode'
 import SSOLogin from './SSOLogin'
 
 const mockNavigate = vi.fn()
@@ -29,9 +28,9 @@ vi.mock('@domains/authentication/application/services/authenticationService', ()
 function renderSSOLogin(searchParams = '') {
   return render(
     <MemoryRouter initialEntries={[`/auth/callback${searchParams}`]}>
-      <ThemeProvider theme={theme}>
+      <ThemeModeProvider>
         <SSOLogin />
-      </ThemeProvider>
+      </ThemeModeProvider>
     </MemoryRouter>,
   )
 }
@@ -40,6 +39,7 @@ describe('SSOLogin', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     localStorage.clear()
+    localStorage.removeItem('theme-mode')
   })
 
   it('shows loading spinner', () => {

@@ -17,14 +17,14 @@ export function getStatusIcon(
   colored: boolean = false,
   size: number = 16,
 ) {
-  const color = colored ? getStatusColor(theme, status) : theme.palette.text.primary
+  const color = colored ? getStatusColor(theme, status) : 'inherit'
   switch (status) {
     case 'approve':
       return <Check sx={{ fontSize: size, color }} />
     case 'request_change':
       return <Rule sx={{ fontSize: size, color }} />
     case 'comment':
-      return <ChatBubbleOutline sx={{ fontSize: size }} />
+      return <ChatBubbleOutline sx={{ fontSize: size, color }} />
   }
 }
 
