@@ -247,4 +247,8 @@ export const HowItWorksSection = styled(Section)({
     radial-gradient(ellipse at 60% 50%, rgba(52, 211, 153, 0.2) 0%, transparent 50%),
     linear-gradient(180deg, ${HOME_UI_TOKENS.heroGradientStart} 0%, ${HOME_UI_TOKENS.heroGradientEnd} 100%)
   `,
+  color: 'rgba(255, 255, 255)',
+  '& .how-it-works-description': {
+    color: 'rgba(255, 255, 255, 0.85)',
+  },
 })

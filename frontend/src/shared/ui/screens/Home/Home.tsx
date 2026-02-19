@@ -216,7 +216,7 @@ export default function Home() {
                     <Typography variant='h6' fontWeight={600} sx={{ mb: 1 }}>
                       {step.title}
                     </Typography>
-                    <Typography variant='body2' color='text.secondary'>
+                    <Typography variant='body2' className='how-it-works-description'>
                       {step.description}
                     </Typography>
                   </Box>
