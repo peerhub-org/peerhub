@@ -1,8 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router'
 import ErrorPage from '@shared/ui/screens/ErrorPage'
-import { HydrateFallback } from '@shared/ui/screens/Fallback'
 import Root from '@shared/ui/containers/RootLayout/RootLayout'
+import FullScreenLoader from '@shared/ui/components/FullScreenLoader/FullScreenLoader'
 import NavigationLoader from '@shared/ui/components/NavigationLoader/NavigationLoader'
 import { requireAuth } from '@shared/ui/routes/authLoader'
 import { CircularProgress, Box } from '@mui/material'
@@ -63,7 +63,7 @@ const routes = [
           },
           {
             path: ':username',
-            HydrateFallback: HydrateFallback,
+            HydrateFallback: FullScreenLoader,
             lazy: () =>
               import('@domains/profiles/ui/screens/Profile/ProfilePage').then((m) => ({
                 Component: m.default,
