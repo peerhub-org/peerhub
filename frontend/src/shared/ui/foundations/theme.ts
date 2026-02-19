@@ -1,4 +1,4 @@
-import { createTheme, Theme } from '@mui/material/styles'
+import { createTheme, Theme, ThemeOptions } from '@mui/material/styles'
 
 declare module '@mui/material/styles' {
   interface TypeBackground {
@@ -30,28 +30,34 @@ export const getMenuSlotProps = (theme: Theme) => ({
   },
 })
 
-const theme = createTheme({
+const darkPalette: ThemeOptions['palette'] = {
+  mode: 'dark',
+  background: {
+    default: 'rgb(25, 25, 25)',
+    paper: 'rgb(32, 32, 32)',
+    highlight: 'rgb(48, 48, 48)',
+    grey: 'rgb(62, 62, 62)',
+  },
+  divider: 'rgb(47, 47, 47)',
+  error: { main: '#d32f2f' },
+  primary: { main: '#2783de' },
+  success: { main: '#388e3c' },
+}
+
+const lightPalette: ThemeOptions['palette'] = {
+  mode: 'light',
+  background: {
+    default: 'rgb(255, 255, 255)',
+    paper: 'rgb(248, 248, 248)',
+    highlight: 'rgb(232, 232, 232)',
+    grey: 'rgb(218, 218, 218)',
+  },
+  divider: 'rgb(234, 234, 234)',
+}
+
+const baseThemeOptions: Omit<ThemeOptions, 'palette'> = {
   shape: {
     borderRadius: 6,
-  },
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#191919',
-      paper: '#202020',
-      highlight: '#303030',
-      grey: '#3e3e3e',
-    },
-    divider: '#2f2f2f',
-    error: {
-      main: '#d32f2f',
-    },
-    primary: {
-      main: '#2783de',
-    },
-    success: {
-      main: '#388e3c',
-    },
   },
   components: {
     MuiCssBaseline: {
@@ -87,6 +93,11 @@ const theme = createTheme({
       },
     },
   },
-})
+}
 
-export default theme
+export function createAppTheme(mode: 'dark' | 'light') {
+  return createTheme({
+    ...baseThemeOptions,
+    palette: mode === 'dark' ? darkPalette : lightPalette,
+  })
+}

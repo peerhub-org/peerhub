@@ -2,8 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
-import { ThemeProvider } from '@mui/material/styles'
-import theme from '@shared/ui/foundations/theme'
+import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode'
 import { UI_COPY } from '@shared/application/config/uiCopy'
 import Feed from './Feed'
 import { useFeedScreen } from './useFeedScreen'
@@ -51,9 +50,9 @@ const createBaseScreenState = () => ({
 function renderFeed() {
   return render(
     <MemoryRouter>
-      <ThemeProvider theme={theme}>
+      <ThemeModeProvider>
         <Feed />
-      </ThemeProvider>
+      </ThemeModeProvider>
     </MemoryRouter>,
   )
 }
@@ -61,6 +60,7 @@ function renderFeed() {
 describe('Feed screen', () => {
   beforeEach(() => {
     mockedUseFeedScreen.mockReturnValue(createBaseScreenState())
+    localStorage.removeItem('theme-mode')
   })
 
   it('renders feed title and tabs', () => {

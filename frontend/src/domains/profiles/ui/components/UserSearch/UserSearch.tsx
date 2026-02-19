@@ -8,7 +8,6 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  Typography,
 } from '@mui/material'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router'
@@ -24,6 +23,7 @@ import { useDebouncedValue } from '@shared/application/hooks/useDebouncedValue'
 import {
   SearchContainer,
   SearchTrigger,
+  SearchTriggerText,
   SearchCard,
   SearchInput,
   ResultsArea,
@@ -150,9 +150,7 @@ export default function UserSearch() {
         }}
       >
         <Search sx={{ fontSize: 16, color: 'text.secondary' }} />
-        <Typography sx={{ fontSize: '0.8rem', color: 'text.secondary' }}>
-          {UI_COPY.searchUsersPlaceholder}
-        </Typography>
+        <SearchTriggerText>{UI_COPY.searchUsersPlaceholder}</SearchTriggerText>
       </SearchTrigger>
 
       {open && (

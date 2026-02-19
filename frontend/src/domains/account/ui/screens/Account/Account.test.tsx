@@ -2,9 +2,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import { render } from '@testing-library/react'
 import { createMemoryRouter, RouterProvider } from 'react-router'
-import { ThemeProvider } from '@mui/material/styles'
-import theme from '@shared/ui/foundations/theme'
 import { SnackBarProvider } from '@shared/ui/hooks/useSnackbar'
+import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode'
 import { AccountScreen } from './Account'
 
 vi.mock('@domains/authentication/application/hooks/useAuthentication', () => ({
@@ -44,11 +43,11 @@ function renderAccountScreen() {
   })
 
   return render(
-    <ThemeProvider theme={theme}>
+    <ThemeModeProvider>
       <SnackBarProvider>
         <RouterProvider router={router} />
       </SnackBarProvider>
-    </ThemeProvider>,
+    </ThemeModeProvider>,
   )
 }
 
@@ -56,6 +55,7 @@ describe('Account screen', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     localStorage.setItem('token', 'test-token')
+    localStorage.removeItem('theme-mode')
   })
 
   it('renders account settings page', async () => {

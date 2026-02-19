@@ -1,8 +1,9 @@
-import { Logout, Person, Settings } from '@mui/icons-material'
+import { DarkMode, LightMode, Logout, Person, Settings } from '@mui/icons-material'
 import {
   Avatar,
   Box,
   Divider,
+  IconButton,
   Link,
   ListItemIcon,
   Menu,
@@ -16,11 +17,14 @@ import { NavLink, useNavigate } from 'react-router'
 import { useAuth } from '@domains/authentication/application/hooks/useAuthentication'
 import UserSearch from '@domains/profiles/ui/components/UserSearch/UserSearch'
 import { getMenuSlotProps } from '@shared/ui/foundations/theme'
-const logo = '/logo.png'
+import { useThemeMode } from '@shared/ui/hooks/useThemeMode'
 import { StyledAppBar, StyledToolbar } from './TopMenuBar.styled'
+
+const logos = { dark: '/logo.png', light: '/logo_black.png' } as const
 
 export default function TopMenuBar() {
   const theme = useTheme()
+  const { mode, toggleTheme } = useThemeMode()
   const { account, logout } = useAuth()
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -45,10 +49,10 @@ export default function TopMenuBar() {
           component={NavLink}
           to='/feed'
           aria-label='PeerHub home'
-          sx={{ lineHeight: 0, display: 'flex', textDecoration: 'none' }}
+          sx={{ lineHeight: 0, display: 'flex', textDecoration: 'none', color: 'inherit' }}
         >
-          <img src={logo} alt='PeerHub Logo' style={{ height: 26, marginRight: 8 }} />
-          <Typography variant='h6' sx={{ color: 'white', lineHeight: 1.3 }}>
+          <img src={logos[mode]} alt='PeerHub Logo' style={{ height: 26, marginRight: 8 }} />
+          <Typography variant='h6' sx={{ lineHeight: 1.3 }}>
             PeerHub
           </Typography>
         </Link>
@@ -57,7 +61,15 @@ export default function TopMenuBar() {
 
         <UserSearch />
 
-        <Box sx={{ ml: 2 }} />
+        <Box sx={{ ml: { xs: 0.5, sm: 2 } }} />
+
+        <Tooltip title={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}>
+          <IconButton onClick={toggleTheme} color='inherit' size='small'>
+            {mode === 'dark' ? <LightMode fontSize='small' /> : <DarkMode fontSize='small' />}
+          </IconButton>
+        </Tooltip>
+
+        <Box sx={{ ml: 1 }} />
 
         <Tooltip title='Account settings'>
           <Avatar

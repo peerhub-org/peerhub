@@ -16,8 +16,9 @@ export const HeaderLeft = styled(Box)({
 
 export const StatusChip = styled(Chip, {
   shouldForwardProp: (prop) => prop !== 'statusColor',
-})<{ statusColor: string }>(({ statusColor }) => ({
+})<{ statusColor: string }>(({ statusColor, theme }) => ({
   backgroundColor: statusColor,
+  color: theme.palette.getContrastText(statusColor),
   fontWeight: 600,
   fontSize: '0.875rem',
   height: 28,
@@ -42,8 +43,12 @@ export const ReviewButton = styled(Button, {
   border: hasExistingReview ? `1px solid ${theme.palette.divider}` : 'none',
   '&:hover': {
     backgroundColor: hasExistingReview ? theme.palette.action.hover : theme.palette.success.light,
+    boxShadow: 'none',
   },
-  color: theme.palette.text.primary,
+  color: hasExistingReview
+    ? theme.palette.getContrastText(theme.palette.background.default)
+    : theme.palette.getContrastText(theme.palette.success.main),
+  boxShadow: 'none',
   fontWeight: 600,
   fontSize: '0.75rem',
   padding: '3px 12px',
