@@ -1,7 +1,7 @@
 import { Component, ReactNode } from 'react'
 import posthog from 'posthog-js'
-import { Button, Typography } from '@mui/material'
 import { ErrorContainer } from './ErrorBoundary.styled'
+import UnexpectedErrorCard from '@shared/ui/components/UnexpectedErrorCard/UnexpectedErrorCard'
 
 interface Props {
   children: ReactNode
@@ -34,13 +34,7 @@ export default class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <ErrorContainer>
-          <Typography variant='h4'>Something went wrong</Typography>
-          <Typography variant='body1' color='text.secondary'>
-            An unexpected error occurred. Please try reloading the page.
-          </Typography>
-          <Button variant='contained' onClick={this.handleReload} sx={{ mt: 2 }}>
-            Reload page
-          </Button>
+          <UnexpectedErrorCard actionLabel='Reload page' onAction={this.handleReload} />
         </ErrorContainer>
       )
     }
