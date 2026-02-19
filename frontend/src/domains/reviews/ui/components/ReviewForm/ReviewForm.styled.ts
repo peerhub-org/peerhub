@@ -32,7 +32,10 @@ export const FormFooter = styled(Box)(({ theme }) => ({
 export const CommentTextField = styled(TextField)(({ theme }) => ({
   marginBottom: 16,
   '& .MuiOutlinedInput-root': {
-    backgroundColor: theme.palette.background.highlight,
+    backgroundColor:
+      theme.palette.mode === 'light'
+        ? theme.palette.background.default
+        : theme.palette.background.highlight,
   },
   '& .MuiInputBase-input': {
     fontSize: '0.875rem',
@@ -66,10 +69,12 @@ export const CancelButton = styled(Button)(({ theme }) => ({
 }))
 
 export const SubmitButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.text.primary,
+  color: theme.palette.getContrastText(theme.palette.success.main),
   backgroundColor: theme.palette.success.main,
+  boxShadow: 'none',
   '&:hover': {
     backgroundColor: theme.palette.success.light,
+    boxShadow: 'none',
   },
   '&.Mui-disabled': {
     backgroundColor: theme.palette.success.dark,

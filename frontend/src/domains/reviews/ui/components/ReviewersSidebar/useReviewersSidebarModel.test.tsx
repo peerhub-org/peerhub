@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, act } from '@testing-library/react'
-import { ThemeProvider } from '@mui/material/styles'
-import theme from '@shared/ui/foundations/theme'
+import { createAppTheme } from '@shared/ui/foundations/theme'
+import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode'
 import { useReviewersSidebarModel } from './useReviewersSidebarModel'
 import reviewService from '@domains/reviews/application/services/reviewService'
 import { ReviewerSummary } from '@domains/reviews/application/interfaces/Review'
@@ -14,12 +14,15 @@ vi.mock('@domains/reviews/application/services/reviewService', () => ({
 }))
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+  <ThemeModeProvider>{children}</ThemeModeProvider>
 )
+
+const theme = createAppTheme('dark')
 
 describe('useReviewersSidebarModel', () => {
   beforeEach(() => {
     vi.resetAllMocks()
+    localStorage.removeItem('theme-mode')
   })
 
   it('sorts current user reviews first and by updated_at desc', () => {

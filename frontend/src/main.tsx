@@ -4,11 +4,9 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider } from 'react-router'
 import posthog from 'posthog-js'
 import { PostHogProvider } from '@posthog/react'
-import CssBaseline from '@mui/material/CssBaseline'
-import { ThemeProvider } from '@mui/material/styles'
-import theme from '@shared/ui/foundations/theme'
 import { router } from '@shared/ui/routes/router'
 import { SnackBarProvider } from '@shared/ui/hooks/useSnackbar.tsx'
+import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode.tsx'
 import { AuthProvider } from '@domains/authentication/application/hooks/useAuthentication.tsx'
 import { POSTHOG_KEY, POSTHOG_HOST } from '@shared/application/config/env'
 import ErrorBoundary from '@shared/ui/components/ErrorBoundary/ErrorBoundary'
@@ -29,8 +27,7 @@ if (POSTHOG_KEY) {
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <PostHogProvider client={posthog}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+      <ThemeModeProvider>
         <ErrorBoundary>
           <AuthProvider>
             <SnackBarProvider>
@@ -38,7 +35,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
             </SnackBarProvider>
           </AuthProvider>
         </ErrorBoundary>
-      </ThemeProvider>
+      </ThemeModeProvider>
     </PostHogProvider>
   </React.StrictMode>,
 )

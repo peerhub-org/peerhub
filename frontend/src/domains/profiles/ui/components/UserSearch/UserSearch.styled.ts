@@ -21,6 +21,24 @@ export const SearchTrigger = styled(Box)(({ theme }) => ({
   '&:hover': {
     borderColor: theme.palette.text.disabled,
   },
+  [theme.breakpoints.down('sm')]: {
+    width: 32,
+    padding: '4px',
+    justifyContent: 'center',
+    border: 'none',
+    backgroundColor: 'transparent',
+    '& .MuiSvgIcon-root': {
+      fontSize: 22,
+    },
+  },
+}))
+
+export const SearchTriggerText = styled(Typography)(({ theme }) => ({
+  fontSize: '0.8rem',
+  color: theme.palette.text.secondary,
+  [theme.breakpoints.down('sm')]: {
+    display: 'none',
+  },
 }))
 
 export const SearchCard = styled(Paper)(({ theme }) => ({
@@ -28,6 +46,13 @@ export const SearchCard = styled(Paper)(({ theme }) => ({
   top: -1,
   right: 0,
   width: 320,
+  [theme.breakpoints.down('sm')]: {
+    position: 'fixed',
+    top: 8,
+    left: 16,
+    right: 16,
+    width: 'auto',
+  },
   backgroundColor: theme.palette.background.paper,
   backgroundImage: 'none',
   border: `1px solid ${theme.palette.divider}`,
