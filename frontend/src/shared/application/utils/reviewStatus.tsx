@@ -17,7 +17,13 @@ export function getStatusIcon(
   colored: boolean = false,
   size: number = 16,
 ) {
-  const color = colored ? getStatusColor(theme, status) : 'inherit'
+  const color = colored
+    ? status === 'comment'
+      ? theme.palette.mode === 'dark'
+        ? theme.palette.grey[300]
+        : theme.palette.grey[700]
+      : getStatusColor(theme, status)
+    : 'inherit'
   switch (status) {
     case 'approve':
       return <Check sx={{ fontSize: size, color }} />

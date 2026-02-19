@@ -8,12 +8,14 @@ import { useInfiniteReviews } from '@domains/reviews/application/hooks/useInfini
 import { useMyReviews } from '@domains/reviews/application/hooks/useMyReviews'
 import { useProfileStatus } from '@domains/profiles/application/hooks/useProfileStatus'
 import { useProfileReviewers } from '@domains/profiles/application/hooks/useProfileReviewers'
+import { useInitialProfileLoading } from '@domains/profiles/application/hooks/useInitialProfileLoading'
 import { ReviewContextProvider } from '@domains/reviews/ui/context/ReviewContext'
 import { getReviewerCounts } from '@domains/reviews/application/utils/reviewerCounts'
 import InlineError from '@shared/ui/components/InlineError/InlineError'
 import ProfileHeader from './ProfileHeader'
 import ProfileTabs from './ProfileTabs'
 import ClosedUserNotice from './ClosedUserNotice'
+import { ProfileMainSkeleton, ProfileTabsSkeleton } from './ProfileLoadingSkeleton'
 import { MainContent, TimelinePanel, SidebarPanel } from './ProfileContent.styled'
 
 interface ProfileContentProps {
@@ -37,6 +39,8 @@ export default function ProfileContent({
   currentUsername,
   myReviewIds: initialMyReviewIds,
 }: ProfileContentProps) {
+  const profileUsername = initialUser.username
+
   const { user, isPageOwner, isDraft, isClosed, statusInfo, handleRefreshUser } = useProfileStatus(
     initialUser,
     currentUsername,
@@ -52,22 +56,29 @@ export default function ProfileContent({
     handleTabChange,
     handleToggleHidden,
     refresh: refreshReviews,
-  } = useInfiniteReviews(user.username, initialPaginatedReviews)
+  } = useInfiniteReviews(profileUsername, initialPaginatedReviews)
 
   const { myReviewIds, myReviewsLoading, currentUserInfo, existingReview, refetchMyReviews } =
-    useMyReviews(currentUsername, initialMyReviewIds, user.username)
+    useMyReviews(currentUsername, initialMyReviewIds, profileUsername)
 
   const {
     reviewers,
     loading: reviewersLoading,
     error: reviewersError,
     refetch: refetchReviewers,
-  } = useProfileReviewers(user.username)
+  } = useProfileReviewers(profileUsername)
 
   const hasExistingReview = useMemo(
     () => reviewers.some((r) => myReviewIds.has(r.id)),
     [reviewers, myReviewIds],
   )
+  const shouldLoadMyReviews = Boolean(currentUsername && !initialMyReviewIds)
+  const { isInitialProfileLoading } = useInitialProfileLoading({
+    profileUsername,
+    reviewersLoading,
+    myReviewsLoading,
+    shouldLoadMyReviews,
+  })
 
   const counts = getReviewerCounts(reviewers)
   const tabCounts: Record<FilterTab, number> = {
@@ -93,17 +104,21 @@ export default function ProfileContent({
         isClosed={isClosed}
         hasExistingReview={hasExistingReview}
         existingReview={existingReview}
-        isLoading={myReviewsLoading || reviewersLoading}
+        isLoading={isInitialProfileLoading}
         onSuccess={handleRefreshData}
       />
 
-      <ProfileTabs
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        tabCounts={tabCounts}
-        isDraft={isDraft}
-        isClosed={isClosed}
-      />
+      {isInitialProfileLoading ? (
+        <ProfileTabsSkeleton />
+      ) : (
+        <ProfileTabs
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
+          tabCounts={tabCounts}
+          isDraft={isDraft}
+          isClosed={isClosed}
+        />
+      )}
 
       {isClosed && <ClosedUserNotice />}
 
@@ -111,43 +126,47 @@ export default function ProfileContent({
         <>
           {headerContent}
 
-          <ReviewContextProvider
-            value={{
-              myReviewIds,
-              currentUserInfo,
-              isPageOwner,
-              profileUsername: user.username,
-              isDraft,
-            }}
-          >
-            <MainContent>
-              <TimelinePanel>
-                <ReviewTimeline
-                  user={user}
-                  reviews={reviews}
-                  refreshing={refreshingReviews}
-                  emptyMessage={emptyMessage}
-                  onToggleHidden={handleToggleHidden}
-                  onRefreshUser={handleRefreshUser}
-                  sentinelRef={sentinelRef}
-                  loadingMore={loadingMore}
-                  hasMore={hasMore}
-                />
-              </TimelinePanel>
-
-              <SidebarPanel>
-                {!reviewersError ? (
-                  <ReviewersSidebar
-                    reviewers={reviewers}
-                    loading={reviewersLoading}
-                    onDeleteSuccess={handleRefreshData}
+          {isInitialProfileLoading ? (
+            <ProfileMainSkeleton />
+          ) : (
+            <ReviewContextProvider
+              value={{
+                myReviewIds,
+                currentUserInfo,
+                isPageOwner,
+                profileUsername,
+                isDraft,
+              }}
+            >
+              <MainContent>
+                <TimelinePanel>
+                  <ReviewTimeline
+                    user={user}
+                    reviews={reviews}
+                    refreshing={refreshingReviews}
+                    emptyMessage={emptyMessage}
+                    onToggleHidden={handleToggleHidden}
+                    onRefreshUser={handleRefreshUser}
+                    sentinelRef={sentinelRef}
+                    loadingMore={loadingMore}
+                    hasMore={hasMore}
                   />
-                ) : (
-                  <InlineError message='Unable to load reviewers right now.' />
-                )}
-              </SidebarPanel>
-            </MainContent>
-          </ReviewContextProvider>
+                </TimelinePanel>
+
+                <SidebarPanel>
+                  {!reviewersError ? (
+                    <ReviewersSidebar
+                      reviewers={reviewers}
+                      loading={false}
+                      onDeleteSuccess={handleRefreshData}
+                    />
+                  ) : (
+                    <InlineError message='Unable to load reviewers right now.' />
+                  )}
+                </SidebarPanel>
+              </MainContent>
+            </ReviewContextProvider>
+          )}
         </>
       )}
     </Container>

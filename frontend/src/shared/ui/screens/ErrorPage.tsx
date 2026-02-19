@@ -4,6 +4,7 @@ import { usePostHog } from '@posthog/react'
 import { isRouteErrorResponse, useRouteError } from 'react-router'
 import { Card, CardBody } from '@shared/ui/styled'
 import { ErrorContainer } from './ErrorPage.styled'
+import UnexpectedErrorCard from '@shared/ui/components/UnexpectedErrorCard/UnexpectedErrorCard'
 
 interface Error {
   status: number
@@ -47,6 +48,18 @@ export default function ErrorPage() {
       </ErrorContainer>
     )
   } else {
-    return <div>Oops</div>
+    return (
+      <ErrorContainer
+        container
+        spacing={0}
+        direction='column'
+        alignItems='center'
+        justifyContent='center'
+      >
+        <Grid size={3}>
+          <UnexpectedErrorCard />
+        </Grid>
+      </ErrorContainer>
+    )
   }
 }
