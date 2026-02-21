@@ -9,6 +9,7 @@ import {
 import { FeedSidebar } from './components/FeedSidebar'
 import { FeedMainContent } from './components/FeedMainContent'
 import { FeedWatchlistModal } from './components/FeedWatchlistModal'
+import { FirstReviewModal } from './components/FirstReviewModal'
 
 type LoaderData = {
   account: Account
@@ -31,6 +32,9 @@ export default function Feed() {
   const {
     watchlistModalOpen,
     setWatchlistModalOpen,
+    firstReviewModalOpen,
+    dismissFirstReviewModal,
+    hasNoReviews,
     panelRef,
     activeTab,
     feedItems,
@@ -42,7 +46,8 @@ export default function Feed() {
     watchlist,
     watchlistLoading,
     watchlistError,
-    reviewSuggestions,
+    sidebarSuggestions,
+    modalSuggestions,
     reviewSuggestionsLoading,
     feedError,
   } = useFeedScreen(data.account)
@@ -53,7 +58,7 @@ export default function Feed() {
         panelRef={panelRef}
         reviewSuggestionsWidget={
           <FeedReviewSuggestions
-            reviewSuggestions={reviewSuggestions}
+            reviewSuggestions={sidebarSuggestions}
             reviewSuggestionsLoading={reviewSuggestionsLoading}
           />
         }
@@ -74,7 +79,7 @@ export default function Feed() {
         sentinelRef={sentinelRef}
         mobileReviewSuggestionsWidget={
           <MobileFeedReviewSuggestions
-            reviewSuggestions={reviewSuggestions}
+            reviewSuggestions={sidebarSuggestions}
             reviewSuggestionsLoading={reviewSuggestionsLoading}
           />
         }
@@ -84,6 +89,14 @@ export default function Feed() {
         watchlist={watchlist}
         onClose={() => setWatchlistModalOpen(false)}
       />
+      {hasNoReviews && (
+        <FirstReviewModal
+          open={firstReviewModalOpen}
+          suggestions={modalSuggestions}
+          loading={reviewSuggestionsLoading}
+          onClose={dismissFirstReviewModal}
+        />
+      )}
     </>
   )
 }
