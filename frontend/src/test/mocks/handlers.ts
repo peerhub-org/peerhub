@@ -149,7 +149,7 @@ export const handlers = [
   }),
 
   http.delete(`${API_BASE}watchlist/:username`, () => {
-    return new HttpResponse(null, { status: 204 })
+    return HttpResponse.json({})
   }),
 
   http.get(`${API_BASE}watchlist`, () => {

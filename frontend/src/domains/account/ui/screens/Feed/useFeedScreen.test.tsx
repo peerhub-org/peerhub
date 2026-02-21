@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook } from '@testing-library/react'
 import { useFeedScreen } from './useFeedScreen'
 import { Account } from '@domains/account/application/interfaces/Account'
+import { createWrapper } from '@test/queryTestUtils'
 
 vi.mock('@domains/authentication/application/hooks/useAuthentication', () => ({
   useAuth: vi.fn(),
@@ -70,7 +71,7 @@ describe('useFeedScreen', () => {
   })
 
   it('hydrates auth account when missing', () => {
-    renderHook(() => useFeedScreen(loaderAccount))
+    renderHook(() => useFeedScreen(loaderAccount), { wrapper: createWrapper() })
     expect(mockSetAccount).toHaveBeenCalledWith(loaderAccount)
   })
 
@@ -83,12 +84,12 @@ describe('useFeedScreen', () => {
       logout: mockLogout,
     })
 
-    renderHook(() => useFeedScreen(loaderAccount))
+    renderHook(() => useFeedScreen(loaderAccount), { wrapper: createWrapper() })
     expect(mockSetAccount).not.toHaveBeenCalled()
   })
 
   it('sets feed page title', () => {
-    renderHook(() => useFeedScreen(loaderAccount))
+    renderHook(() => useFeedScreen(loaderAccount), { wrapper: createWrapper() })
     expect(document.title).toBe('PeerHub - Feed')
   })
 })

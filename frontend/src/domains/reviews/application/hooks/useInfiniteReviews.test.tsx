@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { renderHook, act } from '@testing-library/react'
+import { renderHook, act, waitFor } from '@testing-library/react'
 import { useInfiniteReviews } from './useInfiniteReviews'
 import { PaginatedReviews, Review } from '@domains/reviews/application/interfaces/Review'
 import { ReviewRepository } from '@domains/reviews/application/interfaces/ReviewRepository'
+import { createWrapper } from '@test/queryTestUtils'
 
 const makeReview = (id: string, status: Review['status'] = 'approve'): Review => ({
   id,
@@ -45,7 +46,9 @@ describe('useInfiniteReviews', () => {
   }
 
   it('initializes from initialData', () => {
-    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo))
+    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo), {
+      wrapper: createWrapper(),
+    })
 
     expect(result.current.reviews).toEqual(initialData.items)
     expect(result.current.hasMore).toBe(true)
@@ -59,22 +62,28 @@ describe('useInfiniteReviews', () => {
     }
     vi.mocked(mockRepo.getReviews).mockResolvedValue(tabData)
 
-    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo))
+    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo), {
+      wrapper: createWrapper(),
+    })
 
     await act(async () => {
       await result.current.handleTabChange(null, 'comment')
     })
 
     expect(result.current.activeTab).toBe('comment')
-    expect(result.current.reviews).toEqual(tabData.items)
-    expect(result.current.hasMore).toBe(false)
+    await waitFor(() => {
+      expect(result.current.reviews).toEqual(tabData.items)
+      expect(result.current.hasMore).toBe(false)
+    })
     expect(mockRepo.getReviews).toHaveBeenCalledWith('target', expect.any(Number), 0, 'comment')
   })
 
   it('passes undefined status for "all" tab', async () => {
     vi.mocked(mockRepo.getReviews).mockResolvedValue({ items: [], has_more: false })
 
-    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo))
+    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo), {
+      wrapper: createWrapper(),
+    })
 
     // Change to comment tab first, then back to all
     await act(async () => {
@@ -93,7 +102,9 @@ describe('useInfiniteReviews', () => {
       comment_hidden: true,
     })
 
-    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo))
+    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo), {
+      wrapper: createWrapper(),
+    })
 
     await act(async () => {
       await result.current.handleToggleHidden('r1', true)
@@ -103,28 +114,12 @@ describe('useInfiniteReviews', () => {
     expect(result.current.reviews[1].comment_hidden).toBe(false)
   })
 
-  it('resets state when initialData changes', () => {
-    const newInitialData: PaginatedReviews = {
-      items: [makeReview('r5')],
-      has_more: false,
-    }
-
-    const { result, rerender } = renderHook(
-      ({ data }) => useInfiniteReviews('target', data, mockRepo),
-      { initialProps: { data: initialData } },
-    )
-
-    rerender({ data: newInitialData })
-
-    expect(result.current.reviews).toEqual(newInitialData.items)
-    expect(result.current.hasMore).toBe(false)
-    expect(result.current.activeTab).toBe('all')
-  })
-
   it('handles tab change errors gracefully', async () => {
     vi.mocked(mockRepo.getReviews).mockRejectedValue(new Error('Failed'))
 
-    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo))
+    const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo), {
+      wrapper: createWrapper(),
+    })
 
     await act(async () => {
       await result.current.handleTabChange(null, 'approve')

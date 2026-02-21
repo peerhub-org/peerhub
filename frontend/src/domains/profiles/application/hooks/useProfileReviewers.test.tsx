@@ -3,6 +3,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import { useProfileReviewers } from './useProfileReviewers'
 import reviewService from '@domains/reviews/application/services/reviewService'
 import { ReviewerSummary } from '@domains/reviews/application/interfaces/Review'
+import { createWrapper } from '@test/queryTestUtils'
 
 vi.mock('@domains/reviews/application/services/reviewService', () => ({
   default: {
@@ -31,7 +32,7 @@ describe('useProfileReviewers', () => {
   it('fetches reviewers on mount', async () => {
     vi.mocked(reviewService.getReviewers).mockResolvedValue(mockReviewers)
 
-    const { result } = renderHook(() => useProfileReviewers('bob'))
+    const { result } = renderHook(() => useProfileReviewers('bob'), { wrapper: createWrapper() })
 
     expect(result.current.loading).toBe(true)
 
@@ -47,7 +48,7 @@ describe('useProfileReviewers', () => {
   it('handles errors', async () => {
     vi.mocked(reviewService.getReviewers).mockRejectedValue(new Error('Network error'))
 
-    const { result } = renderHook(() => useProfileReviewers('bob'))
+    const { result } = renderHook(() => useProfileReviewers('bob'), { wrapper: createWrapper() })
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
@@ -62,7 +63,7 @@ describe('useProfileReviewers', () => {
       .mockResolvedValueOnce(mockReviewers)
       .mockResolvedValueOnce([])
 
-    const { result } = renderHook(() => useProfileReviewers('bob'))
+    const { result } = renderHook(() => useProfileReviewers('bob'), { wrapper: createWrapper() })
 
     await waitFor(() => {
       expect(result.current.reviewers).toEqual(mockReviewers)
@@ -82,6 +83,7 @@ describe('useProfileReviewers', () => {
 
     const { result, rerender } = renderHook(({ username }) => useProfileReviewers(username), {
       initialProps: { username: 'bob' },
+      wrapper: createWrapper(),
     })
 
     await waitFor(() => {

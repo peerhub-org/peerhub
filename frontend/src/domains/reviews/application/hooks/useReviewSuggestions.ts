@@ -1,18 +1,16 @@
+import { useQuery } from '@tanstack/react-query'
 import reviewService from '@domains/reviews/application/services/reviewService'
-import { ReviewSuggestion } from '@domains/reviews/application/interfaces/Review'
-import { useAsyncData } from '@shared/application/hooks/useAsyncData'
+import { queryKeys } from '@shared/application/queryKeys'
 
-const fetchReviewSuggestions = () => reviewService.getReviewSuggestions()
-
-export function useReviewSuggestions() {
-  const {
-    data: reviewSuggestions,
-    loading: reviewSuggestionsLoading,
-    error,
-  } = useAsyncData<ReviewSuggestion[]>({
-    fetcher: fetchReviewSuggestions,
-    initialData: [],
+export function useReviewSuggestions(limit?: number) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: queryKeys.reviews.suggestions(limit),
+    queryFn: () => reviewService.getReviewSuggestions(limit),
   })
 
-  return { reviewSuggestions, reviewSuggestionsLoading, error }
+  return {
+    reviewSuggestions: data ?? [],
+    reviewSuggestionsLoading: isLoading,
+    error: error instanceof Error ? error : error ? new Error('An error occurred') : null,
+  }
 }

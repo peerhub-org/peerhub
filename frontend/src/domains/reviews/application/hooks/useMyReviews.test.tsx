@@ -3,6 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { useMyReviews } from './useMyReviews'
 import reviewService from '@domains/reviews/application/services/reviewService'
 import { Review } from '@domains/reviews/application/interfaces/Review'
+import { createWrapper } from '@test/queryTestUtils'
 
 vi.mock('@domains/reviews/application/services/reviewService', () => ({
   default: {
@@ -33,7 +34,9 @@ describe('useMyReviews', () => {
   it('uses initialMyReviewIds when provided', () => {
     const initialIds = new Set(['r1', 'r2'])
 
-    const { result } = renderHook(() => useMyReviews('testuser', initialIds, 'target'))
+    const { result } = renderHook(() => useMyReviews('testuser', initialIds, 'target'), {
+      wrapper: createWrapper(),
+    })
 
     expect(result.current.myReviewIds).toBe(initialIds)
     expect(result.current.myReviewsLoading).toBe(false)
@@ -47,7 +50,9 @@ describe('useMyReviews', () => {
     ]
     vi.mocked(reviewService.getMyReviews).mockResolvedValue(myReviews)
 
-    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'))
+    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'), {
+      wrapper: createWrapper(),
+    })
 
     await waitFor(() => {
       expect(result.current.myReviewsLoading).toBe(false)
@@ -60,7 +65,9 @@ describe('useMyReviews', () => {
     const matchingReview = makeReview({ id: 'r1', reviewed_username: 'target' })
     vi.mocked(reviewService.getMyReviews).mockResolvedValue([matchingReview])
 
-    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'))
+    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'), {
+      wrapper: createWrapper(),
+    })
 
     await waitFor(() => {
       expect(result.current.existingReview).toEqual(matchingReview)
@@ -74,7 +81,9 @@ describe('useMyReviews', () => {
     })
     vi.mocked(reviewService.getMyReviews).mockResolvedValue([review])
 
-    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'))
+    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'), {
+      wrapper: createWrapper(),
+    })
 
     await waitFor(() => {
       expect(result.current.currentUserInfo).toEqual({
@@ -87,7 +96,9 @@ describe('useMyReviews', () => {
   it('handles errors gracefully', async () => {
     vi.mocked(reviewService.getMyReviews).mockRejectedValue(new Error('Failed'))
 
-    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'))
+    const { result } = renderHook(() => useMyReviews('testuser', undefined, 'target'), {
+      wrapper: createWrapper(),
+    })
 
     await waitFor(() => {
       expect(result.current.myReviewsLoading).toBe(false)
@@ -99,7 +110,9 @@ describe('useMyReviews', () => {
   })
 
   it('does not fetch when currentUsername is undefined', () => {
-    const { result } = renderHook(() => useMyReviews(undefined, undefined, 'target'))
+    const { result } = renderHook(() => useMyReviews(undefined, undefined, 'target'), {
+      wrapper: createWrapper(),
+    })
 
     expect(result.current.myReviewsLoading).toBe(false)
     expect(reviewService.getMyReviews).not.toHaveBeenCalled()

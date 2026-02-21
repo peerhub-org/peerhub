@@ -1,39 +1,16 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import watchlistService from '@domains/watchlist/application/services/watchlistService'
-import { Watch } from '@domains/watchlist/application/interfaces/Watch'
+import { queryKeys } from '@shared/application/queryKeys'
 
 export function useWatchlist() {
-  const [watchlist, setWatchlist] = useState<Watch[]>([])
-  const [watchlistLoading, setWatchlistLoading] = useState(true)
-  const [error, setError] = useState<Error | null>(null)
+  const { data, isLoading, error } = useQuery({
+    queryKey: queryKeys.watchlist.list(),
+    queryFn: () => watchlistService.getWatchlist(),
+  })
 
-  useEffect(() => {
-    let isActive = true
-
-    watchlistService
-      .getWatchlist()
-      .then((watchlist) => {
-        if (isActive) {
-          setWatchlist(watchlist)
-          setError(null)
-        }
-      })
-      .catch((err) => {
-        if (isActive) {
-          setWatchlist([])
-          setError(err instanceof Error ? err : new Error('Failed to load watchlist'))
-        }
-      })
-      .finally(() => {
-        if (isActive) {
-          setWatchlistLoading(false)
-        }
-      })
-
-    return () => {
-      isActive = false
-    }
-  }, [])
-
-  return { watchlist, watchlistLoading, error }
+  return {
+    watchlist: data ?? [],
+    watchlistLoading: isLoading,
+    error: error instanceof Error ? error : error ? new Error('Failed to load watchlist') : null,
+  }
 }

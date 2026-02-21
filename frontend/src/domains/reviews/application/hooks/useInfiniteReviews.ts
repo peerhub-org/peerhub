@@ -1,77 +1,131 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { Review, PaginatedReviews } from '@domains/reviews/application/interfaces/Review'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import {
+  InfiniteData,
+  QueryKey,
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
+import { PaginatedReviews } from '@domains/reviews/application/interfaces/Review'
 import { ReviewRepository } from '@domains/reviews/application/interfaces/ReviewRepository'
 import { reviewRepository } from '@domains/reviews/application/services/reviewRepository'
 import { INFINITE_SCROLL_ROOT_MARGIN, PAGE_SIZE } from '@shared/application/config/appConstants'
+import { queryKeys } from '@shared/application/queryKeys'
 
 type FilterTab = 'all' | 'approve' | 'comment' | 'request_change'
 
+function updateHiddenState(
+  cachedData: InfiniteData<PaginatedReviews> | undefined,
+  reviewId: string,
+  hidden: boolean,
+): InfiniteData<PaginatedReviews> | undefined {
+  if (!cachedData) {
+    return cachedData
+  }
+
+  return {
+    ...cachedData,
+    pages: cachedData.pages.map((page) => ({
+      ...page,
+      items: page.items.map((review) =>
+        review.id === reviewId ? { ...review, comment_hidden: hidden } : review,
+      ),
+    })),
+  }
+}
+
 export function useInfiniteReviews(
   username: string,
-  initialData: PaginatedReviews,
+  initialPaginatedReviews: PaginatedReviews,
   repository: ReviewRepository = reviewRepository,
 ) {
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
-  const [reviews, setReviews] = useState<Review[]>(initialData.items)
-  const [loading, setLoading] = useState(false)
-  const [loadingMore, setLoadingMore] = useState(false)
-  const [hasMore, setHasMore] = useState(initialData.has_more)
   const sentinelRef = useRef<HTMLDivElement>(null)
+  const [mountTime] = useState(() => Date.now())
+  const queryClient = useQueryClient()
+  const statusFilter = activeTab === 'all' ? undefined : activeTab
+  const reviewListPrefix = useMemo(
+    () => [...queryKeys.reviews.all, 'list', username] as const,
+    [username],
+  )
 
-  useEffect(() => {
-    setReviews(initialData.items)
-    setHasMore(initialData.has_more)
-    setActiveTab('all')
-    setLoading(false)
-  }, [initialData])
+  const { data, isLoading, isFetching, isFetchingNextPage, hasNextPage, fetchNextPage } =
+    useInfiniteQuery({
+      queryKey: queryKeys.reviews.list(username, statusFilter),
+      queryFn: ({ pageParam }) =>
+        repository.getReviews(username, PAGE_SIZE, pageParam, statusFilter),
+      initialPageParam: 0,
+      getNextPageParam: (lastPage, allPages) => {
+        if (!lastPage.has_more) {
+          return undefined
+        }
 
-  const handleTabChange = async (_: unknown, newValue: FilterTab) => {
+        return allPages.reduce((total, page) => total + page.items.length, 0)
+      },
+      initialData:
+        statusFilter === undefined
+          ? ({
+              pages: [initialPaginatedReviews],
+              pageParams: [0],
+            } as InfiniteData<PaginatedReviews, number>)
+          : undefined,
+      initialDataUpdatedAt: statusFilter === undefined ? mountTime : undefined,
+    })
+
+  const reviews = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data])
+
+  const { mutateAsync: mutateToggleHidden } = useMutation({
+    mutationFn: ({ reviewId, hidden }: { reviewId: string; hidden: boolean }) =>
+      repository.toggleCommentHidden(reviewId, hidden),
+    onMutate: async ({ reviewId, hidden }) => {
+      await queryClient.cancelQueries({ queryKey: reviewListPrefix })
+
+      const previousQueries = queryClient.getQueriesData<InfiniteData<PaginatedReviews>>({
+        queryKey: reviewListPrefix,
+      })
+
+      queryClient.setQueriesData<InfiniteData<PaginatedReviews>>(
+        { queryKey: reviewListPrefix },
+        (cachedData) => updateHiddenState(cachedData, reviewId, hidden),
+      )
+
+      return { previousQueries }
+    },
+    onError: (_error, _variables, context) => {
+      context?.previousQueries.forEach(([key, cachedData]) => {
+        queryClient.setQueryData(key as QueryKey, cachedData)
+      })
+    },
+    onSuccess: (updatedReview) => {
+      queryClient.setQueriesData<InfiniteData<PaginatedReviews>>(
+        { queryKey: reviewListPrefix },
+        (cachedData) =>
+          updateHiddenState(cachedData, updatedReview.id, updatedReview.comment_hidden),
+      )
+    },
+  })
+
+  const handleTabChange = (_: unknown, newValue: FilterTab) => {
     setActiveTab(newValue)
-    setLoading(true)
-    setHasMore(false)
-    setReviews([])
-    try {
-      const statusFilter = newValue === 'all' ? undefined : newValue
-      const data = await repository.getReviews(username, PAGE_SIZE, 0, statusFilter)
-      setReviews(data.items)
-      setHasMore(data.has_more)
-    } catch {
-      setReviews([])
-      setHasMore(false)
-    } finally {
-      setLoading(false)
-    }
   }
 
   const loadMore = useCallback(async () => {
-    if (loadingMore || !hasMore) return
-    setLoadingMore(true)
-    try {
-      const statusFilter = activeTab === 'all' ? undefined : activeTab
-      const data = await repository.getReviews(username, PAGE_SIZE, reviews.length, statusFilter)
-      setReviews((prev) => [...prev, ...data.items])
-      setHasMore(data.has_more)
-    } catch {
-      setHasMore(false)
-    } finally {
-      setLoadingMore(false)
+    if (!hasNextPage || isFetchingNextPage) {
+      return
     }
-  }, [activeTab, hasMore, loadingMore, repository, reviews.length, username])
+
+    await fetchNextPage()
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
   const handleToggleHidden = useCallback(
     async (reviewId: string, hidden: boolean) => {
       try {
-        const updatedReview = await repository.toggleCommentHidden(reviewId, hidden)
-        setReviews((prev) =>
-          prev.map((r) =>
-            r.id === reviewId ? { ...r, comment_hidden: updatedReview.comment_hidden } : r,
-          ),
-        )
+        await mutateToggleHidden({ reviewId, hidden })
       } catch {
         // Error handling
       }
     },
-    [repository],
+    [mutateToggleHidden],
   )
 
   useEffect(() => {
@@ -81,7 +135,7 @@ export function useInfiniteReviews(
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          loadMore()
+          void loadMore()
         }
       },
       { rootMargin: INFINITE_SCROLL_ROOT_MARGIN },
@@ -92,25 +146,15 @@ export function useInfiniteReviews(
 
   const refresh = useCallback(async () => {
     setActiveTab('all')
-    setLoading(true)
-    try {
-      const data = await repository.getReviews(username, PAGE_SIZE, 0)
-      setReviews(data.items)
-      setHasMore(data.has_more)
-    } catch {
-      setReviews([])
-      setHasMore(false)
-    } finally {
-      setLoading(false)
-    }
-  }, [repository, username])
+    await queryClient.invalidateQueries({ queryKey: reviewListPrefix })
+  }, [queryClient, reviewListPrefix])
 
   return {
     activeTab,
     reviews,
-    loading,
-    loadingMore,
-    hasMore,
+    loading: isLoading || (isFetching && !isFetchingNextPage),
+    loadingMore: isFetchingNextPage,
+    hasMore: hasNextPage ?? false,
     sentinelRef,
     handleTabChange,
     handleToggleHidden,

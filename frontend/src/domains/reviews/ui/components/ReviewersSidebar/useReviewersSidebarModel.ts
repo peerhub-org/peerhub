@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useTheme } from '@mui/material/styles'
 import reviewService from '@domains/reviews/application/services/reviewService'
 import { ReviewerSummary } from '@domains/reviews/application/interfaces/Review'
 import { getReviewerCounts } from '@domains/reviews/application/utils/reviewerCounts'
 import { MAX_VISIBLE_REVIEWERS, STATUS_DOT_COUNT } from '@shared/application/config/appConstants'
+import { queryKeys } from '@shared/application/queryKeys'
 
 interface UseReviewersSidebarModelParams {
   reviewers: ReviewerSummary[]
@@ -17,9 +19,17 @@ export function useReviewersSidebarModel({
   onDeleteSuccess,
 }: UseReviewersSidebarModelParams) {
   const theme = useTheme()
-  const [deleting, setDeleting] = useState(false)
+  const queryClient = useQueryClient()
   const [deleteTarget, setDeleteTarget] = useState<string | null>(null)
   const [seeAllOpen, setSeeAllOpen] = useState(false)
+
+  const { mutateAsync: deleteReview, isPending: deleting } = useMutation({
+    mutationFn: (reviewedUsername: string) => reviewService.deleteReview(reviewedUsername),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.reviews.all })
+      onDeleteSuccess?.()
+    },
+  })
 
   const handleDeleteClick = (reviewedUsername: string) => {
     setDeleteTarget(reviewedUsername)
@@ -31,14 +41,11 @@ export function useReviewersSidebarModel({
 
   const handleDeleteConfirm = async () => {
     if (!deleteTarget) return
-    setDeleting(true)
     try {
-      await reviewService.deleteReview(deleteTarget)
-      onDeleteSuccess?.()
+      await deleteReview(deleteTarget)
     } catch {
       // Error handling
     } finally {
-      setDeleting(false)
       setDeleteTarget(null)
     }
   }
