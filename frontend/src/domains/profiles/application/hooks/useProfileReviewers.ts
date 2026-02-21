@@ -1,20 +1,19 @@
-import { useCallback } from 'react'
+import { useQuery } from '@tanstack/react-query'
 import reviewService from '@domains/reviews/application/services/reviewService'
-import { ReviewerSummary } from '@domains/reviews/application/interfaces/Review'
-import { useAsyncData } from '@shared/application/hooks/useAsyncData'
+import { queryKeys } from '@shared/application/queryKeys'
 
 export function useProfileReviewers(username: string) {
-  const fetcher = useCallback(() => reviewService.getReviewers(username), [username])
-
-  const {
-    data: reviewers,
-    loading,
-    error,
-    refetch,
-  } = useAsyncData<ReviewerSummary[]>({
-    fetcher,
-    initialData: [],
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: queryKeys.reviews.reviewers(username),
+    queryFn: () => reviewService.getReviewers(username),
   })
 
-  return { reviewers, loading, error, refetch }
+  return {
+    reviewers: data ?? [],
+    loading: isLoading,
+    error: error instanceof Error ? error : error ? new Error('An error occurred') : null,
+    refetch: async () => {
+      await refetch()
+    },
+  }
 }

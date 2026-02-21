@@ -6,6 +6,7 @@ import {
   PaginatedActivityFeed,
 } from '@domains/account/application/interfaces/ActivityFeed'
 import { FeedRepository } from '@domains/account/application/interfaces/FeedRepository'
+import { createWrapper } from '@test/queryTestUtils'
 
 const makeFeedItem = (id: string): ActivityFeedItem => ({
   review_id: id,
@@ -48,7 +49,7 @@ describe('useActivityFeed', () => {
     }
     vi.mocked(mockRepo.getActivityFeed).mockResolvedValue(feed)
 
-    const { result } = renderHook(() => useActivityFeed(mockRepo))
+    const { result } = renderHook(() => useActivityFeed(mockRepo), { wrapper: createWrapper() })
 
     expect(result.current.loading).toBe(true)
 
@@ -70,7 +71,7 @@ describe('useActivityFeed', () => {
       .mockResolvedValueOnce(allFeed) // initial load
       .mockResolvedValueOnce(mineFeed) // tab switch
 
-    const { result } = renderHook(() => useActivityFeed(mockRepo))
+    const { result } = renderHook(() => useActivityFeed(mockRepo), { wrapper: createWrapper() })
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
@@ -81,14 +82,16 @@ describe('useActivityFeed', () => {
     })
 
     expect(result.current.activeTab).toBe('mine')
-    expect(result.current.feedItems).toEqual(mineFeed.items)
+    await waitFor(() => {
+      expect(result.current.feedItems).toEqual(mineFeed.items)
+    })
     expect(mockRepo.getActivityFeed).toHaveBeenCalledWith('mine', expect.any(Number), 0)
   })
 
   it('handles load error', async () => {
     vi.mocked(mockRepo.getActivityFeed).mockRejectedValue(new Error('Network error'))
 
-    const { result } = renderHook(() => useActivityFeed(mockRepo))
+    const { result } = renderHook(() => useActivityFeed(mockRepo), { wrapper: createWrapper() })
 
     await waitFor(() => {
       expect(result.current.loading).toBe(false)
@@ -117,11 +120,15 @@ describe('useActivityFeed', () => {
           }),
       ) // 'mine' tab
 
-    const { result } = renderHook(() => useActivityFeed(mockRepo))
+    const { result } = renderHook(() => useActivityFeed(mockRepo), { wrapper: createWrapper() })
 
     // Switch tab before initial load completes
-    act(() => {
-      result.current.handleTabChange(null, 'mine')
+    await act(async () => {
+      await result.current.handleTabChange(null, 'mine')
+    })
+
+    await waitFor(() => {
+      expect(mockRepo.getActivityFeed).toHaveBeenCalledTimes(2)
     })
 
     // Resolve second first
@@ -129,12 +136,19 @@ describe('useActivityFeed', () => {
       resolveSecond!({ items: [makeFeedItem('mine-1')], has_more: false })
     })
 
+    await waitFor(() => {
+      expect(result.current.feedItems).toEqual([makeFeedItem('mine-1')])
+      expect(result.current.activeTab).toBe('mine')
+    })
+
     // Resolve first (stale) — should be ignored
     await act(async () => {
       resolveFirst!({ items: [makeFeedItem('all-1')], has_more: true })
     })
 
-    expect(result.current.feedItems).toEqual([makeFeedItem('mine-1')])
-    expect(result.current.activeTab).toBe('mine')
+    await waitFor(() => {
+      expect(result.current.feedItems).toEqual([makeFeedItem('mine-1')])
+      expect(result.current.activeTab).toBe('mine')
+    })
   })
 })

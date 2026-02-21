@@ -6,6 +6,7 @@ import { useReviewersSidebarModel } from './useReviewersSidebarModel'
 import reviewService from '@domains/reviews/application/services/reviewService'
 import { ReviewerSummary } from '@domains/reviews/application/interfaces/Review'
 import { STATUS_DOT_COUNT } from '@shared/application/config/appConstants'
+import { createWrapper } from '@test/queryTestUtils'
 
 vi.mock('@domains/reviews/application/services/reviewService', () => ({
   default: {
@@ -13,8 +14,12 @@ vi.mock('@domains/reviews/application/services/reviewService', () => ({
   },
 }))
 
+const QueryWrapper = createWrapper()
+
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <ThemeModeProvider>{children}</ThemeModeProvider>
+  <QueryWrapper>
+    <ThemeModeProvider>{children}</ThemeModeProvider>
+  </QueryWrapper>
 )
 
 const theme = createAppTheme('dark')
