@@ -88,4 +88,7 @@ export const UI_COPY = {
   homeLoginCta: 'Login with GitHub',
   homeAuthFailed: 'Authentication failed. Please try again.',
   homeLoginFailed: 'Failed to initiate login. Please try again.',
+  feedFirstReviewModalTitle: 'Submit your first review',
+  feedFirstReviewModalSubtitle:
+    'Choose someone you follow on GitHub and leave your first peer review.',
 }
