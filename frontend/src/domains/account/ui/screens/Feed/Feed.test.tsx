@@ -49,6 +49,7 @@ const createBaseScreenState = () => ({
   firstReviewModalOpen: false,
   dismissFirstReviewModal: vi.fn(),
   hasNoReviews: false,
+  myReviewIds: new Set<string>(),
 })
 
 function renderFeed() {
