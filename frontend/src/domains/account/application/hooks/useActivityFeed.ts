@@ -15,6 +15,8 @@ export function useActivityFeed(repository: FeedRepository = feedRepository) {
       queryKey: queryKeys.feed.list(activeTab),
       queryFn: ({ pageParam }) => repository.getActivityFeed(activeTab, PAGE_SIZE, pageParam),
       initialPageParam: 0,
+      gcTime: 0,
+      staleTime: 0,
       getNextPageParam: (lastPage, allPages) => {
         if (!lastPage.has_more) {
           return undefined

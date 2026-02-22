@@ -15,6 +15,7 @@ interface FeedMainContentProps {
   hasMore: boolean
   feedError: Error | null
   currentUsername: string
+  myReviewIds: Set<string>
   sentinelRef: RefObject<HTMLDivElement | null>
   mobileReviewSuggestionsWidget: ReactNode
 }
@@ -28,6 +29,7 @@ export function FeedMainContent({
   hasMore,
   feedError,
   currentUsername,
+  myReviewIds,
   sentinelRef,
   mobileReviewSuggestionsWidget,
 }: FeedMainContentProps) {
@@ -51,6 +53,7 @@ export function FeedMainContent({
               loadingMore={loadingMore}
               hasMore={hasMore}
               currentUsername={currentUsername}
+              myReviewIds={myReviewIds}
               sentinelRef={sentinelRef}
             />
           )}

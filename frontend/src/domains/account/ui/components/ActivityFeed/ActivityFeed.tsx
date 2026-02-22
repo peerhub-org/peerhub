@@ -11,8 +11,10 @@ import {
 } from '@mui/material'
 import { ActivityFeedItem } from '@domains/account/application/interfaces/ActivityFeed'
 import { getStatusColor, getStatusIcon } from '@shared/application/utils/reviewStatus'
+import { getAnonymousReviewDisplay } from '@shared/application/utils/anonymousReview'
 import { timeAgo, formatFullDate } from '@shared/application/utils/dateFormatting'
 import { UI_COPY } from '@shared/application/config/uiCopy'
+import Incognito from '@shared/ui/components/icons/Incognito'
 import EndOfList from '@shared/ui/components/EndOfList/EndOfList'
 import {
   FeedItem,
@@ -29,6 +31,7 @@ interface ActivityFeedProps {
   loadingMore: boolean
   hasMore: boolean
   currentUsername: string
+  myReviewIds: Set<string>
   sentinelRef: RefObject<HTMLDivElement | null>
 }
 
@@ -38,6 +41,7 @@ export default function ActivityFeed({
   loadingMore,
   hasMore,
   currentUsername,
+  myReviewIds,
   sentinelRef,
 }: ActivityFeedProps) {
   const theme = useTheme()
@@ -126,15 +130,44 @@ export default function ActivityFeed({
                   </strong>
                 </FeedLink>{' '}
                 <span style={{ color: 'text.secondary' }}>received a review from</span>{' '}
-                {item.anonymous ? (
-                  'anonymous'
-                ) : (
-                  <FeedLink to={`/${item.reviewer_username}`}>
-                    <strong>
-                      {item.reviewer_username === currentUsername ? 'you' : item.reviewer_username}
-                    </strong>
-                  </FeedLink>
-                )}
+                {(() => {
+                  const isCurrentUser = myReviewIds.has(item.review_id)
+                  const { showAnonymous, isOwnAnonymousReview, displayName } =
+                    getAnonymousReviewDisplay(item, isCurrentUser, {
+                      username: currentUsername,
+                      avatarUrl: null,
+                    })
+                  if (showAnonymous) {
+                    return 'anonymous'
+                  }
+                  if (isOwnAnonymousReview) {
+                    return (
+                      <Tooltip title='Visible to you only' arrow>
+                        <span
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: 2,
+                          }}
+                        >
+                          <Typography
+                            component='span'
+                            variant='body2'
+                            sx={{ color: 'text.disabled', fontWeight: 600 }}
+                          >
+                            you
+                          </Typography>
+                          <Incognito sx={{ fontSize: 14, color: 'text.disabled' }} />
+                        </span>
+                      </Tooltip>
+                    )
+                  }
+                  return (
+                    <FeedLink to={`/${item.reviewer_username}`}>
+                      <strong>{isCurrentUser ? 'you' : displayName}</strong>
+                    </FeedLink>
+                  )
+                })()}
               </Typography>
               <Tooltip title={formatFullDate(item.updated_at)} arrow>
                 <Typography variant='caption' color='text.secondary' sx={{ cursor: 'default' }}>
