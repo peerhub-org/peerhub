@@ -66,8 +66,10 @@ class ReviewService {
     return z.array(reviewerSummarySchema).parse(response.data)
   }
 
-  async getReviewSuggestions(): Promise<ReviewSuggestion[]> {
-    const response = await axios.get(API_BASE_URL + 'reviews/suggestions')
+  async getReviewSuggestions(limit?: number): Promise<ReviewSuggestion[]> {
+    const response = await axios.get(API_BASE_URL + 'reviews/suggestions', {
+      params: limit ? { limit } : undefined,
+    })
     return z.array(reviewSuggestionSchema).parse(response.data)
   }
 

@@ -1,15 +1,9 @@
-import {
-  createContext,
-  useState,
-  ReactNode,
-  useContext,
-  useEffect,
-  useCallback,
-  useRef,
-} from 'react'
+import { createContext, ReactNode, useCallback, useContext, useEffect } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { usePostHog } from '@posthog/react'
 import accountService from '@domains/account/application/services/accountService'
 import { Account } from '@domains/account/application/interfaces/Account'
+import { queryKeys } from '@shared/application/queryKeys'
 
 type AuthContextType = {
   account: Account | undefined
@@ -26,49 +20,73 @@ interface AuthContextProviderProps {
 }
 
 const AuthProvider = ({ children }: AuthContextProviderProps) => {
-  const [account, setAccount] = useState<Account>()
-  const [isLoading, setIsLoading] = useState(true)
-  const isFetching = useRef(false)
   const posthog = usePostHog()
+  const queryClient = useQueryClient()
+  const hasToken = Boolean(localStorage.getItem('token'))
+
+  const {
+    data: account,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: queryKeys.account.me(),
+    queryFn: () => accountService.getAccount(),
+    enabled: hasToken,
+  })
+
+  const setAccount = useCallback(
+    (nextAccount: Account | undefined) => {
+      if (nextAccount) {
+        queryClient.setQueryData(queryKeys.account.me(), nextAccount)
+        return
+      }
+
+      queryClient.removeQueries({ queryKey: queryKeys.account.me(), exact: true })
+    },
+    [queryClient],
+  )
+
+  useEffect(() => {
+    if (!error) return
+
+    localStorage.removeItem('token')
+    queryClient.removeQueries({ queryKey: queryKeys.account.me(), exact: true })
+  }, [error, queryClient])
+
+  useEffect(() => {
+    if (account) {
+      posthog?.identify(account.uuid)
+    }
+  }, [account, posthog])
 
   const refetchAccount = useCallback(async () => {
-    // Prevent duplicate fetches
-    if (isFetching.current) return
-    isFetching.current = true
+    if (!hasToken) return
 
-    try {
-      const fetchedAccount = await accountService.getAccount()
-      setAccount(fetchedAccount)
-      posthog?.identify(fetchedAccount.uuid)
-    } catch {
+    const result = await refetch()
+    if (result.error) {
       localStorage.removeItem('token')
-      setAccount(undefined)
-    } finally {
-      setIsLoading(false)
-      isFetching.current = false
+      queryClient.removeQueries({ queryKey: queryKeys.account.me(), exact: true })
     }
-  }, [posthog])
-
-  // Check if there is a currently active session
-  // when the provider is mounted for the first time.
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) {
-      refetchAccount()
-    } else {
-      setIsLoading(false)
-    }
-  }, [refetchAccount])
+  }, [hasToken, queryClient, refetch])
 
   const logout = () => {
     posthog?.capture('logout_clicked')
     posthog?.reset()
     localStorage.removeItem('token')
-    setAccount(undefined)
+    queryClient.clear()
   }
 
   return (
-    <AuthContext.Provider value={{ account, isLoading, setAccount, refetchAccount, logout }}>
+    <AuthContext.Provider
+      value={{
+        account,
+        isLoading: hasToken ? isLoading : false,
+        setAccount,
+        refetchAccount,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

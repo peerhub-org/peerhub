@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react'
 import { Button, CircularProgress, Skeleton, useTheme } from '@mui/material'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import { usePostHog } from '@posthog/react'
-import watchlistService from '@domains/watchlist/application/services/watchlistService'
+import { useWatchButton } from '@domains/watchlist/application/hooks/useWatchButton'
 import { getWatchedStyles, getUnwatchedStyles } from './WatchButton.styled'
 
 interface WatchButtonProps {
@@ -13,33 +12,21 @@ interface WatchButtonProps {
 export default function WatchButton({ username, initialWatched }: WatchButtonProps) {
   const theme = useTheme()
   const posthog = usePostHog()
-  const [isWatched, setIsWatching] = useState(initialWatched ?? false)
-  const [initialLoading, setInitialLoading] = useState(initialWatched === undefined)
-  const [actionLoading, setActionLoading] = useState(false)
-
-  useEffect(() => {
-    if (initialWatched === undefined) {
-      watchlistService
-        .checkWatch(username)
-        .then(setIsWatching)
-        .finally(() => setInitialLoading(false))
-    }
-  }, [username, initialWatched])
+  const { isWatched, initialLoading, actionLoading, toggleWatch } = useWatchButton(
+    username,
+    initialWatched,
+  )
 
   const handleClick = async () => {
-    setActionLoading(true)
     try {
-      if (isWatched) {
-        await watchlistService.unwatch(username)
-        posthog?.capture('user_unwatched', { watched_username: username })
-        setIsWatching(false)
-      } else {
-        await watchlistService.watch(username)
+      const nextWatched = await toggleWatch()
+      if (nextWatched) {
         posthog?.capture('user_watched', { watched_username: username })
-        setIsWatching(true)
+      } else {
+        posthog?.capture('user_unwatched', { watched_username: username })
       }
-    } finally {
-      setActionLoading(false)
+    } catch {
+      // Error state is surfaced by preserving the last successful query value.
     }
   }
 

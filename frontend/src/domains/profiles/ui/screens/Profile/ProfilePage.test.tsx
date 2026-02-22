@@ -1,6 +1,7 @@
 import { beforeAll, describe, it, expect, vi, beforeEach } from 'vitest'
 import { screen } from '@testing-library/react'
 import { render } from '@testing-library/react'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { SnackBarProvider } from '@shared/ui/hooks/useSnackbar'
 import { ThemeModeProvider } from '@shared/ui/hooks/useThemeMode'
@@ -83,6 +84,14 @@ vi.mock('@domains/reviews/application/services/reviewService', () => ({
 }))
 
 function renderWithRouter() {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+        gcTime: 0,
+      },
+    },
+  })
   const router = createMemoryRouter(
     [{ path: '/:username', element: <ProfilePage />, loader, HydrateFallback: () => null }],
     {
@@ -91,11 +100,13 @@ function renderWithRouter() {
   )
 
   return render(
-    <ThemeModeProvider>
-      <SnackBarProvider>
-        <RouterProvider router={router} />
-      </SnackBarProvider>
-    </ThemeModeProvider>,
+    <QueryClientProvider client={queryClient}>
+      <ThemeModeProvider>
+        <SnackBarProvider>
+          <RouterProvider router={router} />
+        </SnackBarProvider>
+      </ThemeModeProvider>
+    </QueryClientProvider>,
   )
 }
 
