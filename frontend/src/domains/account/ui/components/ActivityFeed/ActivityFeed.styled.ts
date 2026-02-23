@@ -1,11 +1,14 @@
 import { Box, Paper, styled } from '@mui/material'
 import { Link } from 'react-router'
+import { isLight } from '@shared/ui/foundations/theme'
 
 export const FeedItem = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
   marginBottom: theme.spacing(2),
   border: `1px solid ${theme.palette.divider}`,
-  backgroundColor: theme.palette.background.paper,
+  backgroundColor: isLight(theme)
+    ? theme.palette.background.default
+    : theme.palette.background.paper,
   backgroundImage: 'none',
 }))
 

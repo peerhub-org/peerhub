@@ -1,4 +1,5 @@
 import { Box, Button, Radio, TextField, styled } from '@mui/material'
+import { isLight } from '@shared/ui/foundations/theme'
 
 export const FormContainer = styled(Box)<{ component?: React.ElementType }>(({ theme }) => ({
   width: 640,
@@ -32,10 +33,9 @@ export const FormFooter = styled(Box)(({ theme }) => ({
 export const CommentTextField = styled(TextField)(({ theme }) => ({
   marginBottom: 16,
   '& .MuiOutlinedInput-root': {
-    backgroundColor:
-      theme.palette.mode === 'light'
-        ? theme.palette.background.default
-        : theme.palette.background.highlight,
+    backgroundColor: isLight(theme)
+      ? theme.palette.background.default
+      : theme.palette.background.highlight,
   },
   '& .MuiInputBase-input': {
     fontSize: '0.875rem',

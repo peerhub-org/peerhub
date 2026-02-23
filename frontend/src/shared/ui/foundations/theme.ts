@@ -7,6 +7,8 @@ declare module '@mui/material/styles' {
   }
 }
 
+export const isLight = (theme: Theme) => theme.palette.mode === 'light'
+
 export const getMenuSlotProps = (theme: Theme) => ({
   paper: {
     sx: {
@@ -33,12 +35,12 @@ export const getMenuSlotProps = (theme: Theme) => ({
 const darkPalette: ThemeOptions['palette'] = {
   mode: 'dark',
   background: {
-    default: 'rgb(25, 25, 25)',
-    paper: 'rgb(32, 32, 32)',
-    highlight: 'rgb(48, 48, 48)',
-    grey: 'rgb(62, 62, 62)',
+    default: '#191919',
+    paper: '#202020',
+    highlight: '#303030',
+    grey: '#3e3e3e',
   },
-  divider: 'rgb(47, 47, 47)',
+  divider: '#2f2f2f',
   error: { main: '#d32f2f' },
   primary: { main: '#2783de' },
   success: { main: '#388e3c' },
@@ -47,12 +49,12 @@ const darkPalette: ThemeOptions['palette'] = {
 const lightPalette: ThemeOptions['palette'] = {
   mode: 'light',
   background: {
-    default: 'rgb(255, 255, 255)',
-    paper: 'rgb(248, 248, 248)',
-    highlight: 'rgb(232, 232, 232)',
-    grey: 'rgb(218, 218, 218)',
+    default: '#ffffff',
+    paper: '#f8f8f8',
+    highlight: '#f8f8f8',
+    grey: '#e8e8e8'
   },
-  divider: 'rgb(234, 234, 234)',
+  divider: '#eaeaea',
 }
 
 const baseThemeOptions: Omit<ThemeOptions, 'palette'> = {
