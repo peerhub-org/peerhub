@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.3.0] - 2026-02-22
+
+### Added
+- Added automatic watch when submitting a review
+
+### Changed
+
+### Fixed
+
 ## [1.2.0] - 2026-02-22
 
 ### Added
