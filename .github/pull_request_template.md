@@ -4,10 +4,9 @@
 
 ## Type of change
 
-- [ ] Bug fix
 - [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation only
+- [ ] Bug fix
+- [ ] Minor change
 
 ## Validation
 

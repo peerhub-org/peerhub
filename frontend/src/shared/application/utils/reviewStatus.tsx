@@ -1,6 +1,7 @@
 import { ChatBubbleOutline, Check, Rule } from '@mui/icons-material'
 import { Theme } from '@mui/material/styles'
 import { ReviewStatus } from '@shared/application/interfaces/ReviewStatus'
+import { isLight } from '@shared/ui/foundations/theme'
 
 export function getStatusColor(theme: Theme, status: ReviewStatus) {
   const statusColorMap = {
@@ -19,9 +20,9 @@ export function getStatusIcon(
 ) {
   const color = colored
     ? status === 'comment'
-      ? theme.palette.mode === 'dark'
-        ? theme.palette.grey[300]
-        : theme.palette.grey[700]
+      ? isLight(theme)
+        ? theme.palette.grey[700]
+        : theme.palette.grey[300]
       : getStatusColor(theme, status)
     : 'inherit'
   switch (status) {
