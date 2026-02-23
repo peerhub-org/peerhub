@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.0] - 2026-02-22
+
+### Added
+- Email integration for abuse control
+
+### Changed
+
+### Fixed
+
 ## [1.3.1] - 2026-02-22
 
 ### Added
