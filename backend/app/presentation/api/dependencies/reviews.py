@@ -29,10 +29,11 @@ def get_create_or_update_review_use_case(
     review_service: ReviewService = Depends(get_review_service),
     account_service: AccountService = Depends(get_account_service),
     enrichment_service: ReviewEnrichmentService = Depends(get_review_enrichment_service),
+    watchlist_service: WatchlistService = Depends(get_watchlist_service),
 ) -> CreateOrUpdateReviewUseCase:
     """Get create or update review use case instance."""
     return CreateOrUpdateReviewUseCase(
-        review_service, account_service, enrichment_service
+        review_service, account_service, enrichment_service, watchlist_service
     )
 
 
