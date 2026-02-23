@@ -78,6 +78,7 @@ export const SubmitButton = styled(Button)(({ theme }) => ({
   },
   '&.Mui-disabled': {
     backgroundColor: theme.palette.success.dark,
+    color: theme.palette.getContrastText(theme.palette.success.dark),
     opacity: 0.5,
   },
   fontWeight: 600,

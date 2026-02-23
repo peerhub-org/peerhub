@@ -17,6 +17,7 @@ class AccountMapper:
             uuid=document.uuid,
             username=document.username,
             access_token=document.access_token,
+            email=document.email,
             deleted_at=document.deleted_at,
             created_at=document.created_at,
         )
@@ -30,6 +31,7 @@ class AccountMapper:
             uuid=entity.uuid,
             username=entity.username,
             access_token=entity.access_token,
+            email=entity.email,
             deleted_at=entity.deleted_at,
             created_at=entity.created_at or datetime.now(timezone.utc),
         )
@@ -46,5 +48,6 @@ class AccountMapper:
         document.uuid = entity.uuid
         document.username = entity.username
         document.access_token = entity.access_token
+        document.email = entity.email
         document.deleted_at = entity.deleted_at
         return document

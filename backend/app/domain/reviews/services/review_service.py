@@ -45,8 +45,12 @@ class ReviewService:
         status: ReviewStatus,
         comment: str | None,
         anonymous: bool = False,
-    ) -> Review:
-        """Create a new review or update existing one (upsert pattern)."""
+    ) -> tuple[Review, bool]:
+        """Create a new review or update existing one (upsert pattern).
+
+        Returns a tuple of (review, is_new) where is_new indicates
+        whether a new review was created.
+        """
         comment = sanitize_comment(comment)
         # Validate business rules
         self._validate_comment(status, comment)
@@ -71,7 +75,7 @@ class ReviewService:
                 raise AnonymousFieldImmutableException()
             # Update existing review
             existing_review.update_status(status, comment)
-            return await self.review_repository.update(existing_review)
+            return await self.review_repository.update(existing_review), False
         else:
             # Create new review
             new_review = Review(
@@ -84,7 +88,7 @@ class ReviewService:
                 created_at=now,
                 updated_at=now,
             )
-            return await self.review_repository.create(new_review)
+            return await self.review_repository.create(new_review), True
 
     async def get_reviews_for_user(
         self,

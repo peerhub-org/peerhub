@@ -1,4 +1,4 @@
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, MagicMock, patch
 from uuid import uuid4
 
 import pytest
@@ -10,6 +10,7 @@ from app.domain.accounts.entities.account import Account
 from app.domain.accounts.services.account_service import AccountService
 from app.domain.shared.exceptions import AccessRestrictedException
 from app.domain.users.services.user_service import UserService
+from app.infrastructure.email.email_service import EmailService
 
 GITHUB_DATA = {
     "username": "alice",
@@ -34,6 +35,9 @@ async def test_authenticate_creates_user_record(
     mock_account_repository.update.return_value = account
     mock_user_repository.save.side_effect = lambda u: u
 
+    mock_email_service = MagicMock(spec=EmailService)
+    mock_email_service._configured = False
+
     with patch(
         "app.application.github.use_cases.authenticate_with_github.GitHubClient.fetch_github_user_data",
         return_value=(GITHUB_DATA, "token123"),
@@ -41,7 +45,9 @@ async def test_authenticate_creates_user_record(
         "app.application.github.use_cases.authenticate_with_github.settings",
     ) as mock_settings:
         mock_settings.ALLOWED_USERNAMES = []
-        use_case = AuthenticateWithGitHubUseCase(account_service, user_service)
+        use_case = AuthenticateWithGitHubUseCase(
+            account_service, user_service, mock_email_service
+        )
         result = await use_case.execute("code123")
 
     assert result.username == "alice"
@@ -59,6 +65,9 @@ async def test_authenticate_does_not_save_user_when_access_restricted(
     user_service: UserService,
     mock_user_repository: AsyncMock,
 ):
+    mock_email_service = MagicMock(spec=EmailService)
+    mock_email_service._configured = False
+
     with patch(
         "app.application.github.use_cases.authenticate_with_github.GitHubClient.fetch_github_user_data",
         return_value=(GITHUB_DATA, "token123"),
@@ -66,7 +75,9 @@ async def test_authenticate_does_not_save_user_when_access_restricted(
         "app.application.github.use_cases.authenticate_with_github.settings",
     ) as mock_settings:
         mock_settings.ALLOWED_USERNAMES = ["bob"]
-        use_case = AuthenticateWithGitHubUseCase(account_service, user_service)
+        use_case = AuthenticateWithGitHubUseCase(
+            account_service, user_service, mock_email_service
+        )
         with pytest.raises(AccessRestrictedException):
             await use_case.execute("code123")
 

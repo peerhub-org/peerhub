@@ -66,8 +66,9 @@ async def test_get_or_create_account_existing(
 ):
     mock_account_repository.get_by_username.return_value = sample_account
     mock_account_repository.update.return_value = sample_account
-    result = await account_service.get_or_create_account("testuser", "new-token")
+    result, is_new = await account_service.get_or_create_account("testuser", "new-token")
     assert result.access_token == "new-token"
+    assert is_new is False
 
 
 @pytest.mark.asyncio
@@ -83,6 +84,7 @@ async def test_get_or_create_account_new(
         access_token="token",
     )
     mock_account_repository.create.return_value = new_account
-    result = await account_service.get_or_create_account("newuser", "token")
+    result, is_new = await account_service.get_or_create_account("newuser", "token")
     assert result.username == "newuser"
+    assert is_new is True
     mock_account_repository.create.assert_called_once()
