@@ -42,9 +42,14 @@ const createBaseScreenState = () => ({
   })),
   watchlistLoading: false,
   watchlistError: null as Error | null,
-  reviewSuggestions: [],
+  sidebarSuggestions: [],
+  modalSuggestions: [],
   reviewSuggestionsLoading: false,
   reviewSuggestionsError: null as Error | null,
+  firstReviewModalOpen: false,
+  dismissFirstReviewModal: vi.fn(),
+  hasNoReviews: false,
+  myReviewIds: new Set<string>(),
 })
 
 function renderFeed() {

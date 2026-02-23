@@ -69,7 +69,7 @@ export default function ReviewCommentCard({
               anonymous
             </Typography>
           ) : isOwnAnonymousReview ? (
-            <Tooltip title='Visible to you only' arrow>
+            <Tooltip title='Username is visible to you only' arrow>
               <OwnAnonymousWrapper component='span' sx={{ display: 'inline-flex' }}>
                 <Typography
                   component='span'

@@ -61,11 +61,12 @@ async def create_or_update_review(
 
 @router.get("/suggestions", response_model=list[ReviewSuggestionResponse])
 async def get_suggestions(
+    limit: int = Query(4, ge=1, le=16),
     account_uuid: UUID = Depends(get_current_account_uuid),
     use_case: GetSuggestionsUseCase = Depends(get_suggestions_use_case),
 ) -> list[ReviewSuggestionResponse]:
     """Get review suggestions to visit based on GitHub following list."""
-    suggestions = await use_case.execute(account_uuid)
+    suggestions = await use_case.execute(account_uuid, limit=limit)
     return [
         ReviewSuggestionResponse(
             username=item["username"], avatar_url=item.get("avatar_url")

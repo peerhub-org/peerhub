@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-02-22
+
+### Added
+- Added First Review Modal as onboarding step
+
+### Changed
+
+### Fixed
+
 ## [1.1.2] - 2026-02-22
 
 ### Added
