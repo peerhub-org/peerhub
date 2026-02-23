@@ -142,7 +142,7 @@ export default function ActivityFeed({
                   }
                   if (isOwnAnonymousReview) {
                     return (
-                      <Tooltip title='Visible to you only' arrow>
+                      <Tooltip title='Identity is visible to you only' arrow>
                         <span
                           style={{
                             display: 'inline-flex',
