@@ -15,7 +15,7 @@ dynamic = ["version"]
 description = "Backend API for PeerHub"
 license = { text = "AGPL-3.0-only" }
 authors = [
-    {name = "PeerHub BDFL", email = "peerhub.dev@gmail.com"},
+    {name = "PeerHub BDFL", email = "contact@peerhub.dev"},
 ]
 requires-python = ">=3.12"
 dependencies = [

@@ -11,7 +11,7 @@
 
 Do not open public GitHub issues for security vulnerabilities.
 
-Report vulnerabilities privately to: `peerhub.dev@gmail.com`
+Report vulnerabilities privately to: `contact@peerhub.dev`
 
 Include:
 - A clear description of the issue
