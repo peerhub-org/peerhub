@@ -16,7 +16,8 @@ const ThemeModeContext = createContext<ThemeModeContextValue | undefined>(undefi
 
 function getInitialMode(): ThemeMode {
   const stored = localStorage.getItem(STORAGE_KEY)
-  return stored === 'light' ? 'light' : 'dark'
+  if (stored === 'light' || stored === 'dark') return stored
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
 }
 
 const ThemeModeProvider = ({ children }: { children: ReactNode }) => {
