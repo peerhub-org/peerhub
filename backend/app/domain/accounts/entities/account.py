@@ -11,6 +11,7 @@ class Account:
     uuid: UUID
     username: str
     access_token: str
+    email: str | None = None
     created_at: datetime | None = None
     deleted_at: datetime | None = None
 

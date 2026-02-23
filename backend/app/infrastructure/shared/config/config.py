@@ -41,6 +41,9 @@ class Settings(BaseSettings):
     ALLOWED_USERNAMES: set[str] = set()
     POSTHOG_HOST: str = "https://us.i.posthog.com"
     POSTHOG_API_KEY: str | None = None
+    RESEND_API_KEY: str | None = None
+    SENDER_EMAIL: str | None = None
+    ABUSE_CONTROL_EMAIL: str | None = None
 
     @model_validator(mode="after")
     def validate_production_settings(self) -> Self:

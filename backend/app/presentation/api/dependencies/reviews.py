@@ -15,9 +15,11 @@ from app.domain.reviews.services.review_enrichment_service import ReviewEnrichme
 from app.domain.reviews.services.review_service import ReviewService
 from app.domain.users.services.user_service import UserService
 from app.domain.watchlist.services.watchlist_service import WatchlistService
+from app.infrastructure.email.email_service import EmailService
 
 from .services import (
     get_account_service,
+    get_email_service,
     get_review_enrichment_service,
     get_review_service,
     get_user_service,
@@ -30,10 +32,12 @@ def get_create_or_update_review_use_case(
     account_service: AccountService = Depends(get_account_service),
     enrichment_service: ReviewEnrichmentService = Depends(get_review_enrichment_service),
     watchlist_service: WatchlistService = Depends(get_watchlist_service),
+    email_service: EmailService = Depends(get_email_service),
 ) -> CreateOrUpdateReviewUseCase:
     """Get create or update review use case instance."""
     return CreateOrUpdateReviewUseCase(
-        review_service, account_service, enrichment_service, watchlist_service
+        review_service, account_service, enrichment_service, watchlist_service,
+        email_service,
     )
 
 

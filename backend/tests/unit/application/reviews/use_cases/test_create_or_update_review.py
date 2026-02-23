@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 from uuid import uuid4
 
 import pytest
@@ -14,6 +14,7 @@ from app.domain.reviews.services.review_enrichment_service import ReviewEnrichme
 from app.domain.reviews.services.review_service import ReviewService
 from app.domain.users.entities.user import User
 from app.domain.watchlist.services.watchlist_service import WatchlistService
+from app.infrastructure.email.email_service import EmailService
 
 
 @pytest.mark.asyncio
@@ -46,7 +47,7 @@ async def test_create_or_update_review_happy_path(
     mock_account_repository.get_by_uuid.return_value = account
     # Validator: check_target_is_user_type calls get_by_username on user_repo
     mock_user_repository.get_by_username.return_value = User(username="bob", type="User")
-    # No existing review (new creation)
+    # No existing review (new creation) — service now returns (review, is_new)
     mock_review_repository.get_by_reviewer_and_username.return_value = None
     mock_review_repository.create.return_value = review
     # Enrichment: get_accounts_by_uuids -> get_by_uuids
@@ -58,8 +59,12 @@ async def test_create_or_update_review_happy_path(
     mock_watchlist_repository.get_by_watcher_and_username.return_value = None
     mock_watchlist_repository.create.return_value = AsyncMock()
 
+    mock_email_service = MagicMock(spec=EmailService)
+    mock_email_service._configured = False
+
     use_case = CreateOrUpdateReviewUseCase(
-        review_service, account_service, enrichment_service, watchlist_service
+        review_service, account_service, enrichment_service, watchlist_service,
+        mock_email_service,
     )
     result = await use_case.execute(
         reviewer_uuid=reviewer_uuid,
@@ -110,8 +115,12 @@ async def test_create_or_update_review_auto_watches_user(
     mock_watchlist_repository.get_by_watcher_and_username.return_value = None
     mock_watchlist_repository.create.return_value = AsyncMock()
 
+    mock_email_service = MagicMock(spec=EmailService)
+    mock_email_service._configured = False
+
     use_case = CreateOrUpdateReviewUseCase(
-        review_service, account_service, enrichment_service, watchlist_service
+        review_service, account_service, enrichment_service, watchlist_service,
+        mock_email_service,
     )
     await use_case.execute(
         reviewer_uuid=reviewer_uuid,

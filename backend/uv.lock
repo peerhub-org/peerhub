@@ -873,6 +873,7 @@ dependencies = [
     { name = "pyjwt" },
     { name = "pymongo" },
     { name = "python-dotenv" },
+    { name = "resend" },
     { name = "slowapi" },
 ]
 
@@ -905,6 +906,7 @@ requires-dist = [
     { name = "pyjwt", specifier = ">=2.10.0" },
     { name = "pymongo", specifier = ">=4.13.0" },
     { name = "python-dotenv", specifier = ">=1.1.0" },
+    { name = "resend", specifier = ">=2.0.0" },
     { name = "slowapi", specifier = ">=0.1.9" },
 ]
 
@@ -1257,6 +1259,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz", hash = "sha256:dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf", size = 134517, upload-time = "2025-08-18T20:46:02.573Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl", hash = "sha256:2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6", size = 64738, upload-time = "2025-08-18T20:46:00.542Z" },
+]
+
+[[package]]
+name = "resend"
+version = "2.22.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "requests" },
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2e/75/df5e247aa2398a3cafb3136a731fd99760781ce1e27f8afd0355c527319b/resend-2.22.0.tar.gz", hash = "sha256:4f084ea371494e4c811e0417529daeee5c6198b127d2f49a8b287fbc0bc04f97", size = 31056, upload-time = "2026-02-16T14:49:18.009Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8d/20/9f565a733ab147a3e549b00830efff18140946b5e5b6279b77afd668129f/resend-2.22.0-py2.py3-none-any.whl", hash = "sha256:f3c7c6f23492eaed012ff6ba046dc595a4420d4d614ba6abd2ddd62e0ba810b4", size = 51654, upload-time = "2026-02-16T14:49:16.825Z" },
 ]
 
 [[package]]

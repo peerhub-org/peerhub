@@ -52,8 +52,17 @@ class AccountService:
         account.delete()
         return await self.account_repository.update(account)
 
-    async def get_or_create_account(self, username: str, access_token: str) -> Account:
-        """Get existing account by username or create a new one."""
+    async def get_or_create_account(
+        self,
+        username: str,
+        access_token: str,
+        email: str | None = None,
+    ) -> tuple[Account, bool]:
+        """Get existing account by username or create a new one.
+
+        Returns a tuple of (account, is_new) where is_new indicates
+        whether a new account was created.
+        """
         existing_account = await self.get_account_by_username(username)
         if existing_account:
             needs_update = False
@@ -66,14 +75,19 @@ class AccountService:
                 existing_account.access_token = access_token
                 needs_update = True
 
+            if email and existing_account.email != email:
+                existing_account.email = email
+                needs_update = True
+
             if needs_update:
-                return await self.update_account(existing_account)
-            return existing_account
+                return await self.update_account(existing_account), False
+            return existing_account, False
 
         new_account = Account(
             id=None,
             uuid=uuid4(),
             username=username,
             access_token=access_token,
+            email=email,
         )
-        return await self.create_account(new_account)
+        return await self.create_account(new_account), True

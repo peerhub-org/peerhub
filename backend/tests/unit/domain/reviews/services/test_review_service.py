@@ -31,12 +31,13 @@ async def test_create_review_success(
     mock_review_repository.get_by_reviewer_and_username.return_value = None
     mock_review_repository.create.side_effect = lambda r: r
 
-    result = await review_service.create_or_update_review(
+    result, is_new = await review_service.create_or_update_review(
         reviewer_uuid, "reviewed_user", ReviewStatus.APPROVE, "Nice!", False
     )
 
     assert result.status == ReviewStatus.APPROVE
     assert result.comment == "Nice!"
+    assert is_new is True
     mock_review_repository.create.assert_called_once()
 
 
@@ -66,12 +67,13 @@ async def test_update_existing_review(
     mock_review_repository.get_by_reviewer_and_username.return_value = existing
     mock_review_repository.update.side_effect = lambda r: r
 
-    result = await review_service.create_or_update_review(
+    result, is_new = await review_service.create_or_update_review(
         reviewer_uuid, "bob", ReviewStatus.REQUEST_CHANGE, "Fix this", False
     )
 
     assert result.status == ReviewStatus.REQUEST_CHANGE
     assert result.comment == "Fix this"
+    assert is_new is False
     mock_review_repository.update.assert_called_once()
 
 
@@ -249,9 +251,10 @@ async def test_review_user_type_allowed(
     mock_review_repository.get_by_reviewer_and_username.return_value = None
     mock_review_repository.create.side_effect = lambda r: r
 
-    result = await review_service.create_or_update_review(
+    result, is_new = await review_service.create_or_update_review(
         reviewer_uuid, "bob", ReviewStatus.APPROVE, "Great!", False
     )
 
     assert result.status == ReviewStatus.APPROVE
+    assert is_new is True
     mock_review_repository.create.assert_called_once()

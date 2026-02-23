@@ -61,6 +61,27 @@ class GitHubClient:
         return None
 
     @staticmethod
+    async def fetch_user_emails(access_token: str) -> str | None:
+        """Fetch the primary verified email for the authenticated user."""
+        async with httpx.AsyncClient(timeout=GITHUB_TIMEOUT) as client:
+            response = await client.get(
+                f"{GitHubClient.GITHUB_API_URL}/user/emails",
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Accept": "application/vnd.github+json",
+                },
+            )
+            if response.status_code == 200:
+                for entry in response.json():
+                    if entry.get("primary") and entry.get("verified"):
+                        return entry.get("email")
+        logger.warning(
+            "Failed to fetch user emails: status=%d",
+            response.status_code,
+        )
+        return None
+
+    @staticmethod
     async def fetch_github_user_data(code: str) -> tuple[dict, str]:
         """
         Complete OAuth flow: exchange code for token and fetch user data.
@@ -74,12 +95,15 @@ class GitHubClient:
         if user_data is None:
             raise GitHubAPIException("Failed to fetch user data from GitHub.")
 
+        email = await GitHubClient.fetch_user_emails(access_token)
+
         return {
             "username": user_data["login"],
             "name": user_data.get("name"),
             "bio": user_data.get("bio"),
             "avatar_url": user_data.get("avatar_url"),
             "type": user_data.get("type"),
+            "email": email,
         }, access_token
 
     @staticmethod

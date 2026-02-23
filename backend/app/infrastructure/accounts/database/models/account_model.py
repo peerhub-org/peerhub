@@ -12,6 +12,7 @@ class AccountDocument(Document):
     uuid: Annotated[UUID, Field(default_factory=uuid4), Indexed(unique=True)]
     username: Annotated[str, Indexed(unique=True)]
     access_token: str
+    email: str | None = None
     deleted_at: datetime | None = None
     created_at: datetime = Field(default_factory=datetime.utcnow)
 

@@ -5,6 +5,7 @@ from app.domain.reviews.services.review_enrichment_service import ReviewEnrichme
 from app.domain.reviews.services.review_service import ReviewService
 from app.domain.users.services.user_service import UserService
 from app.domain.watchlist.services.watchlist_service import WatchlistService
+from app.infrastructure.email.email_service import EmailService
 
 from .repositories import (
     AccountRepositoryDep,
@@ -52,3 +53,8 @@ def get_review_enrichment_service(
 ) -> ReviewEnrichmentService:
     """Get review enrichment service instance."""
     return ReviewEnrichmentService(account_service, user_service)
+
+
+def get_email_service() -> EmailService:
+    """Get email service instance."""
+    return EmailService()
