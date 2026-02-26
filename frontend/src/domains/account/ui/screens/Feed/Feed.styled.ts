@@ -1,5 +1,4 @@
 import { Avatar, Box, ListItem, Typography, styled } from '@mui/material'
-import { isLight } from '@shared/ui/foundations/theme'
 
 export const PageWrapper = styled(Box)(({ theme }) => ({
   minHeight: '100%',
@@ -23,9 +22,7 @@ export const WatchlistPanel = styled(Box)(({ theme }) => ({
   borderRight: `1px solid ${theme.palette.divider}`,
   padding: theme.spacing(3),
   paddingTop: theme.spacing(3),
-  backgroundColor: isLight(theme)
-    ? theme.palette.background.default
-    : theme.palette.background.paper,
+  backgroundColor: theme.palette.background.default,
   overflowY: 'auto',
   [theme.breakpoints.down('md')]: {
     display: 'none',

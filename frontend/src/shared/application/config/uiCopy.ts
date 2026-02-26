@@ -4,19 +4,19 @@ export const OPEN_SOURCE_FOOTER_SUFFIX = '.'
 
 export const HOME_FEATURES = [
   {
-    title: 'Genuine peer review',
+    title: 'Known review workflow',
     description:
-      "Share meaningful feedback and positive recognition with developers you've actually worked with.",
+      'Review peers with approvals, comments, and change requests in a PR-style workflow.',
   },
   {
-    title: 'A reputation you own',
+    title: 'Anonymous is optional',
     description:
-      'When AI can code too, your reputation is what sets you apart. Every review is proof of how you work, collaborate, and deliver.',
+      'Sign your review or submit it anonymously when candor matters more than attribution.',
   },
   {
-    title: 'Stand out to employers',
+    title: 'Built by peers',
     description:
-      'Build a profile that matters. Let your peer-verified track record speak for itself when companies come looking.',
+      'Uncover how teammates rate you through a transparent record of real collaboration.',
   },
 ]
 
@@ -24,17 +24,17 @@ export const HOME_STEPS = [
   {
     number: '1',
     title: 'Connect your GitHub',
-    description: 'One click to sign in. We only read your public profile.',
+    description: 'One click to sign in. We request read-only access and only to your user profile.',
   },
   {
     number: '2',
-    title: 'Review your peers',
-    description: 'Approve, comment, or request changes. Just like a PR.',
+    title: 'Uncover your reputation',
+    description: 'See how peers rate your work and grow a public, peer-validated profile.',
   },
   {
     number: '3',
-    title: 'Grow your reputation',
-    description: 'Every review you give and receive builds your public profile.',
+    title: 'Review in return',
+    description: 'Approve, comment, or request changes, with anonymous mode as an option.',
   },
 ]
 
@@ -82,10 +82,11 @@ export const UI_COPY = {
   reviewFormUpdate: 'Update review',
   reviewFormValidationCommentRequired: "Comment is required for 'comment' status",
   reviewFormCancel: 'Cancel',
-  homeWhyTitle: 'Built for developers by developers',
+  homeWhyTitle: 'Why PeerHub',
   homeHowTitle: 'How it works',
-  homeReadyTitle: 'Your reputation starts here',
-  homeLoginCta: 'Login with GitHub',
+  homeReadyTitle: 'Ready to uncover your reputation?',
+  homeReadyDescription: 'Join a peer-review network where developer reputation is built in public.',
+  homeLoginCta: 'Continue with GitHub',
   homeAuthFailed: 'Authentication failed. Please try again.',
   homeLoginFailed: 'Failed to initiate login. Please try again.',
   feedFirstReviewModalTitle: 'Submit your first review',

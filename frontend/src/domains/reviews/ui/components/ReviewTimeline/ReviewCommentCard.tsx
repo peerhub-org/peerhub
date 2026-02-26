@@ -20,6 +20,7 @@ interface ReviewCommentCardProps {
   review: Review
   showAnonymous: boolean
   isOwnAnonymousReview: boolean
+  isCurrentUser?: boolean
   displayName: string
   isPageOwner?: boolean
   pageOwnerUsername?: string
@@ -30,6 +31,7 @@ export default function ReviewCommentCard({
   review,
   showAnonymous,
   isOwnAnonymousReview,
+  isCurrentUser,
   displayName,
   isPageOwner,
   pageOwnerUsername,
@@ -54,7 +56,9 @@ export default function ReviewCommentCard({
   if (!review.comment && !review.comment_hidden) return null
 
   return (
-    <Card>
+    <Card
+      sx={isCurrentUser ? { borderLeft: `3px solid ${theme.palette.primary.main}` } : undefined}
+    >
       <CardHeader>
         <Typography variant='body2' sx={{ color: theme.palette.text.secondary }}>
           {showAnonymous ? (

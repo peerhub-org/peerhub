@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { Navigate, useLocation } from 'react-router'
-import { GitHub, RateReview, Verified, Star, KeyboardArrowDown } from '@mui/icons-material'
+import { GitHub, RateReview, Verified, KeyboardArrowDown } from '@mui/icons-material'
 import {
   Box,
   CardContent,
@@ -21,6 +21,7 @@ const previewMobileImage = '/previewMobile.png'
 import { UI_COPY, HOME_FEATURES, HOME_STEPS } from '@shared/application/config/uiCopy'
 import { HOME_UI_TOKENS } from '@shared/application/config/uiTokens'
 import { useInView } from '@shared/application/hooks/useInView'
+import Incognito from '@shared/ui/components/icons/Incognito'
 import OpenSourceFooter from '@shared/ui/components/OpenSourceFooter/OpenSourceFooter'
 import {
   fadeInUp,
@@ -42,9 +43,9 @@ import {
 } from './Home.styled'
 
 const featureIcons = [
-  <RateReview key='feedback' sx={{ fontSize: 48, color: HOME_UI_TOKENS.accentViolet, mb: 2 }} />,
-  <Verified key='reputation' sx={{ fontSize: 48, color: HOME_UI_TOKENS.accentBlue, mb: 2 }} />,
-  <Star key='hired' sx={{ fontSize: 48, color: HOME_UI_TOKENS.accentGreen, mb: 2 }} />,
+  <RateReview key='review' sx={{ fontSize: 48, color: HOME_UI_TOKENS.accentGreen, mb: 2 }} />,
+  <Incognito key='anonymous' sx={{ fontSize: 48, color: HOME_UI_TOKENS.accentGray, mb: 2 }} />,
+  <Verified key='peers' sx={{ fontSize: 48, color: HOME_UI_TOKENS.accentBlue, mb: 2 }} />,
 ]
 
 const features = HOME_FEATURES.map((feature, index) => ({
@@ -123,7 +124,7 @@ export default function Home() {
               typography: { lg: 'h5' },
             }}
           >
-            Open source feedback for developers
+            Open-sourcing developer reputation
           </Typography>
           <Typography
             variant='body2'
@@ -135,8 +136,11 @@ export default function Home() {
               typography: { lg: 'body1' },
             }}
           >
-            Review your peers using the workflow you already know: approvals, comments, and change
-            requests. Think Glassdoor meets GitHub.
+            Uncover how your peers rate you, and review them in return, anonymously if you choose.
+            <br />
+            Use the workflow you already know: approvals, comments, and change requests.
+            <br />
+            Think Glassdoor meets GitHub.
           </Typography>
           <Box sx={{ animation: `${fadeInUp} 0.8s ease-out 0.8s both` }}>
             <GithubButton
@@ -254,7 +258,7 @@ export default function Home() {
                 {UI_COPY.homeReadyTitle}
               </Typography>
               <Typography variant='body1' color='text.secondary' sx={{ mb: 4 }}>
-                Join an open community where developers help each other grow.
+                {UI_COPY.homeReadyDescription}
               </Typography>
               <GithubButton
                 variant='contained'
