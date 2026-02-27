@@ -11,10 +11,10 @@ Thanks for contributing.
 ## Development setup
 
 Prerequisites:
-- Python 3.13+
+- Python 3.13
 - uv
-- Node.js 22+
-- npm 10+
+- Node.js 22
+- npm 10
 - Docker (required for integration tests that use Testcontainers)
 
 1. Prepare env files:
@@ -24,7 +24,12 @@ cp backend/.env.example backend/.env.development
 cp frontend/.env.example frontend/.env.development
 ```
 
-2. Backend setup:
+2. Configure required values:
+
+- Backend OAuth flow: set `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `SSO_CALLBACK_HOSTNAME`
+- Frontend local API: set `VITE_BACKEND_API_URL=http://localhost:8000/api/v1/`
+
+3. Backend setup:
 
 ```bash
 cd backend
@@ -32,7 +37,7 @@ uv sync --dev
 uv run fastapi dev app/main.py
 ```
 
-3. Frontend setup:
+4. Frontend setup:
 
 ```bash
 cd frontend
@@ -48,6 +53,7 @@ Backend:
 
 ```bash
 cd backend
+uv lock --check
 uv run ruff check app tests
 uv run mypy
 uv run pytest
@@ -59,6 +65,7 @@ Frontend:
 cd frontend
 npm run lint
 npm run test:run
+npm run build
 ```
 
 ## Pull requests
