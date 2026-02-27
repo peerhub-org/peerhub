@@ -7,7 +7,7 @@ type FilterTab = 'all' | 'approve' | 'comment' | 'request_change'
 const TABS: { value: FilterTab; label: string; icon: React.ReactElement }[] = [
   { value: 'all', label: 'All reviews', icon: <Visibility sx={{ fontSize: 16 }} /> },
   { value: 'approve', label: 'Approvals', icon: <Check sx={{ fontSize: 16 }} /> },
-  { value: 'request_change', label: 'Changes requests', icon: <Rule sx={{ fontSize: 16 }} /> },
+  { value: 'request_change', label: 'Change requests', icon: <Rule sx={{ fontSize: 16 }} /> },
   { value: 'comment', label: 'Comments', icon: <ChatBubbleOutline sx={{ fontSize: 16 }} /> },
 ]
 
