@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.2] - 2026-02-26
+
+### Added
+
+### Changed
+- New Home
+- Set patterns for light/dark theme UI
+
+### Fixed
+
 ## [1.4.1] - 2026-02-22
 
 ### Added
