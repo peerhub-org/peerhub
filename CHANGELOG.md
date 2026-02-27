@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.3] - 2026-02-26
+
+### Added
+
+### Changed
+- Update docs
+
+### Fixed
+
 ## [1.4.2] - 2026-02-26
 
 ### Added
