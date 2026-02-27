@@ -51,7 +51,7 @@ const lightPalette: ThemeOptions['palette'] = {
   background: {
     default: '#ffffff',
     paper: '#f8f8f8',
-    highlight: '#f8f8f8',
+    highlight: '#e8e8e8',
     grey: '#e8e8e8',
   },
   divider: '#eaeaea',

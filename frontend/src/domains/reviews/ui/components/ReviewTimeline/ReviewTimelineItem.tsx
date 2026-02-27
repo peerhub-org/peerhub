@@ -113,6 +113,7 @@ function ReviewTimelineItem({
           review={review}
           showAnonymous={showAnonymous}
           isOwnAnonymousReview={isOwnAnonymousReview}
+          isCurrentUser={isCurrentUser}
           displayName={displayName}
           isPageOwner={isPageOwner}
           pageOwnerUsername={pageOwnerUsername}

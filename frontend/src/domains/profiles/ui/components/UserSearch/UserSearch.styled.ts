@@ -1,5 +1,4 @@
 import { Box, List, Paper, TextField, Typography, styled } from '@mui/material'
-import { isLight } from '@shared/ui/foundations/theme'
 
 const RESULT_HEIGHT = 41
 const VISIBLE_RESULTS = 5
@@ -15,9 +14,7 @@ export const SearchTrigger = styled(Box)(({ theme }) => ({
   padding: '4px 12px',
   borderRadius: theme.shape.borderRadius,
   border: `1px solid ${theme.palette.divider}`,
-  backgroundColor: isLight(theme)
-    ? theme.palette.background.paper
-    : theme.palette.background.default,
+  backgroundColor: theme.palette.background.paper,
   cursor: 'pointer',
   height: 32,
   width: 200,
