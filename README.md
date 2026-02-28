@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/peerhub-org/peerhub/actions/workflows/ci.yml/badge.svg)](https://github.com/peerhub-org/peerhub/actions/workflows/ci.yml)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.4.3-green.svg)](VERSION)
+[![Version](https://img.shields.io/badge/version-1.4.4-green.svg)](VERSION)
 
 PeerHub is an open-source developer reputation network. Think Glassdoor meets GitHub: sign in with GitHub, see how peers rate your work, leave PR-style reviews, and stay anonymous when it matters.
 

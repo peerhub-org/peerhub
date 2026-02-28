@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.4.4] - 2026-02-28
+
+### Added
+
+### Changed
+
+### Fixed
+- Security packages upgrade
+- Handle build warnings
+
 ## [1.4.3] - 2026-02-26
 
 ### Added

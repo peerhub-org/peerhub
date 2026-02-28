@@ -1,7 +1,6 @@
 import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router'
 import ErrorPage from '@shared/ui/screens/ErrorPage'
-import Root from '@shared/ui/containers/RootLayout/RootLayout'
 import FullScreenLoader from '@shared/ui/components/FullScreenLoader/FullScreenLoader'
 import NavigationLoader from '@shared/ui/components/NavigationLoader/NavigationLoader'
 import { requireAuth } from '@shared/ui/routes/authLoader'
@@ -43,8 +42,11 @@ const routes = [
         ),
       },
       {
-        Component: Root,
         loader: requireAuth,
+        lazy: () =>
+          import('@shared/ui/containers/RootLayout/RootLayout').then((m) => ({
+            Component: m.default,
+          })),
         children: [
           {
             path: 'settings/account',
