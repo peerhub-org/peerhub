@@ -11,9 +11,43 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router'],
-          'vendor-mui': ['@mui/material', '@mui/icons-material', '@emotion/react', '@emotion/styled'],
+        manualChunks(id) {
+          if (!id.includes('node_modules')) {
+            return
+          }
+
+          if (
+            id.includes('/react/') ||
+            id.includes('/react-dom/') ||
+            id.includes('/react-router/')
+          ) {
+            return 'react'
+          }
+
+          if (
+            id.includes('/@mui/material/') ||
+            id.includes('/@mui/icons-material/') ||
+            id.includes('/@emotion/react/') ||
+            id.includes('/@emotion/styled/')
+          ) {
+            return 'mui'
+          }
+
+          if (id.includes('/@tanstack/')) {
+            return 'tanstack'
+          }
+
+          if (id.includes('/posthog-js/') || id.includes('/@posthog/')) {
+            return 'posthog'
+          }
+
+          if (id.includes('/axios/')) {
+            return 'axios'
+          }
+
+          if (id.includes('/zod/')) {
+            return 'zod'
+          }
         },
       },
     },
