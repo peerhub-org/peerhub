@@ -8,6 +8,8 @@ interface ReviewContextValue {
   isPageOwner: boolean
   profileUsername: string
   isDraft: boolean
+  isDraftLocked: boolean
+  isGuest: boolean
 }
 
 const ReviewContext = createContext<ReviewContextValue | null>(null)

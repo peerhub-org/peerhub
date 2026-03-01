@@ -1,6 +1,7 @@
-import { RefObject } from 'react'
+import { RefObject, useMemo } from 'react'
 import { Box, CircularProgress, Typography } from '@mui/material'
-import { LockOutline } from '@mui/icons-material'
+import { GitHub, LockOutline } from '@mui/icons-material'
+import { GitHubSignInButton } from '@shared/ui/styled'
 import { useTheme } from '@mui/material/styles'
 import { Review } from '@domains/reviews/application/interfaces/Review'
 import { User } from '@domains/profiles/application/interfaces/User'
@@ -8,6 +9,7 @@ import ReviewTimelineItem from './ReviewTimelineItem'
 import AuthorBioCard from '@domains/reviews/ui/components/AuthorBioCard/AuthorBioCard'
 import { useReviewContext } from '@domains/reviews/ui/context/ReviewContext'
 import EndOfList from '@shared/ui/components/EndOfList/EndOfList'
+import { useGitHubSignIn } from '@domains/authentication/application/hooks/useGitHubSignIn'
 import {
   EmptyStateContainer,
   DraftPlaceholderContainer,
@@ -46,8 +48,21 @@ export default function ReviewTimeline({
   hasMore = true,
 }: ReviewTimelineProps) {
   const theme = useTheme()
-  const { myReviewIds, currentUserInfo, isPageOwner } = useReviewContext()
-  const isDraft = !user.created_at
+  const { myReviewIds, currentUserInfo, isPageOwner, isDraftLocked, isGuest } = useReviewContext()
+  const isLocked = isDraftLocked || isGuest
+  const handleSignIn = useGitHubSignIn()
+
+  const placeholderRows = useMemo(() => {
+    const count = ((user.username.length % 3) + 1) as 1 | 2 | 3
+
+    const cardPatterns: Record<1 | 2 | 3, boolean[]> = {
+      1: [true],
+      2: [false, true],
+      3: [false, true, false],
+    }
+
+    return cardPatterns[count].map((hasCard, i) => ({ key: i, hasCard }))
+  }, [user.username])
 
   return (
     <Box>
@@ -62,7 +77,7 @@ export default function ReviewTimeline({
         <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
           <CircularProgress size={28} />
         </Box>
-      ) : reviews.length === 0 && !loadingMore && !isDraft ? (
+      ) : reviews.length === 0 && !loadingMore && !isLocked ? (
         <EmptyStateContainer>
           <Typography
             variant='body2'
@@ -93,31 +108,59 @@ export default function ReviewTimeline({
           <CircularProgress size={28} />
         </Box>
       )}
-      {!hasMore && reviews.length > 0 && !isDraft && !refreshing && <EndOfList />}
+      {!hasMore && reviews.length > 0 && !isLocked && !refreshing && <EndOfList />}
 
-      {isDraft && !isPageOwner && (
+      {isLocked && (
         <DraftPlaceholderContainer>
-          <DraftPlaceholderContent>
-            <PlaceholderAvatar></PlaceholderAvatar>
-            <PlaceholderContent>
-              <PlaceholderHeader>
-                <PlaceholderStatusCircle />
-                <Box sx={{ width: '30%', height: 16, bgcolor: 'divider', borderRadius: 1 }} />
-              </PlaceholderHeader>
-              <PlaceholderCard>
-                <PlaceholderCardHeader />
-                <PlaceholderCardBody />
-              </PlaceholderCard>
-            </PlaceholderContent>
-          </DraftPlaceholderContent>
+          {placeholderRows.map(({ key, hasCard }) => (
+            <DraftPlaceholderContent key={key}>
+              <PlaceholderAvatar />
+              <PlaceholderContent>
+                <PlaceholderHeader>
+                  <PlaceholderStatusCircle />
+                  <Box sx={{ width: '30%', height: 16, bgcolor: 'divider', borderRadius: 1 }} />
+                </PlaceholderHeader>
+                {hasCard && (
+                  <PlaceholderCard>
+                    <PlaceholderCardHeader />
+                    <PlaceholderCardBody>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          height: 10,
+                          bgcolor: 'divider',
+                          borderRadius: 1,
+                          mb: 1,
+                        }}
+                      />
+                      <Box sx={{ width: '50%', height: 10, bgcolor: 'divider', borderRadius: 1 }} />
+                    </PlaceholderCardBody>
+                  </PlaceholderCard>
+                )}
+              </PlaceholderContent>
+            </DraftPlaceholderContent>
+          ))}
           <DraftOverlay>
             <LockOutline sx={{ color: 'text.secondary', fontSize: 32 }} />
             <Typography
               variant='body2'
               sx={{ color: theme.palette.text.secondary, textAlign: 'center' }}
             >
-              Other users&apos; reviews will be shown when {user.username} is open to reviews
+              {isDraftLocked
+                ? `Other users' reviews will be shown when ${user.username} is open to reviews`
+                : `Sign in to see ${user.username}'s reviews`}
             </Typography>
+            {isGuest && (
+              <GitHubSignInButton
+                variant='contained'
+                size='small'
+                startIcon={<GitHub />}
+                onClick={handleSignIn}
+                sx={{ mt: 1 }}
+              >
+                Sign in with GitHub
+              </GitHubSignInButton>
+            )}
           </DraftOverlay>
         </DraftPlaceholderContainer>
       )}

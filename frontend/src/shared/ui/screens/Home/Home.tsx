@@ -126,7 +126,7 @@ const STEP_VISUALS = [
 ]
 
 export default function Home() {
-  const token = localStorage.getItem('token')
+  const token = authService.getToken()
   const [loginLoading, setLoginLoading] = useState(false)
   const location = useLocation()
   const { showSnackBar } = useSnackBar()

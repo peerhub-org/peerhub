@@ -2,6 +2,7 @@ import { createContext, ReactNode, useCallback, useContext, useEffect } from 're
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { usePostHog } from '@posthog/react'
 import accountService from '@domains/account/application/services/accountService'
+import authService from '@domains/authentication/application/services/authenticationService'
 import { Account } from '@domains/account/application/interfaces/Account'
 import { queryKeys } from '@shared/application/queryKeys'
 
@@ -22,7 +23,7 @@ interface AuthContextProviderProps {
 const AuthProvider = ({ children }: AuthContextProviderProps) => {
   const posthog = usePostHog()
   const queryClient = useQueryClient()
-  const hasToken = Boolean(localStorage.getItem('token'))
+  const hasToken = Boolean(authService.getToken())
 
   const {
     data: account,
@@ -50,7 +51,7 @@ const AuthProvider = ({ children }: AuthContextProviderProps) => {
   useEffect(() => {
     if (!error) return
 
-    localStorage.removeItem('token')
+    authService.removeToken()
     queryClient.removeQueries({ queryKey: queryKeys.account.me(), exact: true })
   }, [error, queryClient])
 
@@ -65,7 +66,7 @@ const AuthProvider = ({ children }: AuthContextProviderProps) => {
 
     const result = await refetch()
     if (result.error) {
-      localStorage.removeItem('token')
+      authService.removeToken()
       queryClient.removeQueries({ queryKey: queryKeys.account.me(), exact: true })
     }
   }, [hasToken, queryClient, refetch])
@@ -73,7 +74,7 @@ const AuthProvider = ({ children }: AuthContextProviderProps) => {
   const logout = () => {
     posthog?.capture('logout_clicked')
     posthog?.reset()
-    localStorage.removeItem('token')
+    authService.removeToken()
     queryClient.clear()
   }
 

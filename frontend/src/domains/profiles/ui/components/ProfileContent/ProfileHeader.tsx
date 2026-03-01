@@ -14,6 +14,7 @@ interface ProfileHeaderProps {
   statusInfo: { label: string; color: string; message: string }
   showSubmitButton: boolean
   isClosed: boolean
+  isGuest: boolean
   hasExistingReview: boolean
   existingReview?: Review
   isLoading: boolean
@@ -26,6 +27,7 @@ export default function ProfileHeader({
   statusInfo,
   showSubmitButton,
   isClosed,
+  isGuest,
   hasExistingReview,
   existingReview,
   isLoading,
@@ -45,19 +47,21 @@ export default function ProfileHeader({
       <HeaderLeft>
         <StatusChip label={statusInfo.label} size='small' statusColor={statusInfo.color} />
         <Typography variant='body2' sx={{ color: theme.palette.text.secondary }}>
-          <Link
-            href={`https://github.com/${username}`}
-            target='_blank'
-            rel='noopener noreferrer'
-            underline='none'
-            sx={{
-              color: theme.palette.text.primary,
-              fontWeight: 600,
-              '&:hover': { color: theme.palette.primary.main },
-            }}
-          >
-            {username}
-          </Link>
+          {!isGuest && (
+            <Link
+              href={`https://github.com/${username}`}
+              target='_blank'
+              rel='noopener noreferrer'
+              underline='none'
+              sx={{
+                color: theme.palette.text.primary,
+                fontWeight: 600,
+                '&:hover': { color: theme.palette.primary.main },
+              }}
+            >
+              {username}
+            </Link>
+          )}
           {statusInfo.label === 'Open' && createdAt ? (
             <>
               {` ${statusInfo.message} `}

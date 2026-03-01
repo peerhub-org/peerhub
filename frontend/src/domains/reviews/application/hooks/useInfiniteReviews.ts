@@ -38,6 +38,7 @@ export function useInfiniteReviews(
   username: string,
   initialPaginatedReviews: PaginatedReviews,
   repository: ReviewRepository = reviewRepository,
+  enabled = true,
 ) {
   const [activeTab, setActiveTab] = useState<FilterTab>('all')
   const sentinelRef = useRef<HTMLDivElement>(null)
@@ -70,6 +71,7 @@ export function useInfiniteReviews(
             } as InfiniteData<PaginatedReviews, number>)
           : undefined,
       initialDataUpdatedAt: statusFilter === undefined ? mountTime : undefined,
+      enabled,
     })
 
   const reviews = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data])
