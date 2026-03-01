@@ -64,7 +64,12 @@ export default function ProfileContent({
     handleTabChange,
     handleToggleHidden,
     refresh: refreshReviews,
-  } = useInfiniteReviews(profileUsername, initialPaginatedReviews, undefined, !isDraftLocked && !isGuest)
+  } = useInfiniteReviews(
+    profileUsername,
+    initialPaginatedReviews,
+    undefined,
+    !isDraftLocked && !isGuest,
+  )
 
   const { myReviewIds, myReviewsLoading, currentUserInfo, existingReview, refetchMyReviews } =
     useMyReviews(currentUsername, initialMyReviewIds, profileUsername)

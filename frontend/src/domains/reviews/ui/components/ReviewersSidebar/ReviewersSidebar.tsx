@@ -61,12 +61,12 @@ export default function ReviewersSidebar({
   onDeleteSuccess,
 }: ReviewersSidebarProps) {
   const theme = useTheme()
-  const { myReviewIds, currentUserInfo, profileUsername, isPageOwner, isDraftLocked, isGuest} =
+  const { myReviewIds, currentUserInfo, profileUsername, isPageOwner, isDraftLocked, isGuest } =
     useReviewContext()
   const isLocked = isDraftLocked || isGuest
 
   const placeholderCount = useMemo(() => {
-    return (((profileUsername.length) % 3) + 1) * 2
+    return ((profileUsername.length % 3) + 1) * 2
   }, [profileUsername])
 
   const {
@@ -184,26 +184,39 @@ export default function ReviewersSidebar({
         <>
           <ReviewersList>
             {visibleReviews.map((review) => renderReviewerRow(review))}
-            {isLocked && Array.from({ length: placeholderCount }, (_, i) => (
-              <Tooltip
-                key={i}
-                title={isDraftLocked
-                  ? `Other users' reviews will be shown when ${profileUsername} is open to reviews`
-                  : `Sign in to see ${profileUsername}'s reviews`}
-                arrow
-                placement='left'
-              >
-                <ReviewerRow sx={{ opacity: 0.5, cursor: 'help' }}>
-                  <ReviewerInfo>
-                    <Box sx={{ width: 20, height: 20, borderRadius: '50%', bgcolor: 'divider', flexShrink: 0 }} />
-                    <Box sx={{ width: 80, height: 12, bgcolor: 'divider', borderRadius: 1 }} />
-                  </ReviewerInfo>
-                  <ActionsRow>
-                    <Box sx={{ width: 16, height: 16, bgcolor: 'divider', borderRadius: '50%' }} />
-                  </ActionsRow>
-                </ReviewerRow>
-              </Tooltip>
-            ))}
+            {isLocked &&
+              Array.from({ length: placeholderCount }, (_, i) => (
+                <Tooltip
+                  key={i}
+                  title={
+                    isDraftLocked
+                      ? `Other users' reviews will be shown when ${profileUsername} is open to reviews`
+                      : `Sign in to see ${profileUsername}'s reviews`
+                  }
+                  arrow
+                  placement='left'
+                >
+                  <ReviewerRow sx={{ opacity: 0.5, cursor: 'help' }}>
+                    <ReviewerInfo>
+                      <Box
+                        sx={{
+                          width: 20,
+                          height: 20,
+                          borderRadius: '50%',
+                          bgcolor: 'divider',
+                          flexShrink: 0,
+                        }}
+                      />
+                      <Box sx={{ width: 80, height: 12, bgcolor: 'divider', borderRadius: 1 }} />
+                    </ReviewerInfo>
+                    <ActionsRow>
+                      <Box
+                        sx={{ width: 16, height: 16, bgcolor: 'divider', borderRadius: '50%' }}
+                      />
+                    </ActionsRow>
+                  </ReviewerRow>
+                </Tooltip>
+              ))}
           </ReviewersList>
           {hasMoreReviewers && (
             <SecondaryButton

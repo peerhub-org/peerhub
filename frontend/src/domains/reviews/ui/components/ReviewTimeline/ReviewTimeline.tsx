@@ -53,7 +53,7 @@ export default function ReviewTimeline({
   const handleSignIn = useGitHubSignIn()
 
   const placeholderRows = useMemo(() => {
-    const count = ((user.username.length) % 3) + 1 as 1 | 2 | 3
+    const count = ((user.username.length % 3) + 1) as 1 | 2 | 3
 
     const cardPatterns: Record<1 | 2 | 3, boolean[]> = {
       1: [true],
@@ -124,7 +124,15 @@ export default function ReviewTimeline({
                   <PlaceholderCard>
                     <PlaceholderCardHeader />
                     <PlaceholderCardBody>
-                      <Box sx={{ width: '100%', height: 10, bgcolor: 'divider', borderRadius: 1, mb: 1 }} />
+                      <Box
+                        sx={{
+                          width: '100%',
+                          height: 10,
+                          bgcolor: 'divider',
+                          borderRadius: 1,
+                          mb: 1,
+                        }}
+                      />
                       <Box sx={{ width: '50%', height: 10, bgcolor: 'divider', borderRadius: 1 }} />
                     </PlaceholderCardBody>
                   </PlaceholderCard>

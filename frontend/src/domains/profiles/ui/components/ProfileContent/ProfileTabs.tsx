@@ -44,7 +44,9 @@ export default function ProfileTabs({
                 {!isClosed && (
                   <>
                     &nbsp;
-                    <TabBadge badgeContent={isDraftLocked || isGuest ? '?' : String(tabCounts[tab.value])} />
+                    <TabBadge
+                      badgeContent={isDraftLocked || isGuest ? '?' : String(tabCounts[tab.value])}
+                    />
                   </>
                 )}
               </TabLabelWrapper>
