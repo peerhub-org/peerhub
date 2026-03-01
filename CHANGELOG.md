@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.0] - 2026-03-01
+
+### Added
+- Added public profile pages accessible to unauthenticated users via the GitHub public API.
+- Implemented feature flag infrastructure.
+- Added a feature flag to control draft profile visibility.
+
+### Changed
+
+### Fixed
+
 ## [1.4.4] - 2026-02-28
 
 ### Added
