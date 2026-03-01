@@ -63,16 +63,16 @@ const routes = [
                 loader: m.loader,
               })),
           },
-          {
-            path: ':username',
-            HydrateFallback: FullScreenLoader,
-            lazy: () =>
-              import('@domains/profiles/ui/screens/Profile/ProfilePage').then((m) => ({
-                Component: m.default,
-                loader: m.loader,
-              })),
-          },
         ],
+      },
+      {
+        path: ':username',
+        HydrateFallback: FullScreenLoader,
+        lazy: () =>
+          import('@domains/profiles/ui/screens/Profile/PublicProfilePage').then((m) => ({
+            Component: m.default,
+            loader: m.loader,
+          })),
       },
     ],
   },
