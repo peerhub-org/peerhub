@@ -3,7 +3,12 @@ import { useTheme } from '@mui/material/styles'
 import { User } from '@domains/profiles/application/interfaces/User'
 import profileService from '@domains/profiles/application/services/profileService'
 
-export function useProfileStatus(initialUser: User, currentUsername: string | undefined) {
+export function useProfileStatus(
+  initialUser: User,
+  currentUsername: string | undefined,
+  isDraftLocked = false,
+  isGuest = false,
+) {
   const theme = useTheme()
   const [user, setUser] = useState<User>(initialUser)
 
@@ -25,11 +30,18 @@ export function useProfileStatus(initialUser: User, currentUsername: string | un
   const isClosed = Boolean(user.deleted_at)
 
   const getStatusInfo = () => {
+    if (isGuest) {
+      return {
+        label: 'Private' as const,
+        color: theme.palette.background.grey,
+        message: `Sign in to see ${user.username}'s reviews`,
+      }
+    }
     if (!user.created_at) {
       return {
         label: 'Draft' as const,
         color: theme.palette.background.grey,
-        message: 'awaits your feedback, shared once open',
+        message: isDraftLocked ? 'awaits your feedback, shared once open' : 'awaits your feedback',
       }
     }
     if (user.deleted_at) {
