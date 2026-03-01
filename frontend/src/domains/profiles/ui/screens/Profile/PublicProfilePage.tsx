@@ -5,6 +5,7 @@ import { PaginatedReviews } from '@domains/reviews/application/interfaces/Review
 import profileService from '@domains/profiles/application/services/profileService'
 import reviewService from '@domains/reviews/application/services/reviewService'
 import accountService from '@domains/account/application/services/accountService'
+import authService from '@domains/authentication/application/services/authenticationService'
 import { isAxiosError } from '@shared/application/api/errors'
 import ProfileContent from '@domains/profiles/ui/components/ProfileContent/ProfileContent'
 import PublicLayout from '@shared/ui/containers/PublicLayout/PublicLayout'
@@ -31,7 +32,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     throw new Response('Username is required', { status: 400 })
   }
 
-  const token = localStorage.getItem('token')
+  const token = authService.getToken()
 
   // Authenticated user: load from backend (same as existing ProfilePage)
   if (token) {
@@ -54,7 +55,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       if (isAxiosError(error)) {
         if (error.response?.status === 401) {
           // Token is invalid, fall through to guest mode
-          localStorage.removeItem('token')
+          authService.removeToken()
         } else if (error.response?.status === 404) {
           throw new Response('User not found', { status: 404 })
         } else {

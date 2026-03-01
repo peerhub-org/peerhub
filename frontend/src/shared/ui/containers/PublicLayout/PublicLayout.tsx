@@ -52,7 +52,7 @@ function GuestMenuBar() {
 }
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
-  const isAuthenticated = Boolean(localStorage.getItem('token'))
+  const isAuthenticated = Boolean(authService.getToken())
   const lightTheme = useMemo(() => createAppTheme('light'), [])
 
   const content = (
