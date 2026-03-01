@@ -110,6 +110,7 @@ export default function ProfileContent({
         statusInfo={statusInfo}
         showSubmitButton={showSubmitButton}
         isClosed={isClosed}
+        isGuest={isGuest}
         hasExistingReview={hasExistingReview}
         existingReview={existingReview}
         isLoading={isInitialProfileLoading}
