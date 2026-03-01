@@ -9,7 +9,7 @@ import ReviewTimelineItem from './ReviewTimelineItem'
 import AuthorBioCard from '@domains/reviews/ui/components/AuthorBioCard/AuthorBioCard'
 import { useReviewContext } from '@domains/reviews/ui/context/ReviewContext'
 import EndOfList from '@shared/ui/components/EndOfList/EndOfList'
-import authService from '@domains/authentication/application/services/authenticationService'
+import { useGitHubSignIn } from '@domains/authentication/application/hooks/useGitHubSignIn'
 import {
   EmptyStateContainer,
   DraftPlaceholderContainer,
@@ -50,6 +50,7 @@ export default function ReviewTimeline({
   const theme = useTheme()
   const { myReviewIds, currentUserInfo, isPageOwner, isDraftLocked, isGuest } = useReviewContext()
   const isLocked = isDraftLocked || isGuest
+  const handleSignIn = useGitHubSignIn()
 
   const placeholderRows = useMemo(() => {
     const count = ((user.username.length) % 3) + 1 as 1 | 2 | 3
@@ -146,14 +147,7 @@ export default function ReviewTimeline({
                 variant='contained'
                 size='small'
                 startIcon={<GitHub />}
-                onClick={async () => {
-                  try {
-                    const oauthUrl = await authService.getGithubOAuthUrl()
-                    window.location.href = oauthUrl
-                  } catch {
-                    window.location.href = '/'
-                  }
-                }}
+                onClick={handleSignIn}
                 sx={{ mt: 1 }}
               >
                 Sign in with GitHub

@@ -9,17 +9,11 @@ import TopMenuBar from '@shared/ui/components/TopMenuBar/TopMenuBar'
 import { createAppTheme } from '@shared/ui/foundations/theme'
 import { StyledAppBar, StyledToolbar } from '@shared/ui/components/TopMenuBar/TopMenuBar.styled'
 import { RootContainer, SkipLink, MainContent } from '../RootLayout/RootLayout.styled'
+import { useGitHubSignIn } from '@domains/authentication/application/hooks/useGitHubSignIn'
 import authService from '@domains/authentication/application/services/authenticationService'
 
 function GuestMenuBar() {
-  const handleSignIn = async () => {
-    try {
-      const oauthUrl = await authService.getGithubOAuthUrl()
-      window.location.href = oauthUrl
-    } catch {
-      window.location.href = '/'
-    }
-  }
+  const handleSignIn = useGitHubSignIn()
 
   return (
     <StyledAppBar position='static' elevation={0} aria-label='Main navigation'>
