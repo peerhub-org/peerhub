@@ -11,6 +11,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
+import { useMemo } from 'react'
 import { Close, Delete } from '@mui/icons-material'
 import { useTheme } from '@mui/material/styles'
 import { ReviewerSummary } from '@domains/reviews/application/interfaces/Review'
@@ -60,7 +61,14 @@ export default function ReviewersSidebar({
   onDeleteSuccess,
 }: ReviewersSidebarProps) {
   const theme = useTheme()
-  const { myReviewIds, currentUserInfo, profileUsername, isPageOwner, isDraft } = useReviewContext()
+  const { myReviewIds, currentUserInfo, profileUsername, isPageOwner, isDraftLocked, isGuest} =
+    useReviewContext()
+  const isLocked = isDraftLocked || isGuest
+
+  const placeholderCount = useMemo(() => {
+    return (((profileUsername.length) % 3) + 1) * 2
+  }, [profileUsername])
+
   const {
     deleting,
     deleteTarget,
@@ -170,21 +178,24 @@ export default function ReviewersSidebar({
           ))}
           <Skeleton variant='rounded' width='100%' height={24} sx={{ mt: 2 }} />
         </ReviewersList>
-      ) : reviewers.length === 0 && !isDraft ? (
+      ) : reviewers.length === 0 && !isLocked ? (
         <EmptyText variant='body2'>{UI_COPY.reviewersEmpty}</EmptyText>
       ) : (
         <>
           <ReviewersList>
             {visibleReviews.map((review) => renderReviewerRow(review))}
-            {isDraft && !isPageOwner && (
+            {isLocked && Array.from({ length: placeholderCount }, (_, i) => (
               <Tooltip
-                title={`Other users' reviews will be shown when ${profileUsername} is open to reviews`}
+                key={i}
+                title={isDraftLocked
+                  ? `Other users' reviews will be shown when ${profileUsername} is open to reviews`
+                  : `Sign in to see ${profileUsername}'s reviews`}
                 arrow
                 placement='left'
               >
                 <ReviewerRow sx={{ opacity: 0.5, cursor: 'help' }}>
                   <ReviewerInfo>
-                    <AnonymousAvatar></AnonymousAvatar>
+                    <Box sx={{ width: 20, height: 20, borderRadius: '50%', bgcolor: 'divider', flexShrink: 0 }} />
                     <Box sx={{ width: 80, height: 12, bgcolor: 'divider', borderRadius: 1 }} />
                   </ReviewerInfo>
                   <ActionsRow>
@@ -192,7 +203,7 @@ export default function ReviewersSidebar({
                   </ActionsRow>
                 </ReviewerRow>
               </Tooltip>
-            )}
+            ))}
           </ReviewersList>
           {hasMoreReviewers && (
             <SecondaryButton
@@ -210,7 +221,7 @@ export default function ReviewersSidebar({
       {/* Watch button */}
       {profileUsername && (
         <Box sx={{ mt: 2, pt: isPageOwner ? 0 : 2, borderTop: 1, borderColor: 'divider' }}>
-          {!isPageOwner && <WatchButton username={profileUsername} />}
+          {!isPageOwner && !isGuest && <WatchButton username={profileUsername} />}
           <OpenSourceFooter
             variant='caption'
             sx={{ display: 'block', mt: 2, textAlign: 'center' }}

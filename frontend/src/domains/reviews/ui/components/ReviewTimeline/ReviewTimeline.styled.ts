@@ -1,4 +1,4 @@
-import { Avatar, Box, styled } from '@mui/material'
+import { Box, styled } from '@mui/material'
 
 export const EmptyStateContainer = styled(Box)({
   textAlign: 'center',
@@ -15,16 +15,16 @@ export const DraftPlaceholderContent = styled(Box)({
   display: 'flex',
   gap: 16,
   marginBottom: 24,
-  opacity: 0.3,
-  filter: 'blur(2px)',
   pointerEvents: 'none',
   userSelect: 'none',
 })
 
-export const PlaceholderAvatar = styled(Avatar)(({ theme }) => ({
+export const PlaceholderAvatar = styled(Box)(({ theme }) => ({
   width: 40,
   height: 40,
+  borderRadius: '50%',
   backgroundColor: theme.palette.divider,
+  flexShrink: 0,
 }))
 
 export const PlaceholderContent = styled(Box)({
@@ -63,7 +63,7 @@ export const PlaceholderCardBody = styled(Box)({
   height: 60,
 })
 
-export const DraftOverlay = styled(Box)({
+export const DraftOverlay = styled(Box)(({ theme }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -72,7 +72,9 @@ export const DraftOverlay = styled(Box)({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'start',
+  paddingTop: 48,
   gap: 8,
   zIndex: 1,
-})
+  background: `linear-gradient(to bottom, ${theme.palette.background.default}20 0%, ${theme.palette.background.default}80 15%, ${theme.palette.background.default}cc 35%, ${theme.palette.background.default}d9 60%)`,
+}))

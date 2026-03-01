@@ -1,4 +1,5 @@
 import { ReactNode, useMemo } from 'react'
+import { useFeatureFlags } from '@shared/application/hooks/useFeatureFlags'
 import { Container } from '@mui/material'
 import { PaginatedReviews } from '@domains/reviews/application/interfaces/Review'
 import { User } from '@domains/profiles/application/interfaces/User'
@@ -26,6 +27,7 @@ interface ProfileContentProps {
   headerContent?: ReactNode
   currentUsername?: string
   myReviewIds?: Set<string>
+  isGuest?: boolean
 }
 
 type FilterTab = 'all' | 'approve' | 'comment' | 'request_change'
@@ -38,12 +40,18 @@ export default function ProfileContent({
   headerContent,
   currentUsername,
   myReviewIds: initialMyReviewIds,
+  isGuest = false,
 }: ProfileContentProps) {
   const profileUsername = initialUser.username
+  const { openDraftProfiles } = useFeatureFlags()
+
+  const isDraftLocked = !initialUser.created_at && !openDraftProfiles
 
   const { user, isPageOwner, isDraft, isClosed, statusInfo, handleRefreshUser } = useProfileStatus(
     initialUser,
     currentUsername,
+    isDraftLocked,
+    isGuest,
   )
 
   const {
@@ -56,7 +64,7 @@ export default function ProfileContent({
     handleTabChange,
     handleToggleHidden,
     refresh: refreshReviews,
-  } = useInfiniteReviews(profileUsername, initialPaginatedReviews)
+  } = useInfiniteReviews(profileUsername, initialPaginatedReviews, undefined, !isDraftLocked && !isGuest)
 
   const { myReviewIds, myReviewsLoading, currentUserInfo, existingReview, refetchMyReviews } =
     useMyReviews(currentUsername, initialMyReviewIds, profileUsername)
@@ -66,7 +74,7 @@ export default function ProfileContent({
     loading: reviewersLoading,
     error: reviewersError,
     refetch: refetchReviewers,
-  } = useProfileReviewers(profileUsername)
+  } = useProfileReviewers(profileUsername, !isDraftLocked && !isGuest)
 
   const hasExistingReview = useMemo(
     () => reviewers.some((r) => myReviewIds.has(r.id)),
@@ -115,8 +123,9 @@ export default function ProfileContent({
           activeTab={activeTab}
           onTabChange={handleTabChange}
           tabCounts={tabCounts}
-          isDraft={isDraft}
           isClosed={isClosed}
+          isDraftLocked={isDraftLocked}
+          isGuest={isGuest}
         />
       )}
 
@@ -136,6 +145,8 @@ export default function ProfileContent({
                 isPageOwner,
                 profileUsername,
                 isDraft,
+                isDraftLocked,
+                isGuest,
               }}
             >
               <MainContent>

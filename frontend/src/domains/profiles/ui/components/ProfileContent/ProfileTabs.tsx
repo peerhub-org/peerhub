@@ -15,16 +15,18 @@ interface ProfileTabsProps {
   activeTab: FilterTab
   onTabChange: (_: unknown, newValue: FilterTab) => void
   tabCounts: Record<FilterTab, number>
-  isDraft: boolean
   isClosed: boolean
+  isDraftLocked?: boolean
+  isGuest?: boolean
 }
 
 export default function ProfileTabs({
   activeTab,
   onTabChange,
   tabCounts,
-  isDraft,
   isClosed,
+  isDraftLocked = false,
+  isGuest = false,
 }: ProfileTabsProps) {
   return (
     <TabsRow>
@@ -35,14 +37,14 @@ export default function ProfileTabs({
             value={tab.value}
             icon={tab.icon}
             iconPosition='start'
-            disabled={isDraft || isClosed}
+            disabled={isClosed || isDraftLocked || isGuest}
             label={
               <TabLabelWrapper>
                 {tab.label}
                 {!isClosed && (
                   <>
                     &nbsp;
-                    <TabBadge badgeContent={isDraft ? '?' : String(tabCounts[tab.value])} />
+                    <TabBadge badgeContent={isDraftLocked || isGuest ? '?' : String(tabCounts[tab.value])} />
                   </>
                 )}
               </TabLabelWrapper>

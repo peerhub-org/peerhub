@@ -45,19 +45,21 @@ export default function ProfileHeader({
       <HeaderLeft>
         <StatusChip label={statusInfo.label} size='small' statusColor={statusInfo.color} />
         <Typography variant='body2' sx={{ color: theme.palette.text.secondary }}>
-          <Link
-            href={`https://github.com/${username}`}
-            target='_blank'
-            rel='noopener noreferrer'
-            underline='none'
-            sx={{
-              color: theme.palette.text.primary,
-              fontWeight: 600,
-              '&:hover': { color: theme.palette.primary.main },
-            }}
-          >
-            {username}
-          </Link>
+          {statusInfo.label !== 'Private' && (
+            <Link
+              href={`https://github.com/${username}`}
+              target='_blank'
+              rel='noopener noreferrer'
+              underline='none'
+              sx={{
+                color: theme.palette.text.primary,
+                fontWeight: 600,
+                '&:hover': { color: theme.palette.primary.main },
+              }}
+            >
+              {username}
+            </Link>
+          )}
           {statusInfo.label === 'Open' && createdAt ? (
             <>
               {` ${statusInfo.message} `}
