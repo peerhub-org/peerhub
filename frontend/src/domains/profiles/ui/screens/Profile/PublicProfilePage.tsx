@@ -6,6 +6,7 @@ import profileService from '@domains/profiles/application/services/profileServic
 import reviewService from '@domains/reviews/application/services/reviewService'
 import accountService from '@domains/account/application/services/accountService'
 import authService from '@domains/authentication/application/services/authenticationService'
+import posthog from 'posthog-js'
 import { isAxiosError } from '@shared/application/api/errors'
 import ProfileContent from '@domains/profiles/ui/components/ProfileContent/ProfileContent'
 import PublicLayout from '@shared/ui/containers/PublicLayout/PublicLayout'
@@ -71,12 +72,9 @@ export async function loader({ params }: LoaderFunctionArgs) {
   try {
     const response = await fetch(`https://api.github.com/users/${encodeURIComponent(username)}`)
 
-    if (response.status === 404) {
-      throw new Response('User not found', { status: 404 })
-    }
-
     if (!response.ok) {
-      throw new Response('Failed to load user', { status: 500 })
+      posthog.capture('github_public_api_error', { status: response.status, username })
+      return redirect('/')
     }
 
     const ghUser: GithubApiUser = await response.json()
