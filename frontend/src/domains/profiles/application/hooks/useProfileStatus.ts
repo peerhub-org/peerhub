@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTheme } from '@mui/material/styles'
 import { User } from '@domains/profiles/application/interfaces/User'
 import profileService from '@domains/profiles/application/services/profileService'
@@ -29,7 +29,7 @@ export function useProfileStatus(
   const isDraft = !user.created_at
   const isClosed = Boolean(user.deleted_at)
 
-  const getStatusInfo = () => {
+  const statusInfo = useMemo(() => {
     if (isGuest) {
       return {
         label: 'Private' as const,
@@ -56,9 +56,7 @@ export function useProfileStatus(
       color: theme.palette.success.main,
       message: 'is open to reviews since',
     }
-  }
-
-  const statusInfo = getStatusInfo()
+  }, [isGuest, isDraftLocked, user.username, user.created_at, user.deleted_at, theme])
 
   return {
     user,
