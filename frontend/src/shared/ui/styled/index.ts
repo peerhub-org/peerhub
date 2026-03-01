@@ -1,4 +1,4 @@
-import { Box, Button, styled } from '@mui/material'
+import { Box, Button, keyframes, styled } from '@mui/material'
 import { Link } from 'react-router'
 
 // Common flex layouts
@@ -138,3 +138,33 @@ export const DeleteButton = styled(Button)(({ theme }) => ({
     boxShadow: 'none',
   },
 }))
+
+const gradientShift = keyframes`
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+`
+
+export const GitHubSignInButton = styled(Button)({
+  textTransform: 'none',
+  color: '#fff',
+  fontWeight: 600,
+  padding: '6px 16px',
+  borderRadius: 8,
+  backgroundImage: 'linear-gradient(135deg, #5a6078, #818CF8, #c084c4, #F472B6, #818CF8, #5a6078)',
+  backgroundSize: '300% 100%',
+  animation: `${gradientShift} 6s ease infinite`,
+  boxShadow: '0 1px 3px rgba(129,140,248,0.15)',
+  transition: 'box-shadow 0.25s ease, filter 0.25s ease',
+  '&:hover': {
+    animationPlayState: 'paused',
+    backgroundImage: 'linear-gradient(135deg, #818CF8, #F472B6)',
+    backgroundSize: '100% 100%',
+    boxShadow: '0 4px 16px rgba(129,140,248,0.3), 0 2px 6px rgba(244,114,182,0.2)',
+    filter: 'brightness(1.1)',
+  },
+  '&:active': {
+    filter: 'brightness(0.95)',
+    boxShadow: '0 1px 2px rgba(129,140,248,0.2)',
+  },
+})
