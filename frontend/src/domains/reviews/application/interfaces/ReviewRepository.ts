@@ -1,4 +1,5 @@
 import { PaginatedReviews } from '@domains/reviews/application/interfaces/Review'
+import type { Role } from '@shared/application/interfaces/Role'
 
 export interface ReviewRepository {
   getReviews: (
@@ -10,5 +11,5 @@ export interface ReviewRepository {
   toggleCommentHidden: (
     reviewId: string,
     hidden: boolean,
-  ) => Promise<{ id: string; comment_hidden: boolean }>
+  ) => Promise<{ id: string; comment_hidden: boolean; comment_hidden_by: Role | null }>
 }

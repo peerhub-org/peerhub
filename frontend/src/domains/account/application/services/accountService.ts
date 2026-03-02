@@ -7,6 +7,7 @@ import { z } from 'zod'
 const accountSchema = z.object({
   uuid: z.string().uuid(),
   username: z.string(),
+  is_moderator: z.boolean(),
 })
 
 class AccountService {

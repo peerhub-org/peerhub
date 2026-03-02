@@ -1,4 +1,5 @@
 import type { ReviewStatus } from '@shared/application/interfaces/ReviewStatus'
+import type { Role } from '@shared/application/interfaces/Role'
 
 export interface ActivityFeedItem {
   review_id: string
@@ -11,6 +12,7 @@ export interface ActivityFeedItem {
   comment: string | null
   anonymous: boolean
   comment_hidden: boolean
+  comment_hidden_by: Role | null
   created_at: string
   updated_at: string
 }
