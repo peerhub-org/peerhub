@@ -11,6 +11,7 @@ import { ReviewRepository } from '@domains/reviews/application/interfaces/Review
 import { reviewRepository } from '@domains/reviews/application/services/reviewRepository'
 import { INFINITE_SCROLL_ROOT_MARGIN, PAGE_SIZE } from '@shared/application/config/appConstants'
 import { queryKeys } from '@shared/application/queryKeys'
+import type { Role } from '@shared/application/interfaces/Role'
 
 type FilterTab = 'all' | 'approve' | 'comment' | 'request_change'
 
@@ -18,6 +19,7 @@ function updateHiddenState(
   cachedData: InfiniteData<PaginatedReviews> | undefined,
   reviewId: string,
   hidden: boolean,
+  hiddenBy: Role | null,
 ): InfiniteData<PaginatedReviews> | undefined {
   if (!cachedData) {
     return cachedData
@@ -28,7 +30,9 @@ function updateHiddenState(
     pages: cachedData.pages.map((page) => ({
       ...page,
       items: page.items.map((review) =>
-        review.id === reviewId ? { ...review, comment_hidden: hidden } : review,
+        review.id === reviewId
+          ? { ...review, comment_hidden: hidden, comment_hidden_by: hiddenBy }
+          : review,
       ),
     })),
   }
@@ -77,9 +81,15 @@ export function useInfiniteReviews(
   const reviews = useMemo(() => data?.pages.flatMap((page) => page.items) ?? [], [data])
 
   const { mutateAsync: mutateToggleHidden } = useMutation({
-    mutationFn: ({ reviewId, hidden }: { reviewId: string; hidden: boolean }) =>
-      repository.toggleCommentHidden(reviewId, hidden),
-    onMutate: async ({ reviewId, hidden }) => {
+    mutationFn: ({
+      reviewId,
+      hidden,
+    }: {
+      reviewId: string
+      hidden: boolean
+      hiddenBy: Role | null
+    }) => repository.toggleCommentHidden(reviewId, hidden),
+    onMutate: async ({ reviewId, hidden, hiddenBy }) => {
       await queryClient.cancelQueries({ queryKey: reviewListPrefix })
 
       const previousQueries = queryClient.getQueriesData<InfiniteData<PaginatedReviews>>({
@@ -88,7 +98,7 @@ export function useInfiniteReviews(
 
       queryClient.setQueriesData<InfiniteData<PaginatedReviews>>(
         { queryKey: reviewListPrefix },
-        (cachedData) => updateHiddenState(cachedData, reviewId, hidden),
+        (cachedData) => updateHiddenState(cachedData, reviewId, hidden, hiddenBy),
       )
 
       return { previousQueries }
@@ -102,7 +112,12 @@ export function useInfiniteReviews(
       queryClient.setQueriesData<InfiniteData<PaginatedReviews>>(
         { queryKey: reviewListPrefix },
         (cachedData) =>
-          updateHiddenState(cachedData, updatedReview.id, updatedReview.comment_hidden),
+          updateHiddenState(
+            cachedData,
+            updatedReview.id,
+            updatedReview.comment_hidden,
+            updatedReview.comment_hidden_by,
+          ),
       )
     },
   })
@@ -120,9 +135,9 @@ export function useInfiniteReviews(
   }, [fetchNextPage, hasNextPage, isFetchingNextPage])
 
   const handleToggleHidden = useCallback(
-    async (reviewId: string, hidden: boolean) => {
+    async (reviewId: string, hidden: boolean, hiddenBy: Role | null = null) => {
       try {
-        await mutateToggleHidden({ reviewId, hidden })
+        await mutateToggleHidden({ reviewId, hidden, hiddenBy })
       } catch {
         // Error handling
       }
