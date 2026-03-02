@@ -10,6 +10,7 @@ import {
   CircularProgress,
 } from '@mui/material'
 import { ActivityFeedItem } from '@domains/account/application/interfaces/ActivityFeed'
+import { Role } from '@shared/application/interfaces/Role'
 import { getStatusColor, getStatusIcon } from '@shared/application/utils/reviewStatus'
 import { getAnonymousReviewDisplay } from '@shared/application/utils/anonymousReview'
 import { timeAgo, formatFullDate } from '@shared/application/utils/dateFormatting'
@@ -186,7 +187,9 @@ export default function ActivityFeed({
           {item.comment && item.comment_hidden && (
             <CommentCard>
               <Typography variant='body2' sx={{ fontStyle: 'italic', color: 'text.secondary' }}>
-                {`Comment hidden by ${item.reviewed_username}`}
+                {item.comment_hidden_by === Role.MODERATOR
+                  ? 'Abusive comment removed by moderation'
+                  : `Comment hidden by ${item.reviewed_username}`}
               </Typography>
             </CommentCard>
           )}

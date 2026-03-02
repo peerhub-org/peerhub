@@ -6,6 +6,7 @@ interface ReviewContextValue {
   myReviewIds: Set<string>
   currentUserInfo: CurrentUserInfo
   isPageOwner: boolean
+  isModerator: boolean
   profileUsername: string
   isDraft: boolean
   isDraftLocked: boolean
