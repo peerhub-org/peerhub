@@ -38,7 +38,7 @@ class Settings(BaseSettings):
     GITHUB_CLIENT_ID: str | None = None
     GITHUB_CLIENT_SECRET: str | None = None
     SSO_CALLBACK_HOSTNAME: str | None = None
-    ALLOWED_USERNAMES: set[str] = set()
+    MODERATOR_USERNAMES: set[str] = set()
     POSTHOG_HOST: str = "https://us.i.posthog.com"
     POSTHOG_API_KEY: str | None = None
     RESEND_API_KEY: str | None = None
