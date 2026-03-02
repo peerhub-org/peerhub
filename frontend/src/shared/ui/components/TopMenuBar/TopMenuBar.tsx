@@ -10,6 +10,7 @@ import {
   MenuItem,
   Tooltip,
   Typography,
+  alpha,
   useTheme,
 } from '@mui/material'
 import * as React from 'react'
@@ -84,8 +85,11 @@ export default function TopMenuBar() {
             sx={{
               width: 32,
               height: 32,
-              border: `2px solid ${theme.palette.action.selected}`,
               cursor: 'pointer',
+              transition: 'box-shadow 0.2s',
+              '&:hover': {
+                boxShadow: `0 0 0 4px ${alpha(theme.palette.text.primary, 0.08)}`,
+              },
             }}
           />
         </Tooltip>
