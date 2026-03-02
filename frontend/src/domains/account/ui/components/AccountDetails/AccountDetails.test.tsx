@@ -24,7 +24,7 @@ vi.mock('@domains/authentication/application/hooks/useAuthentication', async () 
   return {
     ...actual,
     useAuth: () => ({
-      account: { uuid: 'test-uuid', username: 'testuser' },
+      account: { uuid: 'test-uuid', username: 'testuser', is_moderator: false },
       isLoading: false,
       setAccount: vi.fn(),
       refetchAccount: vi.fn(),
@@ -33,7 +33,7 @@ vi.mock('@domains/authentication/application/hooks/useAuthentication', async () 
   }
 })
 
-const testAccount = { uuid: 'test-uuid', username: 'testuser' }
+const testAccount = { uuid: 'test-uuid', username: 'testuser', is_moderator: false }
 
 describe('AccountDetails', () => {
   beforeEach(() => {
