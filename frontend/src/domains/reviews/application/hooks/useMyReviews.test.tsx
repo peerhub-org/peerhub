@@ -21,6 +21,7 @@ const makeReview = (overrides: Partial<Review> = {}): Review => ({
   comment: 'Great!',
   anonymous: false,
   comment_hidden: false,
+  comment_hidden_by: null,
   created_at: '2025-01-01T00:00:00Z',
   updated_at: '2025-01-01T00:00:00Z',
   ...overrides,

@@ -109,7 +109,9 @@ async def get_reviews(
     )
 
     items = [
-        ReviewResponse.from_review_with_username(r, is_page_owner=result.is_page_owner)
+        ReviewResponse.from_review_with_username(
+            r, is_page_owner=result.is_page_owner, is_moderator=result.is_moderator
+        )
         for r in result.items
     ]
 
@@ -136,6 +138,10 @@ async def toggle_comment_hidden(
     account_uuid: UUID = Depends(get_current_account_uuid),
     use_case: ToggleCommentHiddenUseCase = Depends(get_toggle_comment_hidden_use_case),
 ) -> ReviewResponse:
-    """Toggle the hidden state of a review comment. Only page owner can do this."""
+    """Toggle the hidden state of a review comment."""
     result = await use_case.execute(review_id, account_uuid, request.hidden)
-    return ReviewResponse.from_review_with_username(result)
+    return ReviewResponse.from_review_with_username(
+        result.review_with_username,
+        is_page_owner=result.is_page_owner,
+        is_moderator=result.is_moderator,
+    )

@@ -28,6 +28,7 @@ interface ProfileContentProps {
   currentUsername?: string
   myReviewIds?: Set<string>
   isGuest?: boolean
+  isModerator?: boolean
 }
 
 type FilterTab = 'all' | 'approve' | 'comment' | 'request_change'
@@ -41,6 +42,7 @@ export default function ProfileContent({
   currentUsername,
   myReviewIds: initialMyReviewIds,
   isGuest = false,
+  isModerator = false,
 }: ProfileContentProps) {
   const profileUsername = initialUser.username
   const { openDraftProfiles } = useFeatureFlags()
@@ -149,6 +151,7 @@ export default function ProfileContent({
                 myReviewIds,
                 currentUserInfo,
                 isPageOwner,
+                isModerator,
                 profileUsername,
                 isDraft,
                 isDraftLocked,

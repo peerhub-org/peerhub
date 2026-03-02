@@ -7,6 +7,7 @@ import { API_BASE_URL } from '@shared/application/config/env'
 import { PAGE_SIZE } from '@shared/application/config/appConstants'
 import { z } from 'zod'
 import { reviewStatusSchema } from '@shared/application/schemas/reviewSchemas'
+import { roleSchema } from '@shared/application/schemas/roleSchema'
 
 const activityFeedItemSchema = z.object({
   review_id: z.string(),
@@ -19,6 +20,7 @@ const activityFeedItemSchema = z.object({
   comment: z.string().nullable(),
   anonymous: z.boolean(),
   comment_hidden: z.boolean(),
+  comment_hidden_by: roleSchema.nullable(),
   created_at: z.string(),
   updated_at: z.string(),
 })

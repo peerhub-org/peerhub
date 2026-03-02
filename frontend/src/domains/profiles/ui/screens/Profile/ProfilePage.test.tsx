@@ -25,7 +25,7 @@ vi.mock('@shared/ui/routes/authLoader', () => ({
 // Mock services
 vi.mock('@domains/account/application/services/accountService', () => ({
   default: {
-    getAccount: vi.fn().mockResolvedValue({ username: 'currentuser' }),
+    getAccount: vi.fn().mockResolvedValue({ username: 'currentuser', is_moderator: false }),
   },
 }))
 
@@ -59,6 +59,7 @@ vi.mock('@domains/reviews/application/services/reviewService', () => ({
           comment: 'Great developer!',
           anonymous: false,
           comment_hidden: false,
+          comment_hidden_by: null,
           created_at: '2025-01-01T00:00:00Z',
           updated_at: '2025-01-01T00:00:00Z',
         },

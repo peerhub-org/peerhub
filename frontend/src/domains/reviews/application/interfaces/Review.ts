@@ -1,5 +1,6 @@
 export type { ReviewStatus } from '@shared/application/interfaces/ReviewStatus'
 import type { ReviewStatus } from '@shared/application/interfaces/ReviewStatus'
+import type { Role } from '@shared/application/interfaces/Role'
 
 export interface Review {
   id: string
@@ -11,6 +12,7 @@ export interface Review {
   comment: string | null
   anonymous: boolean
   comment_hidden: boolean
+  comment_hidden_by: Role | null
   created_at: string
   updated_at: string
 }

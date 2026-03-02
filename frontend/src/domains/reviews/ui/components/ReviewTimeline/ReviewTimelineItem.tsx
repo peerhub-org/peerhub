@@ -2,6 +2,7 @@ import { memo } from 'react'
 import { Tooltip } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { Review } from '@domains/reviews/application/interfaces/Review'
+import type { Role } from '@shared/application/interfaces/Role'
 import {
   getStatusColor,
   getStatusIcon,
@@ -35,8 +36,9 @@ interface ReviewTimelineItemProps {
   isCurrentUser?: boolean
   currentUserInfo?: { username: string; avatarUrl: string | null } | null
   isPageOwner?: boolean
+  isModerator?: boolean
   pageOwnerUsername?: string
-  onToggleHidden?: (reviewId: string, hidden: boolean) => void
+  onToggleHidden?: (reviewId: string, hidden: boolean, hiddenBy: Role | null) => void
 }
 
 function ReviewTimelineItem({
@@ -46,6 +48,7 @@ function ReviewTimelineItem({
   isCurrentUser,
   currentUserInfo,
   isPageOwner,
+  isModerator,
   pageOwnerUsername,
   onToggleHidden,
 }: ReviewTimelineItemProps) {
@@ -116,6 +119,7 @@ function ReviewTimelineItem({
           isCurrentUser={isCurrentUser}
           displayName={displayName}
           isPageOwner={isPageOwner}
+          isModerator={isModerator}
           pageOwnerUsername={pageOwnerUsername}
           onToggleHidden={onToggleHidden}
         />

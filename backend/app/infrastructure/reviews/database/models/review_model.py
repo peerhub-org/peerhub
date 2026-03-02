@@ -20,6 +20,7 @@ class ReviewDocument(Document):
     created_at: datetime
     updated_at: datetime
     comment_hidden: bool = False
+    comment_hidden_by: str | None = None
 
     class Settings:
         name = "reviews"

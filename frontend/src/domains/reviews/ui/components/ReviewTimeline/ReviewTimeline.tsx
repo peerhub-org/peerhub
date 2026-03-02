@@ -4,6 +4,7 @@ import { GitHub, LockOutline } from '@mui/icons-material'
 import { GitHubSignInButton } from '@shared/ui/styled'
 import { useTheme } from '@mui/material/styles'
 import { Review } from '@domains/reviews/application/interfaces/Review'
+import type { Role } from '@shared/application/interfaces/Role'
 import { User } from '@domains/profiles/application/interfaces/User'
 import ReviewTimelineItem from './ReviewTimelineItem'
 import AuthorBioCard from '@domains/reviews/ui/components/AuthorBioCard/AuthorBioCard'
@@ -29,7 +30,7 @@ interface ReviewTimelineProps {
   reviews: Review[]
   refreshing?: boolean
   emptyMessage?: string
-  onToggleHidden?: (reviewId: string, hidden: boolean) => void
+  onToggleHidden?: (reviewId: string, hidden: boolean, hiddenBy: Role | null) => void
   onRefreshUser?: () => void
   sentinelRef?: RefObject<HTMLDivElement | null>
   loadingMore?: boolean
@@ -48,7 +49,8 @@ export default function ReviewTimeline({
   hasMore = true,
 }: ReviewTimelineProps) {
   const theme = useTheme()
-  const { myReviewIds, currentUserInfo, isPageOwner, isDraftLocked, isGuest } = useReviewContext()
+  const { myReviewIds, currentUserInfo, isPageOwner, isModerator, isDraftLocked, isGuest } =
+    useReviewContext()
   const isLocked = isDraftLocked || isGuest
   const handleSignIn = useGitHubSignIn()
 
@@ -95,6 +97,7 @@ export default function ReviewTimeline({
             isCurrentUser={myReviewIds.has(review.id)}
             currentUserInfo={currentUserInfo}
             isPageOwner={isPageOwner}
+            isModerator={isModerator}
             pageOwnerUsername={user.username}
             onToggleHidden={onToggleHidden}
           />

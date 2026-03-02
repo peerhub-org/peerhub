@@ -10,6 +10,8 @@ import { API_BASE_URL } from '@shared/application/config/env'
 import { PAGE_SIZE } from '@shared/application/config/appConstants'
 import { z } from 'zod'
 import { reviewStatusSchema } from '@shared/application/schemas/reviewSchemas'
+import { roleSchema } from '@shared/application/schemas/roleSchema'
+import type { Role } from '@shared/application/interfaces/Role'
 
 const reviewSchema = z.object({
   id: z.string(),
@@ -21,6 +23,7 @@ const reviewSchema = z.object({
   comment: z.string().nullable(),
   anonymous: z.boolean(),
   comment_hidden: z.boolean(),
+  comment_hidden_by: roleSchema.nullable(),
   created_at: z.string(),
   updated_at: z.string(),
 })
@@ -90,10 +93,14 @@ class ReviewService {
   async toggleCommentHidden(
     reviewId: string,
     hidden: boolean,
-  ): Promise<{ id: string; comment_hidden: boolean }> {
+  ): Promise<{ id: string; comment_hidden: boolean; comment_hidden_by: Role | null }> {
     const response = await axios.patch(API_BASE_URL + `reviews/${reviewId}/visibility`, { hidden })
     return z
-      .object({ id: z.string(), comment_hidden: z.boolean() })
+      .object({
+        id: z.string(),
+        comment_hidden: z.boolean(),
+        comment_hidden_by: roleSchema.nullable(),
+      })
       .passthrough()
       .parse(response.data)
   }

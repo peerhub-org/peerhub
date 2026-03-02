@@ -27,7 +27,11 @@ const mockedUseActivityFeed = vi.mocked(useActivityFeed)
 const mockedUseWatchlist = vi.mocked(useWatchlist)
 const mockedUseReviewSuggestions = vi.mocked(useReviewSuggestions)
 
-const loaderAccount: Account = { uuid: 'alice-uuid', username: 'alice' }
+const loaderAccount: Account = {
+  uuid: 'alice-uuid',
+  username: 'alice',
+  is_moderator: false,
+}
 
 describe('useFeedScreen', () => {
   const mockSetAccount = vi.fn()

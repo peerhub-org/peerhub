@@ -83,6 +83,7 @@ async def test_get_reviews(async_client: AsyncClient, auth_uuid: UUID):
         items=[review_with_username],
         has_more=False,
         is_page_owner=False,
+        is_moderator=False,
     )
 
     app.dependency_overrides[get_reviews_use_case] = lambda: mock_use_case

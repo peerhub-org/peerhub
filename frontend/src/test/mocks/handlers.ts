@@ -14,7 +14,11 @@ export const handlers = [
 
   // Account
   http.get(`${API_BASE}account`, () => {
-    return HttpResponse.json({ uuid: 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d', username: 'testuser' })
+    return HttpResponse.json({
+      uuid: 'a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d',
+      username: 'testuser',
+      is_moderator: false,
+    })
   }),
 
   http.delete(`${API_BASE}account`, () => {
@@ -69,6 +73,7 @@ export const handlers = [
           comment: 'Great work!',
           anonymous: false,
           comment_hidden: false,
+          comment_hidden_by: null,
           created_at: '2025-01-01T00:00:00Z',
           updated_at: '2025-01-01T00:00:00Z',
         },
@@ -90,6 +95,7 @@ export const handlers = [
       comment: body.comment,
       anonymous: body.anonymous ?? false,
       comment_hidden: false,
+      comment_hidden_by: null,
       created_at: '2025-01-01T00:00:00Z',
       updated_at: '2025-01-01T00:00:00Z',
     })
@@ -104,6 +110,7 @@ export const handlers = [
     return HttpResponse.json({
       id: 'review-1',
       comment_hidden: body.hidden,
+      comment_hidden_by: body.hidden ? ('user' as const) : null,
     })
   }),
 

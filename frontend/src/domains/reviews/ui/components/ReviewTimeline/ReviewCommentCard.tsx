@@ -3,6 +3,7 @@ import { Menu, MenuItem, Tooltip, Typography } from '@mui/material'
 import { MoreHoriz, SpeakerNotesOff } from '@mui/icons-material'
 import { useTheme } from '@mui/material/styles'
 import { Review } from '@domains/reviews/application/interfaces/Review'
+import { Role } from '@shared/application/interfaces/Role'
 import { getMenuSlotProps } from '@shared/ui/foundations/theme'
 import Incognito from '@shared/ui/components/icons/Incognito'
 import {
@@ -23,8 +24,9 @@ interface ReviewCommentCardProps {
   isCurrentUser?: boolean
   displayName: string
   isPageOwner?: boolean
+  isModerator?: boolean
   pageOwnerUsername?: string
-  onToggleHidden?: (reviewId: string, hidden: boolean) => void
+  onToggleHidden?: (reviewId: string, hidden: boolean, hiddenBy: Role | null) => void
 }
 
 export default function ReviewCommentCard({
@@ -34,6 +36,7 @@ export default function ReviewCommentCard({
   isCurrentUser,
   displayName,
   isPageOwner,
+  isModerator,
   pageOwnerUsername,
   onToggleHidden,
 }: ReviewCommentCardProps) {
@@ -49,11 +52,29 @@ export default function ReviewCommentCard({
   }
 
   const handleToggleHidden = () => {
-    onToggleHidden?.(review.id, !review.comment_hidden)
+    const hiddenBy = !review.comment_hidden ? (isPageOwner ? Role.USER : Role.MODERATOR) : null
+    onToggleHidden?.(review.id, !review.comment_hidden, hiddenBy)
     handleMenuClose()
   }
 
   if (!review.comment && !review.comment_hidden) return null
+
+  // Determine visibility and actions based on who hid and who's viewing
+  const hiddenByOwner = review.comment_hidden_by === Role.USER
+  const hiddenByModerator = review.comment_hidden_by === Role.MODERATOR
+
+  // Can the viewer see the comment text when hidden?
+  const canSeeHiddenComment = (hiddenByOwner && isPageOwner) || (hiddenByModerator && isModerator)
+
+  // Can the viewer unhide?
+  const canUnhide = (hiddenByOwner && isPageOwner) || (hiddenByModerator && isModerator)
+
+  // Should we show the menu (hide/unhide)?
+  const canHide = isPageOwner || isModerator
+  const showMenu = canHide && onToggleHidden && (!review.comment_hidden || canUnhide)
+
+  // Hidden icon tooltip
+  const hiddenIconTooltip = canSeeHiddenComment ? 'Comment hidden by you' : undefined
 
   return (
     <Card
@@ -92,8 +113,8 @@ export default function ReviewCommentCard({
             <UsernameLink to={`/${review.reviewer_username}`}>{displayName}</UsernameLink>
           )}
           {' left a comment'}
-          {review.comment_hidden && isPageOwner && (
-            <Tooltip title='Comment hidden by you' arrow>
+          {review.comment_hidden && canSeeHiddenComment && hiddenIconTooltip && (
+            <Tooltip title={hiddenIconTooltip} arrow>
               <HiddenIconWrapper component='span'>
                 <SpeakerNotesOff
                   sx={{
@@ -106,7 +127,7 @@ export default function ReviewCommentCard({
             </Tooltip>
           )}
         </Typography>
-        {isPageOwner && onToggleHidden && (
+        {showMenu && (
           <>
             <MenuIconButton size='small' onClick={handleMenuOpen}>
               <MoreHoriz sx={{ fontSize: 18 }} />
@@ -128,11 +149,13 @@ export default function ReviewCommentCard({
       </CardHeader>
 
       <CardBody>
-        {review.comment_hidden && !isPageOwner ? (
+        {review.comment_hidden && !canSeeHiddenComment ? (
           <HiddenByOwnerText variant='body2'>
-            Comment hidden by {pageOwnerUsername}
+            {hiddenByModerator
+              ? 'Abusive comment removed by moderation'
+              : `Comment hidden by ${pageOwnerUsername}`}
           </HiddenByOwnerText>
-        ) : review.comment_hidden && isPageOwner ? (
+        ) : review.comment_hidden && canSeeHiddenComment ? (
           <HiddenCommentText variant='body2'>{review.comment}</HiddenCommentText>
         ) : (
           <CommentText variant='body2'>{review.comment}</CommentText>

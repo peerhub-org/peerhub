@@ -8,7 +8,6 @@ from app.application.github.use_cases.authenticate_with_github import (
 )
 from app.domain.accounts.entities.account import Account
 from app.domain.accounts.services.account_service import AccountService
-from app.domain.shared.exceptions import AccessRestrictedException
 from app.domain.users.services.user_service import UserService
 from app.infrastructure.email.email_service import EmailService
 
@@ -41,10 +40,7 @@ async def test_authenticate_creates_user_record(
     with patch(
         "app.application.github.use_cases.authenticate_with_github.GitHubClient.fetch_github_user_data",
         return_value=(GITHUB_DATA, "token123"),
-    ), patch(
-        "app.application.github.use_cases.authenticate_with_github.settings",
-    ) as mock_settings:
-        mock_settings.ALLOWED_USERNAMES = []
+    ):
         use_case = AuthenticateWithGitHubUseCase(
             account_service, user_service, mock_email_service
         )
@@ -57,28 +53,3 @@ async def test_authenticate_creates_user_record(
     assert saved_user.name == "Alice"
     assert saved_user.avatar_url == "https://example.com/alice.png"
     assert saved_user.type == "User"
-
-
-@pytest.mark.asyncio
-async def test_authenticate_does_not_save_user_when_access_restricted(
-    account_service: AccountService,
-    user_service: UserService,
-    mock_user_repository: AsyncMock,
-):
-    mock_email_service = MagicMock(spec=EmailService)
-    mock_email_service._configured = False
-
-    with patch(
-        "app.application.github.use_cases.authenticate_with_github.GitHubClient.fetch_github_user_data",
-        return_value=(GITHUB_DATA, "token123"),
-    ), patch(
-        "app.application.github.use_cases.authenticate_with_github.settings",
-    ) as mock_settings:
-        mock_settings.ALLOWED_USERNAMES = ["bob"]
-        use_case = AuthenticateWithGitHubUseCase(
-            account_service, user_service, mock_email_service
-        )
-        with pytest.raises(AccessRestrictedException):
-            await use_case.execute("code123")
-
-    mock_user_repository.save.assert_not_called()
