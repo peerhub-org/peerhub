@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.5.1] - 2026-03-01
+
+### Added
+
+### Changed
+
+### Fixed
+- Add missing feature flag to control draft profile visibility on backend side.
+
 ## [1.5.0] - 2026-03-01
 
 ### Added
