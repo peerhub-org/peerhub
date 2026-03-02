@@ -14,6 +14,7 @@ from app.domain.reviews.services.review_service import ReviewService
 from app.domain.users.services.user_service import UserService
 from app.domain.watchlist.services.watchlist_service import WatchlistService
 
+from .feature_flags import FeatureFlags, get_feature_flags
 from .services import (
     get_account_service,
     get_review_enrichment_service,
@@ -52,6 +53,7 @@ def get_activity_feed_use_case(
     review_service: ReviewService = Depends(get_review_service),
     account_service: AccountService = Depends(get_account_service),
     user_service: UserService = Depends(get_user_service),
+    feature_flags: FeatureFlags = Depends(get_feature_flags),
 ) -> GetActivityFeedUseCase:
     """Get activity feed use case instance."""
     return GetActivityFeedUseCase(
@@ -59,4 +61,5 @@ def get_activity_feed_use_case(
         review_service,
         account_service,
         user_service,
+        open_draft_profiles=feature_flags.open_draft_profiles,
     )

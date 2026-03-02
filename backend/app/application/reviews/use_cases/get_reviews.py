@@ -28,10 +28,12 @@ class GetReviewsUseCase:
         review_service: ReviewService,
         account_service: AccountService,
         enrichment_service: ReviewEnrichmentService,
+        open_draft_profiles: bool,
     ):
         self.review_service = review_service
         self.account_service = account_service
         self.enrichment_service = enrichment_service
+        self.open_draft_profiles = open_draft_profiles
 
     async def execute(
         self,
@@ -53,7 +55,7 @@ class GetReviewsUseCase:
         )
         is_draft = target_account is None
 
-        if is_draft:
+        if is_draft and not self.open_draft_profiles:
             reviews = await self.review_service.get_reviews_for_user(
                 reviewed_username, limit=0, offset=0, status=status
             )

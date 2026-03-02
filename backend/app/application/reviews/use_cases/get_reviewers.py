@@ -17,11 +17,13 @@ class GetReviewersUseCase:
         account_service: AccountService,
         user_service: UserService,
         enrichment_service: ReviewEnrichmentService,
+        open_draft_profiles: bool,
     ):
         self.review_service = review_service
         self.account_service = account_service
         self.user_service = user_service
         self.enrichment_service = enrichment_service
+        self.open_draft_profiles = open_draft_profiles
 
     async def execute(
         self, reviewed_username: str, viewer_uuid: UUID
@@ -39,7 +41,7 @@ class GetReviewersUseCase:
             reviewed_username, limit=MAX_REVIEWERS, offset=0
         )
 
-        if target_account is None:
+        if target_account is None and not self.open_draft_profiles:
             reviews = [
                 review for review in reviews if review.reviewer_uuid == viewer_uuid
             ]

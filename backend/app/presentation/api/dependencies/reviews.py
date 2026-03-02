@@ -17,6 +17,7 @@ from app.domain.users.services.user_service import UserService
 from app.domain.watchlist.services.watchlist_service import WatchlistService
 from app.infrastructure.email.email_service import EmailService
 
+from .feature_flags import FeatureFlags, get_feature_flags
 from .services import (
     get_account_service,
     get_email_service,
@@ -45,9 +46,13 @@ def get_reviews_use_case(
     review_service: ReviewService = Depends(get_review_service),
     account_service: AccountService = Depends(get_account_service),
     enrichment_service: ReviewEnrichmentService = Depends(get_review_enrichment_service),
+    feature_flags: FeatureFlags = Depends(get_feature_flags),
 ) -> GetReviewsUseCase:
     """Get reviews use case instance."""
-    return GetReviewsUseCase(review_service, account_service, enrichment_service)
+    return GetReviewsUseCase(
+        review_service, account_service, enrichment_service,
+        open_draft_profiles=feature_flags.open_draft_profiles,
+    )
 
 
 def get_reviewers_use_case(
@@ -55,10 +60,12 @@ def get_reviewers_use_case(
     account_service: AccountService = Depends(get_account_service),
     user_service: UserService = Depends(get_user_service),
     enrichment_service: ReviewEnrichmentService = Depends(get_review_enrichment_service),
+    feature_flags: FeatureFlags = Depends(get_feature_flags),
 ) -> GetReviewersUseCase:
     """Get reviewers use case instance."""
     return GetReviewersUseCase(
-        review_service, account_service, user_service, enrichment_service
+        review_service, account_service, user_service, enrichment_service,
+        open_draft_profiles=feature_flags.open_draft_profiles,
     )
 
 

@@ -66,7 +66,8 @@ async def test_get_reviewers_resolves_usernames(
     ]
 
     use_case = GetReviewersUseCase(
-        review_service, account_service, user_service, enrichment_service
+        review_service, account_service, user_service, enrichment_service,
+        open_draft_profiles=False,
     )
     results = await use_case.execute("bob", viewer_uuid=uuid4())
 
@@ -138,7 +139,8 @@ async def test_get_reviewers_skips_deleted_accounts(
     ]
 
     use_case = GetReviewersUseCase(
-        review_service, account_service, user_service, enrichment_service
+        review_service, account_service, user_service, enrichment_service,
+        open_draft_profiles=False,
     )
     results = await use_case.execute("bob", viewer_uuid=uuid4())
 
@@ -162,9 +164,69 @@ async def test_get_reviewers_returns_empty_for_closed_account(
     mock_user_repository.get_by_username.return_value = None
 
     use_case = GetReviewersUseCase(
-        review_service, account_service, user_service, enrichment_service
+        review_service, account_service, user_service, enrichment_service,
+        open_draft_profiles=False,
     )
     results = await use_case.execute("bob", viewer_uuid=uuid4())
 
     assert results == []
     mock_review_repository.get_all_for_username.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_get_reviewers_draft_shows_all_when_open(
+    review_service: ReviewService,
+    account_service: AccountService,
+    user_service: UserService,
+    enrichment_service: ReviewEnrichmentService,
+    mock_review_repository: AsyncMock,
+    mock_account_repository: AsyncMock,
+    mock_user_repository: AsyncMock,
+):
+    viewer_uuid = uuid4()
+    other_uuid = uuid4()
+    now = datetime.now(timezone.utc)
+    reviews = [
+        Review(
+            id="r1",
+            reviewer_uuid=viewer_uuid,
+            reviewed_username="draft-user",
+            status=ReviewStatus.APPROVE,
+            comment=None,
+            anonymous=False,
+            created_at=now,
+            updated_at=now,
+        ),
+        Review(
+            id="r2",
+            reviewer_uuid=other_uuid,
+            reviewed_username="draft-user",
+            status=ReviewStatus.COMMENT,
+            comment="Hi",
+            anonymous=False,
+            created_at=now,
+            updated_at=now,
+        ),
+    ]
+    viewer_account = Account(
+        id="viewer-1", uuid=viewer_uuid, username="viewer", access_token="t"
+    )
+    other_account = Account(
+        id="other-1", uuid=other_uuid, username="other", access_token="t"
+    )
+
+    mock_review_repository.get_all_for_username.return_value = reviews
+    mock_account_repository.get_by_uuids.return_value = [viewer_account, other_account]
+    mock_account_repository.get_by_username.return_value = None
+    mock_user_repository.get_by_usernames.return_value = [
+        User(username="viewer", avatar_url=None),
+        User(username="other", avatar_url=None),
+    ]
+
+    use_case = GetReviewersUseCase(
+        review_service, account_service, user_service, enrichment_service,
+        open_draft_profiles=True,
+    )
+    results = await use_case.execute("draft-user", viewer_uuid=viewer_uuid)
+
+    assert len(results) == 2

@@ -54,7 +54,8 @@ async def test_get_activity_feed_mine_filter(
     mock_user_repository.get_by_usernames.return_value = [alice_user, bob_user]
 
     use_case = GetActivityFeedUseCase(
-        watchlist_service, review_service, account_service, user_service
+        watchlist_service, review_service, account_service, user_service,
+        open_draft_profiles=False,
     )
     results = await use_case.execute(
         account_uuid=account_uuid, filter_type="mine", limit=50, offset=0
@@ -106,10 +107,61 @@ async def test_get_activity_feed_skips_deleted_reviewer(
     mock_user_repository.get_by_usernames.return_value = []
 
     use_case = GetActivityFeedUseCase(
-        watchlist_service, review_service, account_service, user_service
+        watchlist_service, review_service, account_service, user_service,
+        open_draft_profiles=False,
     )
     results = await use_case.execute(
         account_uuid=account_uuid, filter_type="mine", limit=50, offset=0
     )
 
     assert len(results) == 0
+
+
+@pytest.mark.asyncio
+async def test_get_activity_feed_draft_shows_all_when_open(
+    watchlist_service: WatchlistService,
+    review_service: ReviewService,
+    account_service: AccountService,
+    user_service: UserService,
+    mock_review_repository: AsyncMock,
+    mock_account_repository: AsyncMock,
+    mock_user_repository: AsyncMock,
+):
+    account_uuid = uuid4()
+    other_reviewer_uuid = uuid4()
+    now = datetime.now(timezone.utc)
+
+    account = Account(id="a1", uuid=account_uuid, username="bob", access_token="t")
+    other_reviewer_account = Account(
+        id="a2", uuid=other_reviewer_uuid, username="alice", access_token="t"
+    )
+    review = Review(
+        id="r1",
+        reviewer_uuid=other_reviewer_uuid,
+        reviewed_username="bob",
+        status=ReviewStatus.APPROVE,
+        comment="Great!",
+        anonymous=False,
+        created_at=now,
+        updated_at=now,
+    )
+    alice_user = User(username="alice", avatar_url="https://example.com/alice.png")
+    bob_user = User(username="bob", avatar_url="https://example.com/bob.png")
+
+    mock_account_repository.get_by_uuid.return_value = account
+    mock_review_repository.get_all_for_username.return_value = [review]
+    # bob has no account entry (draft profile)
+    mock_account_repository.get_by_usernames.return_value = []
+    mock_account_repository.get_by_uuids.return_value = [other_reviewer_account]
+    mock_user_repository.get_by_usernames.return_value = [alice_user, bob_user]
+
+    use_case = GetActivityFeedUseCase(
+        watchlist_service, review_service, account_service, user_service,
+        open_draft_profiles=True,
+    )
+    results = await use_case.execute(
+        account_uuid=account_uuid, filter_type="mine", limit=50, offset=0
+    )
+
+    assert len(results) == 1
+    assert results[0].reviewer_username == "alice"
