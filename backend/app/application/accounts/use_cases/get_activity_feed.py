@@ -29,11 +29,13 @@ class GetActivityFeedUseCase:
         review_service: ReviewService,
         account_service: AccountService,
         user_service: UserService,
+        open_draft_profiles: bool,
     ):
         self.watchlist_service = watchlist_service
         self.review_service = review_service
         self.account_service = account_service
         self.user_service = user_service
+        self.open_draft_profiles = open_draft_profiles
 
     async def execute(
         self,
@@ -103,7 +105,11 @@ class GetActivityFeedUseCase:
 
             if is_deleted:
                 continue
-            if is_draft and review.reviewer_uuid != account_uuid:
+            if (
+                is_draft
+                and not self.open_draft_profiles
+                and review.reviewer_uuid != account_uuid
+            ):
                 continue
             filtered.append(review)
 
