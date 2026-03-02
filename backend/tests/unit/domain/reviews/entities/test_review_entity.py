@@ -40,9 +40,10 @@ def test_set_comment_hidden_true():
         comment_hidden=False,
     )
 
-    review.set_comment_hidden(True)
+    review.set_comment_hidden(True, hidden_by="alice")
 
     assert review.comment_hidden is True
+    assert review.comment_hidden_by == "alice"
     assert review.updated_at > now
 
 
@@ -59,9 +60,11 @@ def test_set_comment_hidden_false():
         created_at=now,
         updated_at=now,
         comment_hidden=True,
+        comment_hidden_by="alice",
     )
 
-    review.set_comment_hidden(False)
+    review.set_comment_hidden(False, hidden_by=None)
 
     assert review.comment_hidden is False
+    assert review.comment_hidden_by is None
     assert review.updated_at > now
