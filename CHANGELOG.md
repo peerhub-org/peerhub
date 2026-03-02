@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.0] - 2026-03-01
+
+### Added
+- Added moderator role and enable hide comment by moderators
+
+### Changed
+
+### Fixed
+
 ## [1.5.1] - 2026-03-01
 
 ### Added
