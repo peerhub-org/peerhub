@@ -1,4 +1,4 @@
-import { Box, List, Paper, TextField, Typography, styled } from '@mui/material'
+import { Box, List, Paper, TextField, Typography, alpha, styled } from '@mui/material'
 
 const RESULT_HEIGHT = 41
 const VISIBLE_RESULTS = 5
@@ -13,13 +13,13 @@ export const SearchTrigger = styled(Box)(({ theme }) => ({
   gap: 6,
   padding: '4px 12px',
   borderRadius: theme.shape.borderRadius,
-  border: `1px solid ${theme.palette.divider}`,
+  border: `1px solid ${alpha(theme.palette.text.primary, 0.15)}`,
   backgroundColor: theme.palette.background.paper,
   cursor: 'pointer',
   height: 32,
   width: 200,
   '&:hover': {
-    borderColor: theme.palette.text.disabled,
+    borderColor: alpha(theme.palette.text.primary, 0.45),
   },
   [theme.breakpoints.down('sm')]: {
     width: 32,
@@ -55,7 +55,7 @@ export const SearchCard = styled(Paper)(({ theme }) => ({
   },
   backgroundColor: theme.palette.background.paper,
   backgroundImage: 'none',
-  border: `1px solid ${theme.palette.divider}`,
+  border: `1px solid ${alpha(theme.palette.text.primary, 0.15)}`,
   borderRadius: 8,
   overflow: 'hidden',
   zIndex: theme.zIndex.modal,
