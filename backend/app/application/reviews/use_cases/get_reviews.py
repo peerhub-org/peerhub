@@ -6,6 +6,7 @@ from app.domain.reviews.services.review_enrichment_service import ReviewEnrichme
 from app.domain.reviews.services.review_service import ReviewService
 from app.domain.reviews.value_objects.review_with_username import ReviewWithUsername
 from app.domain.shared.constants import DEFAULT_PAGE_SIZE
+from app.infrastructure.shared.config.config import settings
 
 # Re-export for backwards compatibility
 __all__ = ["ReviewWithUsername", "PaginatedReviewsResult", "GetReviewsUseCase"]
@@ -18,6 +19,7 @@ class PaginatedReviewsResult:
     items: list[ReviewWithUsername]
     has_more: bool
     is_page_owner: bool
+    is_moderator: bool
 
 
 class GetReviewsUseCase:
@@ -49,6 +51,10 @@ class GetReviewsUseCase:
             current_account is not None
             and current_account.username.lower() == reviewed_username.lower()
         )
+        is_moderator = (
+            current_account is not None
+            and current_account.username in settings.MODERATOR_USERNAMES
+        )
 
         target_account = await self.account_service.get_account_by_username(
             reviewed_username
@@ -75,4 +81,5 @@ class GetReviewsUseCase:
             items=results,
             has_more=has_more,
             is_page_owner=is_page_owner,
+            is_moderator=is_moderator,
         )

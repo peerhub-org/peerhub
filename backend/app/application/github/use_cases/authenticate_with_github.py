@@ -2,12 +2,10 @@ import logging
 
 from app.domain.accounts.entities.account import Account
 from app.domain.accounts.services.account_service import AccountService
-from app.domain.shared.exceptions import AccessRestrictedException
 from app.domain.users.entities.user import User
 from app.domain.users.services.user_service import UserService
 from app.infrastructure.email.email_service import EmailService
 from app.infrastructure.github.external.github_client import GitHubClient
-from app.infrastructure.shared.config.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -35,13 +33,7 @@ class AuthenticateWithGitHubUseCase:
             await GitHubClient.fetch_github_user_data(code)
         )
 
-        # Check if username is in whitelist (if configured)
         username = github_data["username"]
-        if (
-            settings.ALLOWED_USERNAMES
-            and username not in settings.ALLOWED_USERNAMES
-        ):
-            raise AccessRestrictedException()
 
         # Get or create account using GitHub username
         account, is_new = (
