@@ -27,7 +27,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
     }
 
     const paginatedReviews = await reviewService.getReviews(username, PAGE_SIZE, 0)
-    return { user, paginatedReviews, currentUsername: account.username, isOwnProfile }
+    return {
+      user,
+      paginatedReviews,
+      currentUsername: account.username,
+      isOwnProfile,
+      isModerator: account.is_moderator,
+    }
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 401) {
@@ -45,11 +51,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function ProfilePage() {
-  const { user, paginatedReviews, currentUsername, isOwnProfile } = useLoaderData<{
+  const { user, paginatedReviews, currentUsername, isOwnProfile, isModerator } = useLoaderData<{
     user: UserType
     paginatedReviews: PaginatedReviews
     currentUsername: string
     isOwnProfile: boolean
+    isModerator: boolean
   }>()
   const posthog = usePostHog()
   const hasTrackedView = useRef(false)
@@ -78,6 +85,7 @@ export default function ProfilePage() {
           : 'No reviews yet. Be the first to leave a review!'
       }
       currentUsername={currentUsername}
+      isModerator={isModerator}
     />
   )
 }

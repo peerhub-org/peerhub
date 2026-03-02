@@ -25,6 +25,7 @@ interface PublicProfileLoaderData {
   paginatedReviews: PaginatedReviews
   currentUsername?: string
   isGuest: boolean
+  isModerator: boolean
 }
 
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -51,6 +52,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
         paginatedReviews,
         currentUsername: account.username,
         isGuest: false,
+        isModerator: account.is_moderator,
       } satisfies PublicProfileLoaderData
     } catch (error: unknown) {
       if (isAxiosError(error)) {
@@ -94,6 +96,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
       paginatedReviews: { items: [], has_more: false },
       currentUsername: undefined,
       isGuest: true,
+      isModerator: false,
     } satisfies PublicProfileLoaderData
   } catch (error) {
     if (error instanceof Response) throw error
@@ -102,7 +105,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function PublicProfilePage() {
-  const { user, paginatedReviews, currentUsername, isGuest } =
+  const { user, paginatedReviews, currentUsername, isGuest, isModerator } =
     useLoaderData<PublicProfileLoaderData>()
 
   useEffect(() => {
@@ -117,6 +120,7 @@ export default function PublicProfilePage() {
         showSubmitButton={!isGuest && currentUsername !== user.username}
         currentUsername={currentUsername}
         isGuest={isGuest}
+        isModerator={isModerator}
       />
     </PublicLayout>
   )
