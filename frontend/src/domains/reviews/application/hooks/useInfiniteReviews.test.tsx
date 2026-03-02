@@ -15,6 +15,7 @@ const makeReview = (id: string, status: Review['status'] = 'approve'): Review =>
   comment: 'comment',
   anonymous: false,
   comment_hidden: false,
+  comment_hidden_by: null,
   created_at: '2025-01-01T00:00:00Z',
   updated_at: '2025-01-01T00:00:00Z',
 })
@@ -100,6 +101,7 @@ describe('useInfiniteReviews', () => {
     vi.mocked(mockRepo.toggleCommentHidden).mockResolvedValue({
       id: 'r1',
       comment_hidden: true,
+      comment_hidden_by: 'user',
     })
 
     const { result } = renderHook(() => useInfiniteReviews('target', initialData, mockRepo), {
@@ -107,7 +109,7 @@ describe('useInfiniteReviews', () => {
     })
 
     await act(async () => {
-      await result.current.handleToggleHidden('r1', true)
+      await result.current.handleToggleHidden('r1', true, 'user')
     })
 
     expect(result.current.reviews[0].comment_hidden).toBe(true)
