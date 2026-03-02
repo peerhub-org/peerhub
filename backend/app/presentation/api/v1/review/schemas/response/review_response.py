@@ -2,8 +2,17 @@ from datetime import datetime
 from uuid import UUID
 
 from app.application.reviews.use_cases.get_reviews import ReviewWithUsername
-from app.domain.reviews.entities.review import Review, ReviewStatus
+from app.domain.reviews.entities.review import Review, ReviewStatus, Role
 from app.presentation.api.v1.shared.schemas.response.base_response import BaseResponse
+
+
+def _resolve_hidden_by_description(review: Review) -> Role | None:
+    """Derive the hidden-by role label from a review entity."""
+    if not review.comment_hidden or review.comment_hidden_by is None:
+        return None
+    if review.comment_hidden_by == review.reviewed_username:
+        return Role.USER
+    return Role.MODERATOR
 
 
 class ReviewResponse(BaseResponse):
@@ -18,21 +27,36 @@ class ReviewResponse(BaseResponse):
     comment: str | None
     anonymous: bool
     comment_hidden: bool
+    comment_hidden_by: Role | None
     created_at: datetime
     updated_at: datetime
 
     @classmethod
     def from_review_with_username(
-        cls, review_with_username: ReviewWithUsername, is_page_owner: bool = False
+        cls,
+        review_with_username: ReviewWithUsername,
+        is_page_owner: bool = False,
+        is_moderator: bool = False,
     ) -> "ReviewResponse":
         """Create ReviewResponse from ReviewWithUsername (hides identity if anonymous)."""
         review = review_with_username.review
         if review.id is None:
             raise ValueError("Review entity must have an id")
 
+        hidden_by_description = _resolve_hidden_by_description(review)
+
+        # Comment text visibility logic
         comment = review.comment
-        if review.comment_hidden and not is_page_owner:
-            comment = None
+        if review.comment_hidden:
+            hidden_by_owner = hidden_by_description == Role.USER
+            if hidden_by_owner and is_page_owner:
+                # Owner can see their own hides (muted in UI)
+                pass
+            elif not hidden_by_owner and is_moderator:
+                # Moderator can see moderator hides (muted in UI)
+                pass
+            else:
+                comment = None
 
         if review.anonymous:
             return cls(
@@ -45,6 +69,7 @@ class ReviewResponse(BaseResponse):
                 comment=comment,
                 anonymous=True,
                 comment_hidden=review.comment_hidden,
+                comment_hidden_by=hidden_by_description,
                 created_at=review.created_at,
                 updated_at=review.updated_at,
             )
@@ -59,6 +84,7 @@ class ReviewResponse(BaseResponse):
             comment=comment,
             anonymous=False,
             comment_hidden=review.comment_hidden,
+            comment_hidden_by=hidden_by_description,
             created_at=review.created_at,
             updated_at=review.updated_at,
         )
@@ -73,6 +99,9 @@ class ReviewResponse(BaseResponse):
         """Create ReviewResponse from Review entity (shows full identity for owner)."""
         if review.id is None:
             raise ValueError("Review entity must have an id")
+
+        hidden_by_description = _resolve_hidden_by_description(review)
+
         return cls(
             id=review.id,
             reviewer_uuid=review.reviewer_uuid,
@@ -83,6 +112,7 @@ class ReviewResponse(BaseResponse):
             comment=review.comment,
             anonymous=review.anonymous,
             comment_hidden=review.comment_hidden,
+            comment_hidden_by=hidden_by_description,
             created_at=review.created_at,
             updated_at=review.updated_at,
         )

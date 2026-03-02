@@ -2,7 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from app.application.accounts.use_cases.get_activity_feed import ActivityFeedItem
-from app.domain.reviews.entities.review import ReviewStatus
+from app.domain.reviews.entities.review import ReviewStatus, Role
 from app.presentation.api.v1.shared.schemas.response.base_response import BaseResponse
 
 
@@ -19,6 +19,7 @@ class ActivityFeedItemResponse(BaseResponse):
     comment: str | None
     anonymous: bool
     comment_hidden: bool
+    comment_hidden_by: Role | None
     created_at: datetime
     updated_at: datetime
 
@@ -30,6 +31,13 @@ class ActivityFeedItemResponse(BaseResponse):
             raise ValueError("Review must have an id")
 
         comment = None if review.comment_hidden else review.comment
+
+        hidden_by_description: Role | None = None
+        if review.comment_hidden and review.comment_hidden_by is not None:
+            if review.comment_hidden_by == review.reviewed_username:
+                hidden_by_description = Role.USER
+            else:
+                hidden_by_description = Role.MODERATOR
 
         if review.anonymous:
             return cls(
@@ -43,6 +51,7 @@ class ActivityFeedItemResponse(BaseResponse):
                 comment=comment,
                 anonymous=True,
                 comment_hidden=review.comment_hidden,
+                comment_hidden_by=hidden_by_description,
                 created_at=review.created_at,
                 updated_at=review.updated_at,
             )
@@ -58,6 +67,7 @@ class ActivityFeedItemResponse(BaseResponse):
             comment=comment,
             anonymous=False,
             comment_hidden=review.comment_hidden,
+            comment_hidden_by=hidden_by_description,
             created_at=review.created_at,
             updated_at=review.updated_at,
         )

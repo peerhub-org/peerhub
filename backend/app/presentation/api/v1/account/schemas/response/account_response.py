@@ -2,6 +2,7 @@ from datetime import datetime
 from uuid import UUID
 
 from app.domain.accounts.entities.account import Account
+from app.infrastructure.shared.config.config import settings
 from app.presentation.api.v1.shared.schemas.response.base_response import BaseResponse
 
 
@@ -12,6 +13,7 @@ class AccountResponse(BaseResponse):
     uuid: UUID
     username: str
     deleted_at: datetime | None = None
+    is_moderator: bool = False
 
     @classmethod
     def from_entity(cls, account: Account) -> "AccountResponse":
@@ -23,4 +25,5 @@ class AccountResponse(BaseResponse):
             uuid=account.uuid,
             username=account.username,
             deleted_at=account.deleted_at,
+            is_moderator=account.username in settings.MODERATOR_USERNAMES,
         )
