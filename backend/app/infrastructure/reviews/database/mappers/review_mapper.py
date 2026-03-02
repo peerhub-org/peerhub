@@ -22,6 +22,7 @@ class ReviewMapper:
             created_at=document.created_at,
             updated_at=document.updated_at,
             comment_hidden=document.comment_hidden,
+            comment_hidden_by=document.comment_hidden_by,
         )
 
     @staticmethod
@@ -36,6 +37,7 @@ class ReviewMapper:
             created_at=entity.created_at,
             updated_at=entity.updated_at,
             comment_hidden=entity.comment_hidden,
+            comment_hidden_by=entity.comment_hidden_by,
         )
         # If entity has an id, set it on the document
         if entity.id:
@@ -55,4 +57,5 @@ class ReviewMapper:
         document.created_at = entity.created_at
         document.updated_at = entity.updated_at
         document.comment_hidden = entity.comment_hidden
+        document.comment_hidden_by = entity.comment_hidden_by
         return document

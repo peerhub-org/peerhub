@@ -10,6 +10,11 @@ class ReviewStatus(str, Enum):
     COMMENT = "comment"
 
 
+class Role(str, Enum):
+    USER = "user"
+    MODERATOR = "moderator"
+
+
 @dataclass
 class Review:
     """Pure domain entity for Review (no infrastructure dependencies)."""
@@ -23,6 +28,7 @@ class Review:
     created_at: datetime
     updated_at: datetime
     comment_hidden: bool = False
+    comment_hidden_by: str | None = None
 
     def update_status(self, new_status: ReviewStatus, new_comment: str | None) -> None:
         """Update the review status and comment (anonymous is immutable)."""
@@ -30,7 +36,8 @@ class Review:
         self.comment = new_comment
         self.updated_at = datetime.now(timezone.utc)
 
-    def set_comment_hidden(self, hidden: bool) -> None:
-        """Set whether the comment is hidden (only page owner can do this)."""
+    def set_comment_hidden(self, hidden: bool, hidden_by: str | None = None) -> None:
+        """Set whether the comment is hidden and who hid it."""
         self.comment_hidden = hidden
+        self.comment_hidden_by = hidden_by
         self.updated_at = datetime.now(timezone.utc)
