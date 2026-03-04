@@ -137,6 +137,10 @@ export default function Home() {
   const [ctaRef, ctaVisible] = useInView(0.2)
 
   useEffect(() => {
+    document.title = 'PeerHub'
+  }, [])
+
+  useEffect(() => {
     if (!document.querySelector('[data-peerhub-fonts]')) {
       const link = document.createElement('link')
       link.setAttribute('data-peerhub-fonts', '')

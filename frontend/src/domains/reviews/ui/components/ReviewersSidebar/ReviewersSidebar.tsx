@@ -233,7 +233,9 @@ export default function ReviewersSidebar({
 
       {/* Watch button */}
       {profileUsername && (
-        <Box sx={{ mt: 2, pt: isPageOwner ? 0 : 2, borderTop: 1, borderColor: 'divider' }}>
+        <Box
+          sx={{ mt: 2, pt: isPageOwner || isGuest ? 0 : 2, borderTop: 1, borderColor: 'divider' }}
+        >
           {!isPageOwner && !isGuest && <WatchButton username={profileUsername} />}
           <OpenSourceFooter
             variant='caption'

@@ -6,6 +6,7 @@ import { PaginatedReviews } from '@domains/reviews/application/interfaces/Review
 import profileService from '@domains/profiles/application/services/profileService'
 import reviewService from '@domains/reviews/application/services/reviewService'
 import accountService from '@domains/account/application/services/accountService'
+import authService from '@domains/authentication/application/services/authenticationService'
 import { isAxiosError } from '@shared/application/api/errors'
 import ProfileContent from '@domains/profiles/ui/components/ProfileContent/ProfileContent'
 import { PAGE_SIZE } from '@shared/application/config/appConstants'
@@ -37,14 +38,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
   } catch (error: unknown) {
     if (isAxiosError(error)) {
       if (error.response?.status === 401) {
+        authService.removeToken()
         return redirect('/')
       }
       if (error.response?.status === 404) {
         throw new Response('User not found', { status: 404 })
       }
-    }
-    if (import.meta.env.DEV) {
-      console.error('[ProfilePage loader]', error)
     }
     throw new Response('Failed to load user', { status: 500 })
   }
