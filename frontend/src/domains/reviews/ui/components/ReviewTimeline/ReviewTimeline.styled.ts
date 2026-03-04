@@ -29,6 +29,7 @@ export const PlaceholderAvatar = styled(Box)(({ theme }) => ({
 
 export const PlaceholderContent = styled(Box)({
   flex: 1,
+  marginTop: 4,
 })
 
 export const PlaceholderHeader = styled(Box)({

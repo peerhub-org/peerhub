@@ -154,15 +154,23 @@ export default function ReviewTimeline({
                 : `Sign in to see ${user.username}'s reviews`}
             </Typography>
             {isGuest && (
-              <GitHubSignInButton
-                variant='contained'
-                size='small'
-                startIcon={<GitHub />}
-                onClick={handleSignIn}
-                sx={{ mt: 1 }}
-              >
-                Sign in with GitHub
-              </GitHubSignInButton>
+              <>
+                <GitHubSignInButton
+                  variant='contained'
+                  size='small'
+                  startIcon={<GitHub />}
+                  onClick={handleSignIn}
+                  sx={{ mt: 1 }}
+                >
+                  Sign in with GitHub
+                </GitHubSignInButton>
+                <Typography
+                  variant='caption'
+                  sx={{ color: 'text.disabled', mt: 7.5, textAlign: 'center', fontStyle: 'italic' }}
+                >
+                  Profile data sourced from the public GitHub API.
+                </Typography>
+              </>
             )}
           </DraftOverlay>
         </DraftPlaceholderContainer>

@@ -1,5 +1,7 @@
-import { useLoaderData } from 'react-router'
+import { redirect, useLoaderData } from 'react-router'
 import accountService from '@domains/account/application/services/accountService'
+import authService from '@domains/authentication/application/services/authenticationService'
+import { isAxiosError } from '@shared/application/api/errors'
 import { Account } from '@domains/account/application/interfaces/Account'
 import { useFeedScreen } from './useFeedScreen'
 import {
@@ -20,8 +22,9 @@ export async function loader(): Promise<LoaderData> {
     const account = await accountService.getAccount()
     return { account }
   } catch (error) {
-    if (import.meta.env.DEV) {
-      console.error('[Feed loader]', error)
+    if (isAxiosError(error) && error.response?.status === 401) {
+      authService.removeToken()
+      throw redirect('/')
     }
     throw new Response('Failed to load feed', { status: 500 })
   }

@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.2] - 2026-03-02
+
+### Added
+
+### Changed
+
+### Fixed
+- Implemented small UI improvements across multiple components
+
 ## [1.6.1] - 2026-03-01
 
 ### Added
