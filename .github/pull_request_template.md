@@ -7,6 +7,7 @@
 - [ ] New feature
 - [ ] Bug fix
 - [ ] Minor change
+- [ ] Security issue
 
 ## Validation
 
