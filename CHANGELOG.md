@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.16] - 2026-04-16
+
+### Added
+
+### Changed
+
+### Fixed
+- Dependabot security update
+
 ## [1.6.15] - 2026-04-15
 
 ### Added
