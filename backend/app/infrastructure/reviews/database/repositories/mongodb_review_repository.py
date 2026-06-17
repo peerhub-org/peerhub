@@ -72,7 +72,7 @@ class MongoDBReviewRepository(BaseRepository[Review, ReviewDocument]):
 
     async def get_review_count_for_username(self, reviewed_username: str) -> int:
         """Get review count for a given username (case-insensitive)."""
-        collection = ReviewDocument.get_motor_collection()
+        collection = ReviewDocument.get_pymongo_collection()
         return await collection.count_documents(
             {"reviewed_username": reviewed_username},
             collation=CASE_INSENSITIVE,

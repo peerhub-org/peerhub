@@ -1,3 +1,3 @@
-from .health import AsyncIOMotorClient, router
+from .health import AsyncMongoClient, router
 
-__all__ = ["router", "AsyncIOMotorClient"]
+__all__ = ["router", "AsyncMongoClient"]
