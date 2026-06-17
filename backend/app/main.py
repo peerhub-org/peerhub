@@ -5,8 +5,8 @@ from pathlib import Path
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
 from posthog import Posthog
+from pymongo import AsyncMongoClient
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
@@ -47,7 +47,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
             logger.exception("PostHog initialization failed")
 
     # Setup MongoDB
-    app.state.client = AsyncIOMotorClient(settings.MONGO_URI)
+    app.state.client = AsyncMongoClient(settings.MONGO_URI)
     await init_database(app.state.client)
     logger.info("Database connection established")
 

@@ -1,5 +1,5 @@
 from beanie import init_beanie
-from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import AsyncMongoClient
 
 from app.infrastructure.accounts.database.models.account_model import AccountDocument
 from app.infrastructure.reviews.database.models.review_model import ReviewDocument
@@ -10,7 +10,7 @@ from app.infrastructure.watchlist.database.models.watch_model import (
 )
 
 
-async def init_database(client: AsyncIOMotorClient) -> None:
+async def init_database(client: AsyncMongoClient) -> None:
     """Initialize the database connection and document models."""
     await init_beanie(
         database=client[settings.MONGO_DB],

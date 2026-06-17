@@ -9,11 +9,11 @@ from app.main import app
 @pytest.mark.asyncio
 async def test_health_endpoint():
     with patch(
-        "app.presentation.api.v1.health.health.AsyncIOMotorClient"
+        "app.presentation.api.v1.health.health.AsyncMongoClient"
     ) as mock_client_cls:
         mock_client = AsyncMock()
         mock_client.admin.command = AsyncMock(return_value={"ok": 1})
-        mock_client.close = lambda: None
+        mock_client.close = AsyncMock(return_value=None)
         mock_client_cls.return_value = mock_client
 
         transport = ASGITransport(app=app)

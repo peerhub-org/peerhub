@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 import pytest_asyncio
-from motor.motor_asyncio import AsyncIOMotorClient
+from pymongo import AsyncMongoClient
 from testcontainers.mongodb import MongoDbContainer
 
 from app.infrastructure.shared.config.config import settings
@@ -19,21 +19,21 @@ def mongodb_container() -> MongoDbContainer:
 
 
 @pytest_asyncio.fixture(scope="function")
-async def mongo_client(mongodb_container: MongoDbContainer) -> AsyncIOMotorClient:
-    client = AsyncIOMotorClient(mongodb_container.get_connection_url())
+async def mongo_client(mongodb_container: MongoDbContainer) -> AsyncMongoClient:
+    client = AsyncMongoClient(mongodb_container.get_connection_url())
     yield client
-    client.close()
+    await client.close()
 
 
 @pytest_asyncio.fixture(scope="function", autouse=True)
-async def init_beanie(mongo_client: AsyncIOMotorClient, monkeypatch: pytest.MonkeyPatch):
+async def init_beanie(mongo_client: AsyncMongoClient, monkeypatch: pytest.MonkeyPatch):
     monkeypatch.setattr(settings, "MONGO_DB", "peerhub_test")
     await init_database(mongo_client)
     yield
 
 
 @pytest_asyncio.fixture(scope="function", autouse=True)
-async def clear_database(mongo_client: AsyncIOMotorClient, init_beanie: None):
+async def clear_database(mongo_client: AsyncMongoClient, init_beanie: None):
     db = mongo_client["peerhub_test"]
     for name in await db.list_collection_names():
         await db.drop_collection(name)
