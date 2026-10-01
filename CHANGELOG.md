@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.54] - 2026-10-01
+
+### Added
+
+### Changed
+
+### Fixed
+- Dependabot security update
+
+## [1.6.53] - 2026-10-01
+
+### Added
+
+### Changed
+
+### Fixed
+- Dependabot security update
+
 ## [1.6.52] - 2026-10-01
 
 ### Added
