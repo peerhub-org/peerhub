@@ -9,45 +9,33 @@ export default defineConfig({
   ],
   build: {
     sourcemap: true,
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks(id) {
-          if (!id.includes('node_modules')) {
-            return
-          }
-
-          if (
-            id.includes('/react/') ||
-            id.includes('/react-dom/') ||
-            id.includes('/react-router/')
-          ) {
-            return 'react'
-          }
-
-          if (
-            id.includes('/@mui/material/') ||
-            id.includes('/@mui/icons-material/') ||
-            id.includes('/@emotion/react/') ||
-            id.includes('/@emotion/styled/')
-          ) {
-            return 'mui'
-          }
-
-          if (id.includes('/@tanstack/')) {
-            return 'tanstack'
-          }
-
-          if (id.includes('/posthog-js/') || id.includes('/@posthog/')) {
-            return 'posthog'
-          }
-
-          if (id.includes('/axios/')) {
-            return 'axios'
-          }
-
-          if (id.includes('/zod/')) {
-            return 'zod'
-          }
+        // Without this, Rolldown places its runtime helpers inside an app chunk
+        // (authenticationService) that the axios vendor chunk imports from,
+        // while that app chunk imports axios back. The circular import makes
+        // axios evaluate before the helpers exist and the app crashes on load
+        // ("e is not a function"). This option emits a dedicated runtime chunk
+        // and keeps module execution order intact across chunks.
+        strictExecutionOrder: true,
+        codeSplitting: {
+          groups: [
+            {
+              name: 'react',
+              test: /node_modules[\\/](react|react-dom|react-router)[\\/]/,
+            },
+            {
+              name: 'mui',
+              test: /node_modules[\\/](@mui[\\/](material|icons-material)|@emotion[\\/](react|styled))[\\/]/,
+            },
+            { name: 'tanstack', test: /node_modules[\\/]@tanstack[\\/]/ },
+            {
+              name: 'posthog',
+              test: /node_modules[\\/](posthog-js|@posthog)[\\/]/,
+            },
+            { name: 'axios', test: /node_modules[\\/]axios[\\/]/ },
+            { name: 'zod', test: /node_modules[\\/]zod[\\/]/ },
+          ],
         },
       },
     },

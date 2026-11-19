@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6.70] - 2026-11-19
+
+### Added
+
+### Changed
+
+### Fixed
+- Update python version requirements
+- Update rollupOptions to rolldownOptions
+
 ## [1.6.69] - 2026-11-15
 
 ### Added
