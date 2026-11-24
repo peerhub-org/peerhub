@@ -1,4 +1,5 @@
 import type { ErrorRequestHandler } from 'express'
+import { DomainException } from '../../../domain/shared/exceptions.ts'
 import type { Logger } from '../../../infrastructure/shared/observability/logging.ts'
 import { HttpError } from '../errors.ts'
 import { sendJson, sendText } from '../responses.ts'
@@ -8,6 +9,9 @@ const CORS_HEADERS = ['Access-Control-Allow-Origin', 'Access-Control-Allow-Crede
 export function errorHandler(logger: Logger): ErrorRequestHandler {
   return (error: unknown, req, res, next) => {
     if (res.headersSent) return next(error)
+
+    if (error instanceof DomainException)
+      return sendJson(res, error.statusCode, { detail: error.message })
 
     if (error instanceof HttpError) {
       for (const [name, value] of Object.entries(error.headers)) res.setHeader(name, value)

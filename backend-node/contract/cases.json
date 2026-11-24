@@ -146,7 +146,7 @@
   {"name": "reviews create", "db": true, "steps": [
     {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "dave", "status": "approve"}}]},
   {"name": "reviews create with comment", "db": true, "steps": [
-    {"method": "POST", "path": "/api/v1/reviews", "as": "carol", "body": {"reviewed_username": "bob", "status": "comment", "comment": "  Nice\r\nwork​‮ ﬁne\u0000 ", "anonymous": false}}]},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "carol", "body": {"reviewed_username": "bob", "status": "comment", "comment": "  Nice\r\nwork\u200b\u202e ﬁne\u0000 ", "anonymous": false}}]},
   {"name": "reviews create anonymous", "db": true, "steps": [
     {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "moddy", "status": "request_change", "comment": "hmm", "anonymous": true}}]},
   {"name": "reviews create for unknown profile", "db": true, "steps": [

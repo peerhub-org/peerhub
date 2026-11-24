@@ -2,6 +2,7 @@ import type { Server } from 'node:http'
 import type { AddressInfo } from 'node:net'
 import request from 'supertest'
 import { describe, expect, test } from 'vitest'
+import { AccountNotFoundException } from '../../../../src/domain/shared/exceptions.ts'
 import { createApp } from '../../../../src/presentation/api/app.ts'
 import { HttpError } from '../../../../src/presentation/api/errors.ts'
 import { sendJson } from '../../../../src/presentation/api/responses.ts'
@@ -40,6 +41,11 @@ const failing = createApp({
           throw new HttpError(401, 'Not authenticated', { 'WWW-Authenticate': 'Bearer' })
         },
       ],
+    },
+    {
+      method: 'GET',
+      path: '/domain-error',
+      handlers: [async () => Promise.reject(new AccountNotFoundException('x'))],
     },
     { method: 'GET', path: '/users/:username', handlers: [(_req, res) => sendJson(res, 200, {})] },
   ],
@@ -159,6 +165,13 @@ describe('errors', () => {
         error: expect.objectContaining({ message: 'secret detail' }),
       }),
     )
+  })
+
+  test('domain errors carry their own status', async () => {
+    const response = await request(failing).get('/domain-error').set('Origin', CONTRACT_ORIGIN)
+    expect(response.status).toBe(404)
+    expect(response.body).toEqual({ detail: 'Account not found: x' })
+    expect(response.headers).toHaveProperty('access-control-allow-origin')
   })
 
   test('HTTP errors carry detail, headers and CORS', async () => {
