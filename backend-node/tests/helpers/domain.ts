@@ -99,3 +99,8 @@ export const makeWatch = (props: Partial<Watch> = {}): Watch => ({
   createdAt: PAST,
   ...props,
 })
+
+/** Feature flags as resolved by PostHog. */
+export const flags = (openDraftProfiles: boolean) => ({
+  getFeatureFlags: vi.fn(async () => ({ openDraftProfiles })),
+})
