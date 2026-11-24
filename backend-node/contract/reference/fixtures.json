@@ -1,0 +1,1233 @@
+{
+ "review_ids": {
+  "bob_on_alice": "650200000000000000000001",
+  "carol_on_alice_anon": "650200000000000000000002",
+  "moddy_on_alice": "650200000000000000000003",
+  "modtwo_on_ALICE": "650200000000000000000004",
+  "ghost_on_alice": "650200000000000000000005",
+  "legacy_on_alice": "650200000000000000000006",
+  "alice_on_dave": "650200000000000000000007",
+  "carol_on_dave": "650200000000000000000008",
+  "bob_on_carol": "650200000000000000000009",
+  "moddy_on_carol": "65020000000000000000000a",
+  "bob_on_popularmixed": "65020000000000000000000b",
+  "bob_on_ghost": "65020000000000000000000c"
+ },
+ "collections": {
+  "accounts": [
+   {
+    "_id": {
+     "$oid": "650100000000000000000001"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000001"
+    },
+    "username": "alice",
+    "access_token": "gho_alice",
+    "email": "alice@example.test",
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-01-02T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000002"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000002"
+    },
+    "username": "bob",
+    "access_token": "gho_bob",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-01-03T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000003"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000003"
+    },
+    "username": "CarolX",
+    "access_token": "gho_carol",
+    "email": "carol@example.test",
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-01-04T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000004"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000004"
+    },
+    "username": "moddy",
+    "access_token": "gho_moddy",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-01-05T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000005"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000005"
+    },
+    "username": "modtwo",
+    "access_token": "gho_modtwo",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-01-06T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000006"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000006"
+    },
+    "username": "ghost",
+    "access_token": "",
+    "email": "ghost@example.test",
+    "deleted_at": {
+     "$date": "2024-02-10T03:04:05.123Z"
+    },
+    "created_at": {
+     "$date": "2024-01-07T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000007"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000007"
+    },
+    "username": "notoken",
+    "access_token": "",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-01-08T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000008"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000008"
+    },
+    "username": "legacy",
+    "access_token": "gho_legacy",
+    "created_at": {
+     "$date": "2024-01-09T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000064"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000100"
+    },
+    "username": "fan00",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-10T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000065"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000101"
+    },
+    "username": "fan01",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-11T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000066"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000102"
+    },
+    "username": "fan02",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-12T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000067"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000103"
+    },
+    "username": "fan03",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-13T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000068"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000104"
+    },
+    "username": "fan04",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-14T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000069"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000105"
+    },
+    "username": "fan05",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-15T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65010000000000000000006a"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000106"
+    },
+    "username": "fan06",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-16T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65010000000000000000006b"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000107"
+    },
+    "username": "fan07",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-17T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65010000000000000000006c"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000108"
+    },
+    "username": "fan08",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-18T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65010000000000000000006d"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000109"
+    },
+    "username": "fan09",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-19T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65010000000000000000006e"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000110"
+    },
+    "username": "fan10",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-20T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65010000000000000000006f"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000111"
+    },
+    "username": "fan11",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-21T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000070"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000112"
+    },
+    "username": "fan12",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-22T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000071"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000113"
+    },
+    "username": "fan13",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-23T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000072"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000114"
+    },
+    "username": "fan14",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-24T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000073"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000115"
+    },
+    "username": "fan15",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-25T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000074"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000116"
+    },
+    "username": "fan16",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-26T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650100000000000000000075"
+    },
+    "uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000117"
+    },
+    "username": "fan17",
+    "access_token": "gho_fan",
+    "email": null,
+    "deleted_at": null,
+    "created_at": {
+     "$date": "2024-04-27T03:04:05.123Z"
+    }
+   }
+  ],
+  "reviews": [
+   {
+    "_id": {
+     "$oid": "650200000000000000000001"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000002"
+    },
+    "reviewed_username": "alice",
+    "status": "approve",
+    "comment": "Great <b>work</b>",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-11T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-11T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000002"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000003"
+    },
+    "reviewed_username": "alice",
+    "status": "request_change",
+    "comment": "secret",
+    "anonymous": true,
+    "created_at": {
+     "$date": "2024-01-12T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-12T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000003"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000004"
+    },
+    "reviewed_username": "alice",
+    "status": "comment",
+    "comment": "hidden by owner",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-13T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-13T03:04:05.456Z"
+    },
+    "comment_hidden": true,
+    "comment_hidden_by": "alice"
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000004"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000005"
+    },
+    "reviewed_username": "ALICE",
+    "status": "comment",
+    "comment": "hidden by mod",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-14T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-14T03:04:05.456Z"
+    },
+    "comment_hidden": true,
+    "comment_hidden_by": "moddy"
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000005"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000006"
+    },
+    "reviewed_username": "alice",
+    "status": "approve",
+    "comment": "from a deleted one",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-15T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-15T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000006"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000008"
+    },
+    "reviewed_username": "alice",
+    "status": "approve",
+    "created_at": {
+     "$date": "2024-01-10T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-10T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000007"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000001"
+    },
+    "reviewed_username": "dave",
+    "status": "approve",
+    "comment": null,
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-16T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-16T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000008"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000003"
+    },
+    "reviewed_username": "Dave",
+    "status": "request_change",
+    "comment": "anon draft",
+    "anonymous": true,
+    "created_at": {
+     "$date": "2024-01-17T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-17T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000009"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000002"
+    },
+    "reviewed_username": "CarolX",
+    "status": "comment",
+    "comment": "owner hid this",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-18T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-18T03:04:05.456Z"
+    },
+    "comment_hidden": true,
+    "comment_hidden_by": "CarolX"
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000000a"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000004"
+    },
+    "reviewed_username": "carolx",
+    "status": "comment",
+    "comment": "owner, other case",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-19T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-19T03:04:05.456Z"
+    },
+    "comment_hidden": true,
+    "comment_hidden_by": "CarolX"
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000000b"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000002"
+    },
+    "reviewed_username": "PopularMixed",
+    "status": "approve",
+    "comment": null,
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-20T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-20T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000000c"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000002"
+    },
+    "reviewed_username": "ghost",
+    "status": "approve",
+    "comment": "on a deleted one",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-09T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-09T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000064"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000100"
+    },
+    "reviewed_username": "popular",
+    "status": "approve",
+    "comment": "comment 0",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-21T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-21T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000065"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000101"
+    },
+    "reviewed_username": "popular",
+    "status": "request_change",
+    "comment": "comment 1",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-22T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-22T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000066"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000102"
+    },
+    "reviewed_username": "popular",
+    "status": "comment",
+    "comment": "comment 2",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-23T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-23T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000067"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000103"
+    },
+    "reviewed_username": "popular",
+    "status": "approve",
+    "comment": "comment 3",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-24T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-24T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000068"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000104"
+    },
+    "reviewed_username": "popular",
+    "status": "request_change",
+    "comment": "comment 4",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-25T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-25T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000069"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000105"
+    },
+    "reviewed_username": "popular",
+    "status": "comment",
+    "comment": "comment 5",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-26T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-26T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000006a"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000106"
+    },
+    "reviewed_username": "popular",
+    "status": "approve",
+    "comment": "comment 6",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-27T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-27T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000006b"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000107"
+    },
+    "reviewed_username": "popular",
+    "status": "request_change",
+    "comment": "comment 7",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-28T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-28T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000006c"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000108"
+    },
+    "reviewed_username": "popular",
+    "status": "comment",
+    "comment": "comment 8",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-29T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-29T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000006d"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000109"
+    },
+    "reviewed_username": "popular",
+    "status": "approve",
+    "comment": "comment 9",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-30T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-30T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000006e"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000110"
+    },
+    "reviewed_username": "popular",
+    "status": "request_change",
+    "comment": "comment 10",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-01-31T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-01-31T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "65020000000000000000006f"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000111"
+    },
+    "reviewed_username": "popular",
+    "status": "comment",
+    "comment": "comment 11",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-01T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-01T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000070"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000112"
+    },
+    "reviewed_username": "popular",
+    "status": "approve",
+    "comment": "comment 12",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-02T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-02T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000071"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000113"
+    },
+    "reviewed_username": "popular",
+    "status": "request_change",
+    "comment": "comment 13",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-03T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-03T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000072"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000114"
+    },
+    "reviewed_username": "popular",
+    "status": "comment",
+    "comment": "comment 14",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-04T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-04T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000073"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000115"
+    },
+    "reviewed_username": "popular",
+    "status": "approve",
+    "comment": "comment 15",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-05T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-05T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000074"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000116"
+    },
+    "reviewed_username": "popular",
+    "status": "request_change",
+    "comment": "comment 16",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-06T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-06T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   },
+   {
+    "_id": {
+     "$oid": "650200000000000000000075"
+    },
+    "reviewer_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000117"
+    },
+    "reviewed_username": "popular",
+    "status": "comment",
+    "comment": "comment 17",
+    "anonymous": false,
+    "created_at": {
+     "$date": "2024-02-07T03:04:05.123Z"
+    },
+    "updated_at": {
+     "$date": "2024-02-07T03:04:05.456Z"
+    },
+    "comment_hidden": false,
+    "comment_hidden_by": null
+   }
+  ],
+  "users": [
+   {
+    "_id": {
+     "$oid": "650300000000000000000001"
+    },
+    "username": "alice",
+    "name": "alice name",
+    "bio": "alice bio",
+    "avatar_url": "https://avatars.test/alice.png",
+    "type": "User",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000002"
+    },
+    "username": "bob",
+    "name": "bob name",
+    "bio": "bob bio",
+    "avatar_url": "https://avatars.test/bob.png",
+    "type": "User",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000003"
+    },
+    "username": "CarolX",
+    "name": "CarolX name",
+    "bio": "CarolX bio",
+    "avatar_url": "https://avatars.test/carolx.png",
+    "type": "User",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000004"
+    },
+    "username": "moddy",
+    "name": "moddy name",
+    "bio": "moddy bio",
+    "avatar_url": "https://avatars.test/moddy.png",
+    "type": "User",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000005"
+    },
+    "username": "ghost",
+    "name": "ghost name",
+    "bio": "ghost bio",
+    "avatar_url": "https://avatars.test/ghost.png",
+    "type": "User",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000006"
+    },
+    "username": "dave",
+    "name": "dave name",
+    "bio": "dave bio",
+    "avatar_url": "https://avatars.test/dave.png",
+    "type": "User",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000007"
+    },
+    "username": "acme",
+    "name": "acme name",
+    "bio": "acme bio",
+    "avatar_url": "https://avatars.test/acme.png",
+    "type": "Organization",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000008"
+    },
+    "username": "botty",
+    "name": "botty name",
+    "bio": "botty bio",
+    "avatar_url": "https://avatars.test/botty.png",
+    "type": "Bot",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650300000000000000000009"
+    },
+    "username": "typeless",
+    "name": "typeless name",
+    "bio": "typeless bio",
+    "avatar_url": "https://avatars.test/typeless.png",
+    "type": null,
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65030000000000000000000a"
+    },
+    "username": "stale",
+    "name": "stale name",
+    "bio": "stale bio",
+    "avatar_url": "https://avatars.test/stale.png",
+    "type": "User",
+    "updated_at": {
+     "$date": "2020-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65030000000000000000000b"
+    },
+    "username": "fan00",
+    "name": null,
+    "bio": null,
+    "avatar_url": null,
+    "type": "User",
+    "updated_at": {
+     "$date": "2099-01-01T00:00:00Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "65030000000000000000000c"
+    },
+    "username": "legacyuser"
+   }
+  ],
+  "watchlist": [
+   {
+    "_id": {
+     "$oid": "650400000000000000000001"
+    },
+    "watcher_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000001"
+    },
+    "watched_username": "bob",
+    "created_at": {
+     "$date": "2024-01-31T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650400000000000000000002"
+    },
+    "watcher_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000001"
+    },
+    "watched_username": "dave",
+    "created_at": {
+     "$date": "2024-02-01T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650400000000000000000003"
+    },
+    "watcher_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000001"
+    },
+    "watched_username": "neverseenprofile",
+    "created_at": {
+     "$date": "2024-02-02T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650400000000000000000004"
+    },
+    "watcher_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000002"
+    },
+    "watched_username": "dave",
+    "created_at": {
+     "$date": "2024-02-03T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650400000000000000000005"
+    },
+    "watcher_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000002"
+    },
+    "watched_username": "popular",
+    "created_at": {
+     "$date": "2024-02-04T03:04:05.123Z"
+    }
+   },
+   {
+    "_id": {
+     "$oid": "650400000000000000000006"
+    },
+    "watcher_uuid": {
+     "$uuid": "a0000000-0000-4000-8000-000000000003"
+    },
+    "watched_username": "ghost",
+    "created_at": {
+     "$date": "2024-02-05T03:04:05.123Z"
+    }
+   }
+  ]
+ }
+}

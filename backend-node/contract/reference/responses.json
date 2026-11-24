@@ -1,0 +1,6045 @@
+[
+ {
+  "name": "health ok",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "status": "healthy",
+     "database": "healthy",
+     "version": "peerhub"
+    }
+   }
+  ]
+ },
+ {
+  "name": "health database down",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "status": "degraded",
+     "database": "unhealthy",
+     "version": "peerhub"
+    }
+   }
+  ]
+ },
+ {
+  "name": "http unknown route",
+  "responses": [
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Not Found"
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Not Found"
+    }
+   }
+  ]
+ },
+ {
+  "name": "http method not allowed",
+  "responses": [
+   {
+    "status": 405,
+    "headers": {
+     "allow": "POST",
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Method Not Allowed"
+    }
+   },
+   {
+    "status": 405,
+    "headers": {
+     "allow": "GET",
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Method Not Allowed"
+    }
+   }
+  ]
+ },
+ {
+  "name": "http trailing slash",
+  "responses": [
+   {
+    "status": 307,
+    "headers": {
+     "location": "http://test/api/v1/account"
+    }
+   },
+   {
+    "status": 307,
+    "headers": {
+     "location": "http://test/api/v1/watchlist"
+    }
+   }
+  ]
+ },
+ {
+  "name": "http path is case sensitive",
+  "responses": [
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Not Found"
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Not Found"
+    }
+   }
+  ]
+ },
+ {
+  "name": "http HEAD",
+  "responses": [
+   {
+    "status": 405,
+    "headers": {
+     "allow": "GET",
+     "content-type": "application/json"
+    },
+    "json": null
+   }
+  ]
+ },
+ {
+  "name": "cors allowed origin",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "access-control-allow-credentials": "true",
+     "access-control-allow-origin": "http://localhost:5173",
+     "content-type": "application/json",
+     "vary": "Origin"
+    },
+    "json": {
+     "url": "https://github.com/login/oauth/authorize?client_id=client-id&redirect_uri=http://localhost:5173/oauth/callback&scope=read:user user:email"
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "access-control-allow-credentials": "true",
+     "access-control-allow-headers": "Accept, Accept-Language, Authorization, Content-Language, Content-Type",
+     "access-control-allow-methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+     "access-control-allow-origin": "http://localhost:5173",
+     "access-control-max-age": "600",
+     "content-type": "text/plain; charset=utf-8",
+     "vary": "Origin"
+    },
+    "text": "OK"
+   },
+   {
+    "status": 401,
+    "headers": {
+     "access-control-allow-credentials": "true",
+     "access-control-allow-origin": "http://localhost:5173",
+     "content-type": "application/json",
+     "vary": "Origin",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ },
+ {
+  "name": "cors on internal error",
+  "responses": [
+   {
+    "status": 500,
+    "headers": {
+     "content-type": "text/plain; charset=utf-8"
+    },
+    "text": "Internal Server Error"
+   }
+  ]
+ },
+ {
+  "name": "cors denied origin",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "access-control-allow-credentials": "true",
+     "content-type": "application/json"
+    },
+    "json": {
+     "url": "https://github.com/login/oauth/authorize?client_id=client-id&redirect_uri=http://localhost:5173/oauth/callback&scope=read:user user:email"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "access-control-allow-credentials": "true",
+     "access-control-allow-headers": "Accept, Accept-Language, Authorization, Content-Language, Content-Type",
+     "access-control-allow-methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+     "access-control-max-age": "600",
+     "content-type": "text/plain; charset=utf-8",
+     "vary": "Origin"
+    },
+    "text": "Disallowed CORS origin"
+   }
+  ]
+ },
+ {
+  "name": "auth failures",
+  "responses": [
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Could not validate credentials"
+    }
+   }
+  ]
+ },
+ {
+  "name": "auth accepted variants",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000001",
+     "uuid": "a0000000-0000-4000-8000-000000000001",
+     "username": "alice",
+     "deleted_at": null,
+     "is_moderator": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000001",
+     "uuid": "a0000000-0000-4000-8000-000000000001",
+     "username": "alice",
+     "deleted_at": null,
+     "is_moderator": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000001",
+     "uuid": "a0000000-0000-4000-8000-000000000001",
+     "username": "alice",
+     "deleted_at": null,
+     "is_moderator": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000001",
+     "uuid": "a0000000-0000-4000-8000-000000000001",
+     "username": "alice",
+     "deleted_at": null,
+     "is_moderator": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "auth precedes validation",
+  "responses": [
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ },
+ {
+  "name": "users auth url",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "url": "https://github.com/login/oauth/authorize?client_id=client-id&redirect_uri=http://localhost:5173/oauth/callback&scope=read:user user:email"
+    }
+   }
+  ]
+ },
+ {
+  "name": "users exchange existing account",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "token": "<jwt>"
+    }
+   }
+  ],
+  "db": {
+   "accounts": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650100000000000000000001"
+      },
+      "uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000001"
+      },
+      "username": "alice",
+      "access_token": "gho_alice_new",
+      "email": "alice-new@example.test",
+      "deleted_at": null,
+      "created_at": {
+       "$date": "2024-01-02T03:04:05.123Z"
+      }
+     }
+    ]
+   },
+   "users": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650300000000000000000001"
+      },
+      "username": "alice",
+      "name": "Alice Renamed",
+      "bio": null,
+      "avatar_url": "https://avatars.test/alice-new.png",
+      "type": "User",
+      "updated_at": {
+       "$date": "2099-01-01T00:00:00Z"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "users exchange new account",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "token": "<jwt>"
+    }
+   }
+  ],
+  "db": {
+   "accounts": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "uuid": {
+       "$uuid": "<uuid>"
+      },
+      "username": "newbie",
+      "access_token": "gho_newbie",
+      "email": null,
+      "deleted_at": null,
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   },
+   "users": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "username": "newbie",
+      "name": null,
+      "bio": "hi",
+      "avatar_url": "https://avatars.test/newbie.png",
+      "type": "User",
+      "updated_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  },
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New account: newbie",
+    "html": "<p><strong>Username:</strong> <a href='https://peerhub.dev/newbie'>newbie</a></p>"
+   }
+  ]
+ },
+ {
+  "name": "users exchange new account with failing email",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "token": "<jwt>"
+    }
+   }
+  ],
+  "db": {
+   "accounts": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "uuid": {
+       "$uuid": "<uuid>"
+      },
+      "username": "newbie",
+      "access_token": "gho_newbie",
+      "email": null,
+      "deleted_at": null,
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   },
+   "users": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "username": "newbie",
+      "name": null,
+      "bio": "hi",
+      "avatar_url": "https://avatars.test/newbie.png",
+      "type": "User",
+      "updated_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "users exchange reactivates deleted account",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "token": "<jwt>"
+    }
+   }
+  ],
+  "db": {
+   "accounts": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650100000000000000000006"
+      },
+      "uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000006"
+      },
+      "username": "ghost",
+      "access_token": "gho_ghost_new",
+      "email": "ghost@example.test",
+      "deleted_at": null,
+      "created_at": {
+       "$date": "2024-01-07T03:04:05.123Z"
+      }
+     }
+    ]
+   },
+   "users": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650300000000000000000005"
+      },
+      "username": "ghost",
+      "name": "Ghost",
+      "bio": null,
+      "avatar_url": "https://avatars.test/ghost.png",
+      "type": "User",
+      "updated_at": {
+       "$date": "2099-01-01T00:00:00Z"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "users exchange failures",
+  "responses": [
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authorization code not provided."
+    }
+   },
+   {
+    "status": 502,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub API error: Failed to get access token from GitHub."
+    }
+   },
+   {
+    "status": 502,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub API error: Failed to get access token from GitHub."
+    }
+   },
+   {
+    "status": 502,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub API error: Failed to fetch user data from GitHub."
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authentication failed"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "users exchange validation",
+  "responses": [
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "string_type",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Input should be a valid string",
+       "input": 5
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "string_type",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Input should be a valid string",
+       "input": null
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "model_attributes_type",
+       "loc": [
+        "body"
+       ],
+       "msg": "Input should be a valid dictionary or object to extract fields from",
+       "input": []
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body"
+       ],
+       "msg": "Field required",
+       "input": null
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "json_invalid",
+       "loc": [
+        "body",
+        1
+       ],
+       "msg": "JSON decode error",
+       "input": {},
+       "ctx": {
+        "error": "Expecting property name enclosed in double quotes"
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "users exchange rate limit",
+  "responses": [
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authorization code not provided."
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authorization code not provided."
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authorization code not provided."
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authorization code not provided."
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authorization code not provided."
+    }
+   },
+   {
+    "status": 429,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "error": "Rate limit exceeded: 5 per 1 minute"
+    }
+   }
+  ]
+ },
+ {
+  "name": "users exchange rate limit ignores invalid bodies",
+  "responses": [
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "code"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Authorization code not provided."
+    }
+   }
+  ]
+ },
+ {
+  "name": "users search",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "users": [
+      {
+       "login": "alice",
+       "avatar_url": "https://avatars.test/alice.png",
+       "type": "User"
+      },
+      {
+       "login": "Alina",
+       "avatar_url": "https://avatars.test/alina.png",
+       "type": null
+      }
+     ]
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "users": []
+    }
+   },
+   {
+    "status": 502,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub API error: Failed to search GitHub users"
+    }
+   },
+   {
+    "status": 502,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub API error: Failed to search GitHub users"
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "query",
+        "q"
+       ],
+       "msg": "Field required",
+       "input": null
+      }
+     ]
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ },
+ {
+  "name": "users search rate limit",
+  "responses": [
+   {
+    "status": 429,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "error": "Rate limit exceeded: 30 per 1 minute"
+    }
+   }
+  ]
+ },
+ {
+  "name": "users get cached",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "alice",
+     "name": "alice name",
+     "bio": "alice bio",
+     "avatar_url": "https://avatars.test/alice.png",
+     "type": "User",
+     "created_at": "2024-01-02T03:04:05.123Z",
+     "deleted_at": null
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "alice",
+     "name": "alice name",
+     "bio": "alice bio",
+     "avatar_url": "https://avatars.test/alice.png",
+     "type": "User",
+     "created_at": "2024-01-02T03:04:05.123Z",
+     "deleted_at": null
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "dave",
+     "name": "dave name",
+     "bio": "dave bio",
+     "avatar_url": "https://avatars.test/dave.png",
+     "type": "User",
+     "created_at": null,
+     "deleted_at": null
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "ghost",
+     "name": "ghost name",
+     "bio": "ghost bio",
+     "avatar_url": "https://avatars.test/ghost.png",
+     "type": "User",
+     "created_at": "2024-01-07T03:04:05.123Z",
+     "deleted_at": "2024-02-10T03:04:05.123Z"
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "acme",
+     "name": "acme name",
+     "bio": "acme bio",
+     "avatar_url": "https://avatars.test/acme.png",
+     "type": "Organization",
+     "created_at": null,
+     "deleted_at": null
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "legacyuser",
+     "name": null,
+     "bio": null,
+     "avatar_url": null,
+     "type": null,
+     "created_at": null,
+     "deleted_at": null
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "users get stale refreshes from github",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "stale",
+     "name": "Stale Updated",
+     "bio": "fresh bio",
+     "avatar_url": "https://avatars.test/stale-new.png",
+     "type": "User",
+     "created_at": null,
+     "deleted_at": null
+    }
+   }
+  ],
+  "db": {
+   "users": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "65030000000000000000000a"
+      },
+      "username": "stale",
+      "name": "Stale Updated",
+      "bio": "fresh bio",
+      "avatar_url": "https://avatars.test/stale-new.png",
+      "type": "User",
+      "updated_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "users get creates uncached",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "BrandNew",
+     "name": "Brand New",
+     "bio": null,
+     "avatar_url": "https://avatars.test/brandnew.png",
+     "type": "User",
+     "created_at": null,
+     "deleted_at": null
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "neworg",
+     "name": null,
+     "bio": null,
+     "avatar_url": null,
+     "type": "Organization",
+     "created_at": null,
+     "deleted_at": null
+    }
+   }
+  ],
+  "db": {
+   "users": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "username": "BrandNew",
+      "name": "Brand New",
+      "bio": null,
+      "avatar_url": "https://avatars.test/brandnew.png",
+      "type": "User",
+      "updated_at": {
+       "$date": "<date>"
+      }
+     },
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "username": "neworg",
+      "name": null,
+      "bio": null,
+      "avatar_url": null,
+      "type": "Organization",
+      "updated_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "users get failures",
+  "responses": [
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "User not found: missing"
+    }
+   },
+   {
+    "status": 502,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub API error: Failed to fetch GitHub user"
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "users refresh own",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "username": "alice",
+     "name": "Alice Refreshed",
+     "bio": "refreshed",
+     "avatar_url": "https://avatars.test/alice-r.png",
+     "type": "User",
+     "created_at": "2024-01-02T03:04:05.123Z",
+     "deleted_at": null
+    }
+   },
+   {
+    "status": 429,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "error": "Rate limit exceeded: 1 per 1 hour"
+    }
+   }
+  ],
+  "db": {
+   "users": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650300000000000000000001"
+      },
+      "username": "alice",
+      "name": "Alice Refreshed",
+      "bio": "refreshed",
+      "avatar_url": "https://avatars.test/alice-r.png",
+      "type": "User",
+      "updated_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "users refresh other or different case",
+  "responses": [
+   {
+    "status": 403,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "You can only refresh your own profile data."
+    }
+   },
+   {
+    "status": 403,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "You can only refresh your own profile data."
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "account get",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000001",
+     "uuid": "a0000000-0000-4000-8000-000000000001",
+     "username": "alice",
+     "deleted_at": null,
+     "is_moderator": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000004",
+     "uuid": "a0000000-0000-4000-8000-000000000004",
+     "username": "moddy",
+     "deleted_at": null,
+     "is_moderator": true
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000006"
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000008",
+     "uuid": "a0000000-0000-4000-8000-000000000008",
+     "username": "legacy",
+     "deleted_at": null,
+     "is_moderator": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "account delete",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650100000000000000000001",
+     "uuid": "a0000000-0000-4000-8000-000000000001",
+     "username": "alice",
+     "deleted_at": "<date>",
+     "is_moderator": false
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000001"
+    }
+   }
+  ],
+  "db": {
+   "accounts": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650100000000000000000001"
+      },
+      "uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000001"
+      },
+      "username": "alice",
+      "access_token": "",
+      "email": "alice@example.test",
+      "deleted_at": {
+       "$date": "<date>"
+      },
+      "created_at": {
+       "$date": "2024-01-02T03:04:05.123Z"
+      }
+     }
+    ]
+   },
+   "reviews": {
+    "removed": [
+     {
+      "$oid": "650200000000000000000007"
+     }
+    ]
+   },
+   "watchlist": {
+    "removed": [
+     {
+      "$oid": "650400000000000000000001"
+     },
+     {
+      "$oid": "650400000000000000000002"
+     },
+     {
+      "$oid": "650400000000000000000003"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "account delete unknown",
+  "responses": [
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "account my reviews",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650200000000000000000008",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000003",
+      "reviewer_username": "CarolX",
+      "reviewer_avatar_url": "https://avatars.test/carolx.png",
+      "reviewed_username": "Dave",
+      "status": "request_change",
+      "comment": "anon draft",
+      "anonymous": true,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "2024-01-17T03:04:05.123Z",
+      "updated_at": "2024-01-17T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000002",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000003",
+      "reviewer_username": "CarolX",
+      "reviewer_avatar_url": "https://avatars.test/carolx.png",
+      "reviewed_username": "alice",
+      "status": "request_change",
+      "comment": "secret",
+      "anonymous": true,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "2024-01-12T03:04:05.123Z",
+      "updated_at": "2024-01-12T03:04:05.456Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "65020000000000000000000a",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+      "reviewer_username": "moddy",
+      "reviewer_avatar_url": "https://avatars.test/moddy.png",
+      "reviewed_username": "carolx",
+      "status": "comment",
+      "comment": "owner, other case",
+      "anonymous": false,
+      "comment_hidden": true,
+      "comment_hidden_by": "moderator",
+      "created_at": "2024-01-19T03:04:05.123Z",
+      "updated_at": "2024-01-19T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000003",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+      "reviewer_username": "moddy",
+      "reviewer_avatar_url": "https://avatars.test/moddy.png",
+      "reviewed_username": "alice",
+      "status": "comment",
+      "comment": "hidden by owner",
+      "anonymous": false,
+      "comment_hidden": true,
+      "comment_hidden_by": "user",
+      "created_at": "2024-01-13T03:04:05.123Z",
+      "updated_at": "2024-01-13T03:04:05.456Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650200000000000000000006",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+      "reviewer_username": "legacy",
+      "reviewer_avatar_url": null,
+      "reviewed_username": "alice",
+      "status": "approve",
+      "comment": null,
+      "anonymous": false,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "2024-01-10T03:04:05.123Z",
+      "updated_at": "2024-01-10T03:04:05.123Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": []
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": []
+   }
+  ]
+ },
+ {
+  "name": "account requires authentication",
+  "responses": [
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "account feed",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000007",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+       "reviewer_username": "alice",
+       "reviewer_avatar_url": "https://avatars.test/alice.png",
+       "reviewed_username": "dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-16T03:04:05.123Z",
+       "updated_at": "2024-01-16T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000007",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+       "reviewer_username": "alice",
+       "reviewer_avatar_url": "https://avatars.test/alice.png",
+       "reviewed_username": "dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-16T03:04:05.123Z",
+       "updated_at": "2024-01-16T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000007",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+       "reviewer_username": "alice",
+       "reviewer_avatar_url": "https://avatars.test/alice.png",
+       "reviewed_username": "dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-16T03:04:05.123Z",
+       "updated_at": "2024-01-16T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   }
+  ]
+ },
+ {
+  "name": "account feed draft profiles closed",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000007",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+       "reviewer_username": "alice",
+       "reviewer_avatar_url": "https://avatars.test/alice.png",
+       "reviewed_username": "dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-16T03:04:05.123Z",
+       "updated_at": "2024-01-16T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "account feed validation",
+  "responses": [
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "literal_error",
+       "loc": [
+        "query",
+        "filter"
+       ],
+       "msg": "Input should be 'all', 'mine' or 'watching'",
+       "input": "bogus",
+       "ctx": {
+        "expected": "'all', 'mine' or 'watching'"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be greater than or equal to 1",
+       "input": "0",
+       "ctx": {
+        "ge": 1
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "less_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be less than or equal to 100",
+       "input": "101",
+       "ctx": {
+        "le": 100
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "int_parsing",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be a valid integer, unable to parse string as an integer",
+       "input": "abc"
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "int_parsing",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be a valid integer, unable to parse string as an integer",
+       "input": "1.5"
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "int_parsing",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be a valid integer, unable to parse string as an integer",
+       "input": ""
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "offset"
+       ],
+       "msg": "Input should be greater than or equal to 0",
+       "input": "-1",
+       "ctx": {
+        "ge": 0
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "literal_error",
+       "loc": [
+        "query",
+        "filter"
+       ],
+       "msg": "Input should be 'all', 'mine' or 'watching'",
+       "input": "x",
+       "ctx": {
+        "expected": "'all', 'mine' or 'watching'"
+       }
+      },
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be greater than or equal to 1",
+       "input": "0",
+       "ctx": {
+        "ge": 1
+       }
+      },
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "offset"
+       ],
+       "msg": "Input should be greater than or equal to 0",
+       "input": "-1",
+       "ctx": {
+        "ge": 0
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000007",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+       "reviewer_username": "alice",
+       "reviewer_avatar_url": "https://avatars.test/alice.png",
+       "reviewed_username": "dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-16T03:04:05.123Z",
+       "updated_at": "2024-01-16T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      }
+     ],
+     "has_more": true
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      }
+     ],
+     "has_more": true
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      }
+     ],
+     "has_more": true
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "review_id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000007",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+       "reviewer_username": "alice",
+       "reviewer_avatar_url": "https://avatars.test/alice.png",
+       "reviewed_username": "dave",
+       "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-16T03:04:05.123Z",
+       "updated_at": "2024-01-16T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "review_id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "int_parsing",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be a valid integer, unable to parse string as an integer",
+       "input": "1e1"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews create",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "dave",
+     "status": "approve",
+     "comment": null,
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "reviewed_username": "dave",
+      "status": "approve",
+      "comment": null,
+      "anonymous": false,
+      "created_at": {
+       "$date": "<date>"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   }
+  },
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: bob \u2192 dave",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/dave'>dave</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>"
+   }
+  ]
+ },
+ {
+  "name": "reviews create with comment",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000003",
+     "reviewer_username": "CarolX",
+     "reviewer_avatar_url": "https://avatars.test/carolx.png",
+     "reviewed_username": "bob",
+     "status": "comment",
+     "comment": "Nice\nwork fine",
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000003"
+      },
+      "reviewed_username": "bob",
+      "status": "comment",
+      "comment": "Nice\nwork fine",
+      "anonymous": false,
+      "created_at": {
+       "$date": "<date>"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000003"
+      },
+      "watched_username": "bob",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  },
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: CarolX \u2192 bob",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/CarolX'>CarolX</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Status:</strong> comment</p><p><strong>Comment:</strong> Nice\nwork fine</p>"
+   }
+  ]
+ },
+ {
+  "name": "reviews create anonymous",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": null,
+     "reviewer_username": null,
+     "reviewer_avatar_url": null,
+     "reviewed_username": "moddy",
+     "status": "request_change",
+     "comment": "hmm",
+     "anonymous": true,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "reviewed_username": "moddy",
+      "status": "request_change",
+      "comment": "hmm",
+      "anonymous": true,
+      "created_at": {
+       "$date": "<date>"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "watched_username": "moddy",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  },
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: bob (as anonymous) \u2192 moddy",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob (as anonymous)</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/moddy'>moddy</a></p><p><strong>Status:</strong> request_change</p><p><strong>Comment:</strong> hmm</p>"
+   }
+  ]
+ },
+ {
+  "name": "reviews create for unknown profile",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "neverseen",
+     "status": "approve",
+     "comment": null,
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "reviewed_username": "neverseen",
+      "status": "approve",
+      "comment": null,
+      "anonymous": false,
+      "created_at": {
+       "$date": "<date>"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "watched_username": "neverseen",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  },
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: bob \u2192 neverseen",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/neverseen'>neverseen</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>"
+   }
+  ]
+ },
+ {
+  "name": "reviews create with failing email",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "neverseen",
+     "status": "approve",
+     "comment": null,
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "reviewed_username": "neverseen",
+      "status": "approve",
+      "comment": null,
+      "anonymous": false,
+      "created_at": {
+       "$date": "<date>"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "watched_username": "neverseen",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews update",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650200000000000000000001",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "alice",
+     "status": "request_change",
+     "comment": "changed",
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "2024-01-11T03:04:05.123Z",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650200000000000000000001"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "reviewed_username": "alice",
+      "status": "request_change",
+      "comment": "changed",
+      "anonymous": false,
+      "created_at": {
+       "$date": "2024-01-11T03:04:05.123Z"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "watched_username": "ALICE",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews update keeps hidden state",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650200000000000000000003",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+     "reviewer_username": "moddy",
+     "reviewer_avatar_url": "https://avatars.test/moddy.png",
+     "reviewed_username": "alice",
+     "status": "comment",
+     "comment": null,
+     "anonymous": false,
+     "comment_hidden": true,
+     "comment_hidden_by": "user",
+     "created_at": "2024-01-13T03:04:05.123Z",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650200000000000000000003"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000004"
+      },
+      "reviewed_username": "alice",
+      "status": "comment",
+      "comment": "edited",
+      "anonymous": false,
+      "created_at": {
+       "$date": "2024-01-13T03:04:05.123Z"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": true,
+      "comment_hidden_by": "alice"
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000004"
+      },
+      "watched_username": "alice",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews update cannot change anonymity",
+  "responses": [
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot change anonymous status after review creation"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot change anonymous status after review creation"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "reviews create business errors",
+  "responses": [
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: alice"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: ALICE"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Action not allowed: acme is not a regular user"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Action not allowed: typeless is not a regular user"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "reviews create by deleted account",
+  "responses": [
+   {
+    "status": 500,
+    "headers": {
+     "content-type": "text/plain; charset=utf-8"
+    },
+    "text": "Internal Server Error"
+   }
+  ],
+  "db": {
+   "reviews": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000006"
+      },
+      "reviewed_username": "bob",
+      "status": "approve",
+      "comment": null,
+      "anonymous": false,
+      "created_at": {
+       "$date": "<date>"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000006"
+      },
+      "watched_username": "bob",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  },
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: ghost \u2192 bob",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/ghost'>ghost</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>"
+   }
+  ]
+ },
+ {
+  "name": "reviews create by unknown account",
+  "responses": [
+   {
+    "status": 500,
+    "headers": {
+     "content-type": "text/plain; charset=utf-8"
+    },
+    "text": "Internal Server Error"
+   }
+  ],
+  "db": {
+   "reviews": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000999"
+      },
+      "reviewed_username": "bob",
+      "status": "approve",
+      "comment": null,
+      "anonymous": false,
+      "created_at": {
+       "$date": "<date>"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   },
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000999"
+      },
+      "watched_username": "bob",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews create validation",
+  "responses": [
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "reviewed_username"
+       ],
+       "msg": "Field required",
+       "input": {}
+      },
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "status"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "enum",
+       "loc": [
+        "body",
+        "status"
+       ],
+       "msg": "Input should be 'approve', 'request_change' or 'comment'",
+       "input": "bogus",
+       "ctx": {
+        "expected": "'approve', 'request_change' or 'comment'"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "value_error",
+       "loc": [
+        "body",
+        "comment"
+       ],
+       "msg": "Value error, Comment is required",
+       "input": "   ",
+       "ctx": {
+        "error": {}
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "enum",
+       "loc": [
+        "body",
+        "status"
+       ],
+       "msg": "Input should be 'approve', 'request_change' or 'comment'",
+       "input": "bogus",
+       "ctx": {
+        "expected": "'approve', 'request_change' or 'comment'"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "string_type",
+       "loc": [
+        "body",
+        "reviewed_username"
+       ],
+       "msg": "Input should be a valid string",
+       "input": 1
+      },
+      {
+       "type": "string_type",
+       "loc": [
+        "body",
+        "comment"
+       ],
+       "msg": "Input should be a valid string",
+       "input": 2
+      },
+      {
+       "type": "bool_parsing",
+       "loc": [
+        "body",
+        "anonymous"
+       ],
+       "msg": "Input should be a valid boolean, unable to interpret input",
+       "input": "maybe"
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "json_invalid",
+       "loc": [
+        "body",
+        0
+       ],
+       "msg": "JSON decode error",
+       "input": {},
+       "ctx": {
+        "error": "Expecting value"
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "model_attributes_type",
+       "loc": [
+        "body"
+       ],
+       "msg": "Input should be a valid dictionary or object to extract fields from",
+       "input": "{}"
+      }
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews comment status without comment key",
+  "responses": [
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Review validation error: Comment is required for 'comment' status"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "reviews comment length in code points",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "dave",
+     "status": "approve",
+     "comment": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "string_too_long",
+       "loc": [
+        "body",
+        "comment"
+       ],
+       "msg": "String should have at most 1024 characters",
+       "input": "\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00",
+       "ctx": {
+        "max_length": 1024
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Review validation error: Comment exceeds maximum length"
+    }
+   }
+  ],
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: bob \u2192 dave",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/dave'>dave</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> \ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00\ud83d\ude00</p>"
+   }
+  ]
+ },
+ {
+  "name": "reviews boolean coercion",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": null,
+     "reviewer_username": null,
+     "reviewer_avatar_url": null,
+     "reviewed_username": "dave",
+     "status": "approve",
+     "comment": null,
+     "anonymous": true,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "<oid>",
+     "reviewer_uuid": null,
+     "reviewer_username": null,
+     "reviewer_avatar_url": null,
+     "reviewed_username": "neverseen",
+     "status": "approve",
+     "comment": null,
+     "anonymous": true,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "<date>",
+     "updated_at": "<date>"
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "bool_type",
+       "loc": [
+        "body",
+        "anonymous"
+       ],
+       "msg": "Input should be a valid boolean",
+       "input": null
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "bool_parsing",
+       "loc": [
+        "body",
+        "anonymous"
+       ],
+       "msg": "Input should be a valid boolean, unable to interpret input",
+       "input": 2
+      }
+     ]
+    }
+   }
+  ],
+  "emails": [
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: bob (as anonymous) \u2192 dave",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob (as anonymous)</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/dave'>dave</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>"
+   },
+   {
+    "from": "PeerHub <sender@example.test>",
+    "to": [
+     "abuse@example.test"
+    ],
+    "subject": "New review: bob (as anonymous) \u2192 neverseen",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob (as anonymous)</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/neverseen'>neverseen</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>"
+   }
+  ]
+ },
+ {
+  "name": "reviews rate limit",
+  "responses": [
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 429,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "error": "Rate limit exceeded: 5 per 1 minute"
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews rate limit ignores 401 and 422",
+  "responses": [
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "reviewed_username"
+       ],
+       "msg": "Field required",
+       "input": {}
+      },
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "status"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "reviewed_username"
+       ],
+       "msg": "Field required",
+       "input": {}
+      },
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "status"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "reviewed_username"
+       ],
+       "msg": "Field required",
+       "input": {}
+      },
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "status"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot review yourself: bob"
+    }
+   },
+   {
+    "status": 429,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "error": "Rate limit exceeded: 5 per 1 minute"
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews list visibility",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "status": "comment",
+       "comment": "hidden by owner",
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "status": "comment",
+       "comment": "hidden by mod",
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "status": "comment",
+       "comment": "hidden by owner",
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "65020000000000000000000a",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "carolx",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-19T03:04:05.123Z",
+       "updated_at": "2024-01-19T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000009",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "CarolX",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-18T03:04:05.123Z",
+       "updated_at": "2024-01-18T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "65020000000000000000000a",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "carolx",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-19T03:04:05.123Z",
+       "updated_at": "2024-01-19T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000009",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "CarolX",
+       "status": "comment",
+       "comment": "owner hid this",
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-18T03:04:05.123Z",
+       "updated_at": "2024-01-18T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000007",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+       "reviewer_username": "alice",
+       "reviewer_avatar_url": "https://avatars.test/alice.png",
+       "reviewed_username": "dave",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-16T03:04:05.123Z",
+       "updated_at": "2024-01-16T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews list pagination and filters",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000075",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000117",
+       "reviewer_username": "fan17",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "comment",
+       "comment": "comment 17",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-07T03:04:05.123Z",
+       "updated_at": "2024-02-07T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000074",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000116",
+       "reviewer_username": "fan16",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "request_change",
+       "comment": "comment 16",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-06T03:04:05.123Z",
+       "updated_at": "2024-02-06T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000073",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000115",
+       "reviewer_username": "fan15",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 15",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-05T03:04:05.123Z",
+       "updated_at": "2024-02-05T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000072",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000114",
+       "reviewer_username": "fan14",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "comment",
+       "comment": "comment 14",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-04T03:04:05.123Z",
+       "updated_at": "2024-02-04T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000071",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000113",
+       "reviewer_username": "fan13",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "request_change",
+       "comment": "comment 13",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-03T03:04:05.123Z",
+       "updated_at": "2024-02-03T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000070",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000112",
+       "reviewer_username": "fan12",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 12",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-02T03:04:05.123Z",
+       "updated_at": "2024-02-02T03:04:05.456Z"
+      },
+      {
+       "id": "65020000000000000000006f",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000111",
+       "reviewer_username": "fan11",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "comment",
+       "comment": "comment 11",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-01T03:04:05.123Z",
+       "updated_at": "2024-02-01T03:04:05.456Z"
+      },
+      {
+       "id": "65020000000000000000006e",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000110",
+       "reviewer_username": "fan10",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "request_change",
+       "comment": "comment 10",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-31T03:04:05.123Z",
+       "updated_at": "2024-01-31T03:04:05.456Z"
+      },
+      {
+       "id": "65020000000000000000006d",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000109",
+       "reviewer_username": "fan09",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 9",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-30T03:04:05.123Z",
+       "updated_at": "2024-01-30T03:04:05.456Z"
+      },
+      {
+       "id": "65020000000000000000006c",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000108",
+       "reviewer_username": "fan08",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "comment",
+       "comment": "comment 8",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-29T03:04:05.123Z",
+       "updated_at": "2024-01-29T03:04:05.456Z"
+      },
+      {
+       "id": "65020000000000000000006b",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000107",
+       "reviewer_username": "fan07",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "request_change",
+       "comment": "comment 7",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-28T03:04:05.123Z",
+       "updated_at": "2024-01-28T03:04:05.456Z"
+      },
+      {
+       "id": "65020000000000000000006a",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000106",
+       "reviewer_username": "fan06",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 6",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-27T03:04:05.123Z",
+       "updated_at": "2024-01-27T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000069",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000105",
+       "reviewer_username": "fan05",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "comment",
+       "comment": "comment 5",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-26T03:04:05.123Z",
+       "updated_at": "2024-01-26T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000068",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000104",
+       "reviewer_username": "fan04",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "request_change",
+       "comment": "comment 4",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-25T03:04:05.123Z",
+       "updated_at": "2024-01-25T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000067",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000103",
+       "reviewer_username": "fan03",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 3",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-24T03:04:05.123Z",
+       "updated_at": "2024-01-24T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000066",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000102",
+       "reviewer_username": "fan02",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "comment",
+       "comment": "comment 2",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-23T03:04:05.123Z",
+       "updated_at": "2024-01-23T03:04:05.456Z"
+      }
+     ],
+     "has_more": true
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000066",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000102",
+       "reviewer_username": "fan02",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "comment",
+       "comment": "comment 2",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-23T03:04:05.123Z",
+       "updated_at": "2024-01-23T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000065",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000101",
+       "reviewer_username": "fan01",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "request_change",
+       "comment": "comment 1",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-22T03:04:05.123Z",
+       "updated_at": "2024-01-22T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000064",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000100",
+       "reviewer_username": "fan00",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 0",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-21T03:04:05.123Z",
+       "updated_at": "2024-01-21T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000073",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000115",
+       "reviewer_username": "fan15",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 15",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-05T03:04:05.123Z",
+       "updated_at": "2024-02-05T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000070",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000112",
+       "reviewer_username": "fan12",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 12",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-02-02T03:04:05.123Z",
+       "updated_at": "2024-02-02T03:04:05.456Z"
+      },
+      {
+       "id": "65020000000000000000006d",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000109",
+       "reviewer_username": "fan09",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "popular",
+       "status": "approve",
+       "comment": "comment 9",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-30T03:04:05.123Z",
+       "updated_at": "2024-01-30T03:04:05.456Z"
+      }
+     ],
+     "has_more": true
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews list validation",
+  "responses": [
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be greater than or equal to 1",
+       "input": "0",
+       "ctx": {
+        "ge": 1
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "less_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be less than or equal to 128",
+       "input": "129",
+       "ctx": {
+        "le": 128
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "offset"
+       ],
+       "msg": "Input should be greater than or equal to 0",
+       "input": "-1",
+       "ctx": {
+        "ge": 0
+       }
+      }
+     ]
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews list draft profiles closed",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000008",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "Dave",
+       "status": "request_change",
+       "comment": "anon draft",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-17T03:04:05.123Z",
+       "updated_at": "2024-01-17T03:04:05.456Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [
+      {
+       "id": "650200000000000000000004",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+       "reviewer_username": "modtwo",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "ALICE",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "moderator",
+       "created_at": "2024-01-14T03:04:05.123Z",
+       "updated_at": "2024-01-14T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000003",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+       "reviewer_username": "moddy",
+       "reviewer_avatar_url": "https://avatars.test/moddy.png",
+       "reviewed_username": "alice",
+       "status": "comment",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": true,
+       "comment_hidden_by": "user",
+       "created_at": "2024-01-13T03:04:05.123Z",
+       "updated_at": "2024-01-13T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000002",
+       "reviewer_uuid": null,
+       "reviewer_username": null,
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "request_change",
+       "comment": "secret",
+       "anonymous": true,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-12T03:04:05.123Z",
+       "updated_at": "2024-01-12T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000001",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+       "reviewer_username": "bob",
+       "reviewer_avatar_url": "https://avatars.test/bob.png",
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": "Great <b>work</b>",
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-11T03:04:05.123Z",
+       "updated_at": "2024-01-11T03:04:05.456Z"
+      },
+      {
+       "id": "650200000000000000000006",
+       "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+       "reviewer_username": "legacy",
+       "reviewer_avatar_url": null,
+       "reviewed_username": "alice",
+       "status": "approve",
+       "comment": null,
+       "anonymous": false,
+       "comment_hidden": false,
+       "comment_hidden_by": null,
+       "created_at": "2024-01-10T03:04:05.123Z",
+       "updated_at": "2024-01-10T03:04:05.123Z"
+      }
+     ],
+     "has_more": false
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "items": [],
+     "has_more": false
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews reviewers",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650200000000000000000004",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+      "reviewer_username": "modtwo",
+      "reviewer_avatar_url": null,
+      "reviewed_username": "ALICE",
+      "status": "comment",
+      "anonymous": false,
+      "updated_at": "2024-01-14T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000003",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+      "reviewer_username": "moddy",
+      "reviewer_avatar_url": "https://avatars.test/moddy.png",
+      "reviewed_username": "alice",
+      "status": "comment",
+      "anonymous": false,
+      "updated_at": "2024-01-13T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000002",
+      "reviewer_uuid": null,
+      "reviewer_username": null,
+      "reviewer_avatar_url": null,
+      "reviewed_username": "alice",
+      "status": "request_change",
+      "anonymous": true,
+      "updated_at": "2024-01-12T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000001",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "reviewer_username": "bob",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewed_username": "alice",
+      "status": "approve",
+      "anonymous": false,
+      "updated_at": "2024-01-11T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000006",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+      "reviewer_username": "legacy",
+      "reviewer_avatar_url": null,
+      "reviewed_username": "alice",
+      "status": "approve",
+      "anonymous": false,
+      "updated_at": "2024-01-10T03:04:05.123Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650200000000000000000004",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+      "reviewer_username": "modtwo",
+      "reviewer_avatar_url": null,
+      "reviewed_username": "ALICE",
+      "status": "comment",
+      "anonymous": false,
+      "updated_at": "2024-01-14T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000003",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+      "reviewer_username": "moddy",
+      "reviewer_avatar_url": "https://avatars.test/moddy.png",
+      "reviewed_username": "alice",
+      "status": "comment",
+      "anonymous": false,
+      "updated_at": "2024-01-13T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000002",
+      "reviewer_uuid": null,
+      "reviewer_username": null,
+      "reviewer_avatar_url": null,
+      "reviewed_username": "alice",
+      "status": "request_change",
+      "anonymous": true,
+      "updated_at": "2024-01-12T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000001",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "reviewer_username": "bob",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewed_username": "alice",
+      "status": "approve",
+      "anonymous": false,
+      "updated_at": "2024-01-11T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000006",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+      "reviewer_username": "legacy",
+      "reviewer_avatar_url": null,
+      "reviewed_username": "alice",
+      "status": "approve",
+      "anonymous": false,
+      "updated_at": "2024-01-10T03:04:05.123Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650200000000000000000008",
+      "reviewer_uuid": null,
+      "reviewer_username": null,
+      "reviewer_avatar_url": null,
+      "reviewed_username": "Dave",
+      "status": "request_change",
+      "anonymous": true,
+      "updated_at": "2024-01-17T03:04:05.456Z"
+     },
+     {
+      "id": "650200000000000000000007",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+      "reviewer_username": "alice",
+      "reviewer_avatar_url": "https://avatars.test/alice.png",
+      "reviewed_username": "dave",
+      "status": "approve",
+      "anonymous": false,
+      "updated_at": "2024-01-16T03:04:05.456Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": []
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": []
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews reviewers draft profiles closed",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": []
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650200000000000000000008",
+      "reviewer_uuid": null,
+      "reviewer_username": null,
+      "reviewer_avatar_url": null,
+      "reviewed_username": "Dave",
+      "status": "request_change",
+      "anonymous": true,
+      "updated_at": "2024-01-17T03:04:05.456Z"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "name": "reviews suggestions",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "username": "CarolX",
+      "avatar_url": "https://avatars.test/carol.png"
+     },
+     {
+      "username": "moddy",
+      "avatar_url": null
+     },
+     {
+      "username": "popular",
+      "avatar_url": "https://avatars.test/popular.png"
+     },
+     {
+      "username": "PopularMixed",
+      "avatar_url": "https://avatars.test/pm.png"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "username": "CarolX",
+      "avatar_url": "https://avatars.test/carol.png"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": []
+   },
+   {
+    "status": 502,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub API error: Failed to fetch GitHub following list"
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "GitHub access token is missing"
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "less_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be less than or equal to 16",
+       "input": "17",
+       "ctx": {
+        "le": 16
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ },
+ {
+  "name": "reviews delete",
+  "responses": [
+   {
+    "status": 204,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": null
+   },
+   {
+    "status": 204,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": null
+   },
+   {
+    "status": 204,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": null
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "removed": [
+     {
+      "$oid": "650200000000000000000001"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews hide by owner",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650200000000000000000001",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "alice",
+     "status": "approve",
+     "comment": "Great <b>work</b>",
+     "anonymous": false,
+     "comment_hidden": true,
+     "comment_hidden_by": "user",
+     "created_at": "2024-01-11T03:04:05.123Z",
+     "updated_at": "<date>"
+    }
+   },
+   {
+    "status": 403,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Unauthorized: You can only unhide comments that you hid"
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650200000000000000000001",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "alice",
+     "status": "approve",
+     "comment": "Great <b>work</b>",
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "2024-01-11T03:04:05.123Z",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650200000000000000000001"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "reviewed_username": "alice",
+      "status": "approve",
+      "comment": "Great <b>work</b>",
+      "anonymous": false,
+      "created_at": {
+       "$date": "2024-01-11T03:04:05.123Z"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews hide by moderator",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650200000000000000000001",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "alice",
+     "status": "approve",
+     "comment": "Great <b>work</b>",
+     "anonymous": false,
+     "comment_hidden": true,
+     "comment_hidden_by": "moderator",
+     "created_at": "2024-01-11T03:04:05.123Z",
+     "updated_at": "<date>"
+    }
+   },
+   {
+    "status": 403,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Unauthorized: You can only unhide comments that you hid"
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650200000000000000000001",
+     "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+     "reviewer_username": "bob",
+     "reviewer_avatar_url": "https://avatars.test/bob.png",
+     "reviewed_username": "alice",
+     "status": "approve",
+     "comment": "Great <b>work</b>",
+     "anonymous": false,
+     "comment_hidden": false,
+     "comment_hidden_by": null,
+     "created_at": "2024-01-11T03:04:05.123Z",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650200000000000000000001"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000002"
+      },
+      "reviewed_username": "alice",
+      "status": "approve",
+      "comment": "Great <b>work</b>",
+      "anonymous": false,
+      "created_at": {
+       "$date": "2024-01-11T03:04:05.123Z"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": false,
+      "comment_hidden_by": null
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews hide case mismatch owner",
+  "responses": [
+   {
+    "status": 403,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Unauthorized: Only the page owner or moderators can hide/unhide comments"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "reviews hide anonymous",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "id": "650200000000000000000002",
+     "reviewer_uuid": null,
+     "reviewer_username": null,
+     "reviewer_avatar_url": null,
+     "reviewed_username": "alice",
+     "status": "request_change",
+     "comment": "secret",
+     "anonymous": true,
+     "comment_hidden": true,
+     "comment_hidden_by": "user",
+     "created_at": "2024-01-12T03:04:05.123Z",
+     "updated_at": "<date>"
+    }
+   }
+  ],
+  "db": {
+   "reviews": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650200000000000000000002"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000003"
+      },
+      "reviewed_username": "alice",
+      "status": "request_change",
+      "comment": "secret",
+      "anonymous": true,
+      "created_at": {
+       "$date": "2024-01-12T03:04:05.123Z"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": true,
+      "comment_hidden_by": "alice"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "reviews hide errors",
+  "responses": [
+   {
+    "status": 403,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Unauthorized: Only the page owner or moderators can hide/unhide comments"
+    }
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Review not found: ffffffffffffffffffffffff"
+    }
+   },
+   {
+    "status": 500,
+    "headers": {
+     "content-type": "text/plain; charset=utf-8"
+    },
+    "text": "Internal Server Error"
+   },
+   {
+    "status": 404,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Account not found: a0000000-0000-4000-8000-000000000999"
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "hidden"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "bool_parsing",
+       "loc": [
+        "body",
+        "hidden"
+       ],
+       "msg": "Input should be a valid boolean, unable to interpret input",
+       "input": "x"
+      }
+     ]
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "reviews hide review by deleted author",
+  "responses": [
+   {
+    "status": 500,
+    "headers": {
+     "content-type": "text/plain; charset=utf-8"
+    },
+    "text": "Internal Server Error"
+   }
+  ],
+  "db": {
+   "reviews": {
+    "changed": [
+     {
+      "_id": {
+       "$oid": "650200000000000000000005"
+      },
+      "reviewer_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000006"
+      },
+      "reviewed_username": "alice",
+      "status": "approve",
+      "comment": "from a deleted one",
+      "anonymous": false,
+      "created_at": {
+       "$date": "2024-01-15T03:04:05.123Z"
+      },
+      "updated_at": {
+       "$date": "<date>"
+      },
+      "comment_hidden": true,
+      "comment_hidden_by": "alice"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "watchlist get",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650400000000000000000003",
+      "watched_username": "neverseenprofile",
+      "watched_avatar_url": null,
+      "watched_name": null,
+      "created_at": "2024-02-02T03:04:05.123Z"
+     },
+     {
+      "id": "650400000000000000000002",
+      "watched_username": "dave",
+      "watched_avatar_url": "https://avatars.test/dave.png",
+      "watched_name": "dave name",
+      "created_at": "2024-02-01T03:04:05.123Z"
+     },
+     {
+      "id": "650400000000000000000001",
+      "watched_username": "bob",
+      "watched_avatar_url": "https://avatars.test/bob.png",
+      "watched_name": "bob name",
+      "created_at": "2024-01-31T03:04:05.123Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650400000000000000000002",
+      "watched_username": "dave",
+      "watched_avatar_url": "https://avatars.test/dave.png",
+      "watched_name": "dave name",
+      "created_at": "2024-02-01T03:04:05.123Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": [
+     {
+      "id": "650400000000000000000006",
+      "watched_username": "ghost",
+      "watched_avatar_url": "https://avatars.test/ghost.png",
+      "watched_name": "ghost name",
+      "created_at": "2024-02-05T03:04:05.123Z"
+     }
+    ]
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": []
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be greater than or equal to 1",
+       "input": "0",
+       "ctx": {
+        "ge": 1
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "less_than_equal",
+       "loc": [
+        "query",
+        "limit"
+       ],
+       "msg": "Input should be less than or equal to 500",
+       "input": "501",
+       "ctx": {
+        "le": 500
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "greater_than_equal",
+       "loc": [
+        "query",
+        "offset"
+       ],
+       "msg": "Input should be greater than or equal to 0",
+       "input": "-1",
+       "ctx": {
+        "ge": 0
+       }
+      }
+     ]
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ },
+ {
+  "name": "watchlist add",
+  "responses": [
+   {
+    "status": 201,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "message": "Watched successfully"
+    }
+   },
+   {
+    "status": 201,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "message": "Watched successfully"
+    }
+   },
+   {
+    "status": 201,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "message": "Watched successfully"
+    }
+   }
+  ],
+  "db": {
+   "watchlist": {
+    "added": [
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000001"
+      },
+      "watched_username": "CarolX",
+      "created_at": {
+       "$date": "<date>"
+      }
+     },
+     {
+      "_id": {
+       "$oid": "<oid>"
+      },
+      "watcher_uuid": {
+       "$uuid": "a0000000-0000-4000-8000-000000000001"
+      },
+      "watched_username": "neverseen",
+      "created_at": {
+       "$date": "<date>"
+      }
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "watchlist add errors",
+  "responses": [
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Cannot watch yourself: Alice"
+    }
+   },
+   {
+    "status": 400,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": "Action not allowed: acme is not a regular user"
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "missing",
+       "loc": [
+        "body",
+        "username"
+       ],
+       "msg": "Field required",
+       "input": {}
+      }
+     ]
+    }
+   },
+   {
+    "status": 422,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "detail": [
+      {
+       "type": "string_type",
+       "loc": [
+        "body",
+        "username"
+       ],
+       "msg": "Input should be a valid string",
+       "input": [
+        "x"
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ],
+  "db": {}
+ },
+ {
+  "name": "watchlist remove",
+  "responses": [
+   {
+    "status": 204,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": null
+   },
+   {
+    "status": 204,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": null
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ],
+  "db": {
+   "watchlist": {
+    "removed": [
+     {
+      "$oid": "650400000000000000000001"
+     }
+    ]
+   }
+  }
+ },
+ {
+  "name": "watchlist check",
+  "responses": [
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "is_watching": true
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "is_watching": true
+    }
+   },
+   {
+    "status": 200,
+    "headers": {
+     "content-type": "application/json"
+    },
+    "json": {
+     "is_watching": false
+    }
+   },
+   {
+    "status": 401,
+    "headers": {
+     "content-type": "application/json",
+     "www-authenticate": "Bearer"
+    },
+    "json": {
+     "detail": "Not authenticated"
+    }
+   }
+  ]
+ }
+]

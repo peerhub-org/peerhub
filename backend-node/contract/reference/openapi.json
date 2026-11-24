@@ -1,0 +1,1474 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "peerhub",
+  "version": "0.1.0"
+ },
+ "paths": {
+  "/api/v1/health": {
+   "get": {
+    "tags": [
+     "health"
+    ],
+    "summary": "Health Check",
+    "description": "Health check endpoint with database connectivity verification.",
+    "operationId": "health_check_api_v1_health_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "type": "object",
+         "title": "Response Health Check Api V1 Health Get"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/account": {
+   "get": {
+    "tags": [
+     "account"
+    ],
+    "summary": "Get Current Account",
+    "description": "Get the current authenticated account.",
+    "operationId": "get_current_account_api_v1_account_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AccountResponse"
+        }
+       }
+      }
+     }
+    },
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ]
+   },
+   "delete": {
+    "tags": [
+     "account"
+    ],
+    "summary": "Delete Account",
+    "description": "Delete the current account.",
+    "operationId": "delete_account_api_v1_account_delete",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AccountResponse"
+        }
+       }
+      }
+     }
+    },
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ]
+   }
+  },
+  "/api/v1/account/reviews": {
+   "get": {
+    "tags": [
+     "account"
+    ],
+    "summary": "Get My Reviews",
+    "description": "Get all reviews made by the current authenticated user.",
+    "operationId": "get_my_reviews_api_v1_account_reviews_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/ReviewResponse"
+         },
+         "type": "array",
+         "title": "Response Get My Reviews Api V1 Account Reviews Get"
+        }
+       }
+      }
+     }
+    },
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ]
+   }
+  },
+  "/api/v1/account/feed": {
+   "get": {
+    "tags": [
+     "account"
+    ],
+    "summary": "Get Activity Feed",
+    "description": "Get activity feed with reviews.",
+    "operationId": "get_activity_feed_api_v1_account_feed_get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "filter",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "enum": [
+        "all",
+        "mine",
+        "watching"
+       ],
+       "type": "string",
+       "default": "all",
+       "title": "Filter"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 100,
+       "minimum": 1,
+       "default": 16,
+       "title": "Limit"
+      }
+     },
+     {
+      "name": "offset",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "minimum": 0,
+       "default": 0,
+       "title": "Offset"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/PaginatedActivityFeedResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/users/auth": {
+   "get": {
+    "tags": [
+     "github"
+    ],
+    "summary": "Github Auth",
+    "description": "Get GitHub OAuth login URL.",
+    "operationId": "github_auth_api_v1_users_auth_get",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OAuthUrlResponse"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/users/exchange-token": {
+   "post": {
+    "tags": [
+     "github"
+    ],
+    "summary": "Exchange Token",
+    "description": "Exchange GitHub OAuth code for access token.",
+    "operationId": "exchange_token_api_v1_users_exchange_token_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ExchangeCodeRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/TokenResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/users/search": {
+   "get": {
+    "tags": [
+     "github"
+    ],
+    "summary": "Search Users",
+    "description": "Search GitHub users by query.",
+    "operationId": "search_users_api_v1_users_search_get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "q",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Q"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UserSearchResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/users/{username}": {
+   "get": {
+    "tags": [
+     "github"
+    ],
+    "summary": "Get User",
+    "description": "Get a GitHub user by username.",
+    "operationId": "get_user_api_v1_users__username__get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Username"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UserResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/users/{username}/refresh": {
+   "post": {
+    "tags": [
+     "github"
+    ],
+    "summary": "Refresh User",
+    "description": "Force-refresh a GitHub user's data from GitHub.",
+    "operationId": "refresh_user_api_v1_users__username__refresh_post",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Username"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UserResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/reviews": {
+   "post": {
+    "tags": [
+     "reviews"
+    ],
+    "summary": "Create Or Update Review",
+    "description": "Create or update a review for a user.",
+    "operationId": "create_or_update_review_api_v1_reviews_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CreateOrUpdateReviewRequest"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ReviewResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    },
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ]
+   }
+  },
+  "/api/v1/reviews/suggestions": {
+   "get": {
+    "tags": [
+     "reviews"
+    ],
+    "summary": "Get Suggestions",
+    "description": "Get review suggestions to visit based on GitHub following list.",
+    "operationId": "get_suggestions_api_v1_reviews_suggestions_get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 16,
+       "minimum": 1,
+       "default": 4,
+       "title": "Limit"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/ReviewSuggestionResponse"
+         },
+         "title": "Response Get Suggestions Api V1 Reviews Suggestions Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/reviews/{username}/reviewers": {
+   "get": {
+    "tags": [
+     "reviews"
+    ],
+    "summary": "Get Reviewers",
+    "description": "Get all reviewers for a user (no pagination, for sidebar display).",
+    "operationId": "get_reviewers_api_v1_reviews__username__reviewers_get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Username"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/ReviewerSummaryResponse"
+         },
+         "title": "Response Get Reviewers Api V1 Reviews  Username  Reviewers Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/reviews/{username}": {
+   "get": {
+    "tags": [
+     "reviews"
+    ],
+    "summary": "Get Reviews",
+    "description": "Get paginated reviews for a user.",
+    "operationId": "get_reviews_api_v1_reviews__username__get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Username"
+      }
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 128,
+       "minimum": 1,
+       "default": 16,
+       "title": "Limit"
+      }
+     },
+     {
+      "name": "offset",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "minimum": 0,
+       "default": 0,
+       "title": "Offset"
+      }
+     },
+     {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/PaginatedReviewResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "reviews"
+    ],
+    "summary": "Delete Review",
+    "description": "Delete your review of a user.",
+    "operationId": "delete_review_api_v1_reviews__username__delete",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Username"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/reviews/{review_id}/visibility": {
+   "patch": {
+    "tags": [
+     "reviews"
+    ],
+    "summary": "Toggle Comment Hidden",
+    "description": "Toggle the hidden state of a review comment.",
+    "operationId": "toggle_comment_hidden_api_v1_reviews__review_id__visibility_patch",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "review_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Review Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ToggleCommentHiddenRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ReviewResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/watchlist": {
+   "post": {
+    "tags": [
+     "watchlist"
+    ],
+    "summary": "Watch",
+    "description": "Watch a user.",
+    "operationId": "watch_api_v1_watchlist_post",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/WatchRequest"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "object",
+         "additionalProperties": {
+          "type": "string"
+         },
+         "title": "Response Watch Api V1 Watchlist Post"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "get": {
+    "tags": [
+     "watchlist"
+    ],
+    "summary": "Get Watchlist",
+    "description": "Get all watched users for current user.",
+    "operationId": "get_watchlist_api_v1_watchlist_get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 500,
+       "minimum": 1,
+       "default": 100,
+       "title": "Limit"
+      }
+     },
+     {
+      "name": "offset",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "minimum": 0,
+       "default": 0,
+       "title": "Offset"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/WatchResponse"
+         },
+         "title": "Response Get Watchlist Api V1 Watchlist Get"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/watchlist/{username}": {
+   "delete": {
+    "tags": [
+     "watchlist"
+    ],
+    "summary": "Unwatch",
+    "description": "Unwatch a user.",
+    "operationId": "unwatch_api_v1_watchlist__username__delete",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Username"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/watchlist/check/{username}": {
+   "get": {
+    "tags": [
+     "watchlist"
+    ],
+    "summary": "Check Watch",
+    "description": "Check if current user is watching a username.",
+    "operationId": "check_watch_api_v1_watchlist_check__username__get",
+    "security": [
+     {
+      "OAuth2CookieBearer": []
+     }
+    ],
+    "parameters": [
+     {
+      "name": "username",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "title": "Username"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/WatchStatusResponse"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "components": {
+  "schemas": {
+   "AccountResponse": {
+    "properties": {
+     "id": {
+      "title": "Id"
+     },
+     "uuid": {
+      "title": "Uuid"
+     },
+     "username": {
+      "title": "Username"
+     },
+     "deleted_at": {
+      "title": "Deleted At"
+     },
+     "is_moderator": {
+      "title": "Is Moderator"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "uuid",
+     "username"
+    ],
+    "title": "AccountResponse",
+    "description": "Response schema for account data."
+   },
+   "ActivityFeedItemResponse": {
+    "properties": {
+     "review_id": {
+      "title": "Review Id"
+     },
+     "reviewer_uuid": {
+      "title": "Reviewer Uuid"
+     },
+     "reviewer_username": {
+      "title": "Reviewer Username"
+     },
+     "reviewer_avatar_url": {
+      "title": "Reviewer Avatar Url"
+     },
+     "reviewed_username": {
+      "title": "Reviewed Username"
+     },
+     "reviewed_user_avatar_url": {
+      "title": "Reviewed User Avatar Url"
+     },
+     "status": {},
+     "comment": {
+      "title": "Comment"
+     },
+     "anonymous": {
+      "title": "Anonymous"
+     },
+     "comment_hidden": {
+      "title": "Comment Hidden"
+     },
+     "comment_hidden_by": {},
+     "created_at": {
+      "title": "Created At"
+     },
+     "updated_at": {
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "review_id",
+     "reviewer_uuid",
+     "reviewer_username",
+     "reviewer_avatar_url",
+     "reviewed_username",
+     "reviewed_user_avatar_url",
+     "status",
+     "comment",
+     "anonymous",
+     "comment_hidden",
+     "comment_hidden_by",
+     "created_at",
+     "updated_at"
+    ],
+    "title": "ActivityFeedItemResponse",
+    "description": "Response schema for an activity feed item."
+   },
+   "CreateOrUpdateReviewRequest": {
+    "properties": {
+     "reviewed_username": {
+      "type": "string",
+      "title": "Reviewed Username"
+     },
+     "status": {
+      "$ref": "#/components/schemas/ReviewStatus"
+     },
+     "comment": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 1024
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Comment"
+     },
+     "anonymous": {
+      "type": "boolean",
+      "title": "Anonymous",
+      "default": false
+     }
+    },
+    "type": "object",
+    "required": [
+     "reviewed_username",
+     "status"
+    ],
+    "title": "CreateOrUpdateReviewRequest",
+    "description": "Request schema for creating or updating a review."
+   },
+   "ExchangeCodeRequest": {
+    "properties": {
+     "code": {
+      "type": "string",
+      "title": "Code"
+     }
+    },
+    "type": "object",
+    "required": [
+     "code"
+    ],
+    "title": "ExchangeCodeRequest"
+   },
+   "HTTPValidationError": {
+    "properties": {
+     "detail": {
+      "items": {
+       "$ref": "#/components/schemas/ValidationError"
+      },
+      "type": "array",
+      "title": "Detail"
+     }
+    },
+    "type": "object",
+    "title": "HTTPValidationError"
+   },
+   "OAuthUrlResponse": {
+    "properties": {
+     "url": {
+      "type": "string",
+      "title": "Url"
+     }
+    },
+    "type": "object",
+    "required": [
+     "url"
+    ],
+    "title": "OAuthUrlResponse"
+   },
+   "PaginatedActivityFeedResponse": {
+    "properties": {
+     "items": {
+      "title": "Items"
+     },
+     "has_more": {
+      "title": "Has More"
+     }
+    },
+    "type": "object",
+    "required": [
+     "items",
+     "has_more"
+    ],
+    "title": "PaginatedActivityFeedResponse",
+    "description": "Paginated response for activity feed."
+   },
+   "PaginatedReviewResponse": {
+    "properties": {
+     "items": {
+      "title": "Items"
+     },
+     "has_more": {
+      "title": "Has More"
+     }
+    },
+    "type": "object",
+    "required": [
+     "items",
+     "has_more"
+    ],
+    "title": "PaginatedReviewResponse",
+    "description": "Response schema for paginated review results."
+   },
+   "ReviewResponse": {
+    "properties": {
+     "id": {
+      "title": "Id"
+     },
+     "reviewer_uuid": {
+      "title": "Reviewer Uuid"
+     },
+     "reviewer_username": {
+      "title": "Reviewer Username"
+     },
+     "reviewer_avatar_url": {
+      "title": "Reviewer Avatar Url"
+     },
+     "reviewed_username": {
+      "title": "Reviewed Username"
+     },
+     "status": {},
+     "comment": {
+      "title": "Comment"
+     },
+     "anonymous": {
+      "title": "Anonymous"
+     },
+     "comment_hidden": {
+      "title": "Comment Hidden"
+     },
+     "comment_hidden_by": {},
+     "created_at": {
+      "title": "Created At"
+     },
+     "updated_at": {
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "reviewer_uuid",
+     "reviewer_username",
+     "reviewer_avatar_url",
+     "reviewed_username",
+     "status",
+     "comment",
+     "anonymous",
+     "comment_hidden",
+     "comment_hidden_by",
+     "created_at",
+     "updated_at"
+    ],
+    "title": "ReviewResponse",
+    "description": "Response schema for review data."
+   },
+   "ReviewStatus": {
+    "type": "string",
+    "enum": [
+     "approve",
+     "request_change",
+     "comment"
+    ],
+    "title": "ReviewStatus"
+   },
+   "ReviewSuggestionResponse": {
+    "properties": {
+     "username": {
+      "type": "string",
+      "title": "Username"
+     },
+     "avatar_url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Avatar Url"
+     }
+    },
+    "type": "object",
+    "required": [
+     "username",
+     "avatar_url"
+    ],
+    "title": "ReviewSuggestionResponse",
+    "description": "Response schema for review suggestion."
+   },
+   "ReviewerSummaryResponse": {
+    "properties": {
+     "id": {
+      "title": "Id"
+     },
+     "reviewer_uuid": {
+      "title": "Reviewer Uuid"
+     },
+     "reviewer_username": {
+      "title": "Reviewer Username"
+     },
+     "reviewer_avatar_url": {
+      "title": "Reviewer Avatar Url"
+     },
+     "reviewed_username": {
+      "title": "Reviewed Username"
+     },
+     "status": {},
+     "anonymous": {
+      "title": "Anonymous"
+     },
+     "updated_at": {
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "reviewer_uuid",
+     "reviewer_username",
+     "reviewer_avatar_url",
+     "reviewed_username",
+     "status",
+     "anonymous",
+     "updated_at"
+    ],
+    "title": "ReviewerSummaryResponse",
+    "description": "Lightweight reviewer info for the sidebar (no comment/content)."
+   },
+   "Role": {
+    "type": "string",
+    "enum": [
+     "user",
+     "moderator"
+    ],
+    "title": "Role"
+   },
+   "ToggleCommentHiddenRequest": {
+    "properties": {
+     "hidden": {
+      "type": "boolean",
+      "title": "Hidden"
+     }
+    },
+    "type": "object",
+    "required": [
+     "hidden"
+    ],
+    "title": "ToggleCommentHiddenRequest",
+    "description": "Request schema for toggling comment hidden state."
+   },
+   "TokenResponse": {
+    "properties": {
+     "token": {
+      "type": "string",
+      "title": "Token"
+     }
+    },
+    "type": "object",
+    "required": [
+     "token"
+    ],
+    "title": "TokenResponse"
+   },
+   "UserResponse": {
+    "properties": {
+     "username": {
+      "title": "Username"
+     },
+     "name": {
+      "title": "Name"
+     },
+     "bio": {
+      "title": "Bio"
+     },
+     "avatar_url": {
+      "title": "Avatar Url"
+     },
+     "type": {
+      "title": "Type"
+     },
+     "created_at": {
+      "title": "Created At"
+     },
+     "deleted_at": {
+      "title": "Deleted At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "username"
+    ],
+    "title": "UserResponse",
+    "description": "Response schema for GitHub user data."
+   },
+   "UserSearchItem": {
+    "properties": {
+     "login": {
+      "title": "Login"
+     },
+     "avatar_url": {
+      "title": "Avatar Url"
+     },
+     "type": {
+      "title": "Type"
+     }
+    },
+    "type": "object",
+    "required": [
+     "login",
+     "avatar_url"
+    ],
+    "title": "UserSearchItem",
+    "description": "Response schema for a single GitHub user search result."
+   },
+   "UserSearchResponse": {
+    "properties": {
+     "users": {
+      "title": "Users"
+     }
+    },
+    "type": "object",
+    "required": [
+     "users"
+    ],
+    "title": "UserSearchResponse",
+    "description": "Response schema for GitHub user search results."
+   },
+   "ValidationError": {
+    "properties": {
+     "loc": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "integer"
+        }
+       ]
+      },
+      "type": "array",
+      "title": "Location"
+     },
+     "msg": {
+      "type": "string",
+      "title": "Message"
+     },
+     "type": {
+      "type": "string",
+      "title": "Error Type"
+     },
+     "input": {
+      "title": "Input"
+     },
+     "ctx": {
+      "type": "object",
+      "title": "Context"
+     }
+    },
+    "type": "object",
+    "required": [
+     "loc",
+     "msg",
+     "type"
+    ],
+    "title": "ValidationError"
+   },
+   "WatchRequest": {
+    "properties": {
+     "username": {
+      "type": "string",
+      "title": "Username"
+     }
+    },
+    "type": "object",
+    "required": [
+     "username"
+    ],
+    "title": "WatchRequest",
+    "description": "Request schema for watching a user."
+   },
+   "WatchResponse": {
+    "properties": {
+     "id": {
+      "title": "Id"
+     },
+     "watched_username": {
+      "title": "Watched Username"
+     },
+     "watched_avatar_url": {
+      "title": "Watched Avatar Url"
+     },
+     "watched_name": {
+      "title": "Watched Name"
+     },
+     "created_at": {
+      "title": "Created At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "watched_username",
+     "watched_avatar_url",
+     "watched_name",
+     "created_at"
+    ],
+    "title": "WatchResponse",
+    "description": "Response schema for a watch."
+   },
+   "WatchStatusResponse": {
+    "properties": {
+     "is_watching": {
+      "title": "Is Watching"
+     }
+    },
+    "type": "object",
+    "required": [
+     "is_watching"
+    ],
+    "title": "WatchStatusResponse",
+    "description": "Response schema for watch status check."
+   }
+  },
+  "securitySchemes": {
+   "OAuth2CookieBearer": {
+    "type": "oauth2",
+    "flows": {
+     "password": {
+      "scopes": {},
+      "tokenUrl": "/api/v1/auth/access-token"
+     }
+    }
+   }
+  }
+ }
+}

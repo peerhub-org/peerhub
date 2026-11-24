@@ -1,0 +1,47 @@
+[
+  {"method": "POST", "path": "/login/oauth/access_token", "form": {"code": "good-existing"}, "status": 200, "body": {"access_token": "gho_alice_new"}},
+  {"method": "POST", "path": "/login/oauth/access_token", "form": {"code": "good-new"}, "status": 200, "body": {"access_token": "gho_newbie"}},
+  {"method": "POST", "path": "/login/oauth/access_token", "form": {"code": "good-ghost"}, "status": 200, "body": {"access_token": "gho_ghost_new"}},
+  {"method": "POST", "path": "/login/oauth/access_token", "form": {"code": "user-fails"}, "status": 200, "body": {"access_token": "gho_user_fails"}},
+  {"method": "POST", "path": "/login/oauth/access_token", "form": {"code": "no-login"}, "status": 200, "body": {"access_token": "gho_no_login"}},
+  {"method": "POST", "path": "/login/oauth/access_token", "form": {"code": "bad-code"}, "status": 200, "body": {"error": "bad_verification_code"}},
+  {"method": "POST", "path": "/login/oauth/access_token", "form": {"code": "oauth-down"}, "status": 503, "body": {}},
+
+  {"method": "GET", "path": "/user", "token": "gho_alice_new", "status": 200, "body": {"login": "alice", "name": "Alice Renamed", "bio": null, "avatar_url": "https://avatars.test/alice-new.png", "type": "User"}},
+  {"method": "GET", "path": "/user", "token": "gho_newbie", "status": 200, "body": {"login": "newbie", "name": null, "bio": "hi", "avatar_url": "https://avatars.test/newbie.png", "type": "User"}},
+  {"method": "GET", "path": "/user", "token": "gho_ghost_new", "status": 200, "body": {"login": "ghost", "name": "Ghost", "bio": null, "avatar_url": "https://avatars.test/ghost.png", "type": "User"}},
+  {"method": "GET", "path": "/user", "token": "gho_no_login", "status": 200, "body": {"name": "No Login"}},
+  {"method": "GET", "path": "/user", "token": "gho_user_fails", "status": 401, "body": {}},
+
+  {"method": "GET", "path": "/user/emails", "token": "gho_alice_new", "status": 200, "body": [{"email": "other@example.test", "primary": false, "verified": true}, {"email": "alice-new@example.test", "primary": true, "verified": true}]},
+  {"method": "GET", "path": "/user/emails", "token": "gho_newbie", "status": 200, "body": [{"email": "newbie@example.test", "primary": true, "verified": false}]},
+  {"method": "GET", "path": "/user/emails", "token": "gho_ghost_new", "status": 403, "body": {}},
+  {"method": "GET", "path": "/user/emails", "token": "gho_no_login", "status": 200, "body": []},
+
+  {"method": "GET", "path": "/users/stale", "status": 200, "body": {"login": "stale", "name": "Stale Updated", "bio": "fresh bio", "avatar_url": "https://avatars.test/stale-new.png", "type": "User"}},
+  {"method": "GET", "path": "/users/brandnew", "status": 200, "body": {"login": "BrandNew", "name": "Brand New", "bio": null, "avatar_url": "https://avatars.test/brandnew.png", "type": "User"}},
+  {"method": "GET", "path": "/users/neworg", "status": 200, "body": {"login": "neworg", "name": null, "bio": null, "avatar_url": null, "type": "Organization"}},
+  {"method": "GET", "path": "/users/alice", "status": 200, "body": {"login": "alice", "name": "Alice Refreshed", "bio": "refreshed", "avatar_url": "https://avatars.test/alice-r.png", "type": "User"}},
+  {"method": "GET", "path": "/users/missing", "status": 404, "body": {"message": "Not Found"}},
+  {"method": "GET", "path": "/users/broken", "status": 500, "body": {}},
+
+  {"method": "GET", "path": "/search/users", "query": {"q": "type:user ali"}, "status": 200, "body": {"items": [{"login": "alice", "avatar_url": "https://avatars.test/alice.png", "type": "User", "id": 1}, {"login": "Alina", "avatar_url": "https://avatars.test/alina.png"}]}},
+  {"method": "GET", "path": "/search/users", "query": {"q": "type:user zzz"}, "status": 200, "body": {"items": []}},
+  {"method": "GET", "path": "/search/users", "query": {"q": "type:user "}, "status": 422, "body": {}},
+  {"method": "GET", "path": "/search/users", "query": {"q": "type:user boom"}, "status": 503, "body": {}},
+
+  {"method": "GET", "path": "/users/alice/following", "query": {"per_page": "100"}, "status": 200, "body": [
+    {"login": "bob", "avatar_url": "https://avatars.test/bob.png", "type": "User"},
+    {"login": "CarolX", "avatar_url": "https://avatars.test/carol.png", "type": "User"},
+    {"login": "popular", "avatar_url": "https://avatars.test/popular.png", "type": "User"},
+    {"login": "PopularMixed", "avatar_url": "https://avatars.test/pm.png", "type": "User"},
+    {"login": "ghost", "avatar_url": "https://avatars.test/ghost.png", "type": "User"},
+    {"login": "acme", "avatar_url": "https://avatars.test/acme.png", "type": "Organization"},
+    {"login": "ALICE", "avatar_url": "https://avatars.test/alice.png", "type": "User"},
+    {"login": "typeless", "avatar_url": "https://avatars.test/typeless.png"},
+    {"login": "moddy", "avatar_url": null, "type": "User"},
+    {"login": null, "type": "User"}
+  ]},
+  {"method": "GET", "path": "/users/bob/following", "query": {"per_page": "100"}, "status": 200, "body": []},
+  {"method": "GET", "path": "/users/moddy/following", "query": {"per_page": "100"}, "status": 500, "body": {}}
+]
