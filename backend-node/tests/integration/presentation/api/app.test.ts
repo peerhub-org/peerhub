@@ -24,9 +24,11 @@ const stubs = operations.map(
 )
 const app = createApp({ settings, logger, routes: stubs })
 
+const captured: unknown[] = []
 const failing = createApp({
   settings,
   logger,
+  captureException: (error, properties) => captured.push([error, properties]),
   routes: [
     {
       method: 'GET',
@@ -152,7 +154,10 @@ describe('cors', () => {
 describe('errors', () => {
   test('unhandled errors are opaque, logged and sent without CORS headers', async () => {
     lines.length = 0
-    const response = await request(failing).get('/async-error').set('Origin', CONTRACT_ORIGIN)
+    captured.length = 0
+    const response = await request(failing)
+      .get('/async-error?token=x')
+      .set('Origin', CONTRACT_ORIGIN)
     expect(response.status).toBe(500)
     expect(response.text).toBe('Internal Server Error')
     expect(response.headers['content-type']).toBe('text/plain; charset=utf-8')
@@ -165,12 +170,17 @@ describe('errors', () => {
         error: expect.objectContaining({ message: 'secret detail' }),
       }),
     )
+    expect(captured).toEqual([
+      [new Error('secret detail'), { path: '/async-error', method: 'GET' }],
+    ])
   })
 
   test('domain errors carry their own status', async () => {
+    captured.length = 0
     const response = await request(failing).get('/domain-error').set('Origin', CONTRACT_ORIGIN)
     expect(response.status).toBe(404)
     expect(response.body).toEqual({ detail: 'Account not found: x' })
+    expect(captured).toEqual([])
     expect(response.headers).toHaveProperty('access-control-allow-origin')
   })
 

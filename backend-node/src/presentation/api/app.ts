@@ -3,7 +3,7 @@ import type { Settings } from '../../infrastructure/shared/config/config.ts'
 import { namedLogger, type Logger } from '../../infrastructure/shared/observability/logging.ts'
 import { accessLog } from './middlewares/access_log.ts'
 import { cors } from './middlewares/cors.ts'
-import { errorHandler } from './middlewares/error_handler.ts'
+import { errorHandler, type CaptureException } from './middlewares/error_handler.ts'
 import { routeGuard } from './middlewares/route_guard.ts'
 import type { Route } from './routes.ts'
 
@@ -11,9 +11,10 @@ export interface AppOptions {
   settings: Pick<Settings, 'BACKEND_CORS_ORIGINS'>
   logger: Logger
   routes: readonly Route[]
+  captureException?: CaptureException
 }
 
-export function createApp({ settings, logger, routes }: AppOptions): Express {
+export function createApp({ settings, logger, routes, captureException }: AppOptions): Express {
   const app = express()
   app.disable('x-powered-by')
   app.set('etag', false)
@@ -27,6 +28,6 @@ export function createApp({ settings, logger, routes }: AppOptions): Express {
     const method = route.method.toLowerCase() as Lowercase<Route['method']>
     app[method](route.path, ...route.handlers)
   }
-  app.use(errorHandler(namedLogger(logger, 'api')))
+  app.use(errorHandler(namedLogger(logger, 'api'), captureException))
   return app
 }

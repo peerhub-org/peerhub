@@ -6,7 +6,10 @@ import { sendJson, sendText } from '../responses.ts'
 
 const CORS_HEADERS = ['Access-Control-Allow-Origin', 'Access-Control-Allow-Credentials', 'Vary']
 
-export function errorHandler(logger: Logger): ErrorRequestHandler {
+/** Called with every error that ends in a 500. */
+export type CaptureException = (error: unknown, properties: Record<string, string>) => void
+
+export function errorHandler(logger: Logger, capture?: CaptureException): ErrorRequestHandler {
   return (error: unknown, req, res, next) => {
     if (res.headersSent) return next(error)
 
@@ -22,6 +25,7 @@ export function errorHandler(logger: Logger): ErrorRequestHandler {
     if (error instanceof URIError) return sendJson(res, 400, { detail: 'Bad Request' })
 
     logger.error({ error }, `Unhandled exception on ${req.method} ${req.path}`)
+    capture?.(error, { path: req.path, method: req.method })
     // Unhandled errors are rendered outside CORS in the Python backend.
     for (const name of CORS_HEADERS) res.removeHeader(name)
     sendText(res, 500, 'Internal Server Error')

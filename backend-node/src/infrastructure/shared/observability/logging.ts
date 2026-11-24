@@ -1,4 +1,4 @@
-import { pino, type DestinationStream, type Logger } from 'pino'
+import { multistream, pino, type DestinationStream, type Logger } from 'pino'
 import { prettyFactory } from 'pino-pretty'
 import type { Settings } from '../config/config.ts'
 
@@ -9,11 +9,13 @@ const LEVEL_NAMES: Record<string, string> = { warn: 'WARNING', fatal: 'CRITICAL'
 
 /**
  * Create the root logger: JSON lines in production, readable lines elsewhere.
+ * The exporter, if any, always receives JSON lines.
  * Always log through namedLogger(), so that every line says where it comes from.
  */
 export function createLogger(
   settings: Pick<Settings, 'ENVIRONMENT'>,
   destination: DestinationStream = pino.destination(1),
+  exporter: DestinationStream | null = null,
 ): Logger {
   const stream = settings.ENVIRONMENT === 'production' ? destination : readable(destination)
   return pino(
@@ -25,7 +27,7 @@ export function createLogger(
       timestamp: () => `,"timestamp":"${new Date().toISOString()}"`,
       formatters: { level: (label) => ({ level: LEVEL_NAMES[label] ?? label.toUpperCase() }) },
     },
-    stream,
+    exporter ? multistream([{ stream }, { stream: exporter }]) : stream,
   )
 }
 
