@@ -1,0 +1,3 @@
+contract/
+dist/
+package-lock.json
