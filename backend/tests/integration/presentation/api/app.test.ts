@@ -93,6 +93,23 @@ describe('routing', () => {
     expect(response.headers.location).toMatch(/\/api\/v1\/account\/feed\?limit=2$/)
   })
 
+  test('drops every trailing slash on redirects', async () => {
+    const response = await request(app).get('/api/v1/account///').redirects(0)
+    expect(response.status).toBe(307)
+    expect(response.headers.location).toMatch(/\/api\/v1\/account$/)
+  })
+
+  test('only slashes are not found', async () => {
+    expect((await request(app).get('///')).status).toBe(404)
+  })
+
+  test('paths full of slashes are answered at once', async () => {
+    const start = performance.now()
+    const response = await request(app).get(`${'/'.repeat(15_000)}x/`)
+    expect(response.status).toBe(404)
+    expect(performance.now() - start).toBeLessThan(100)
+  })
+
   test('OPTIONS without preflight headers is not allowed', async () => {
     const response = await request(app).options('/api/v1/reviews')
     expect(response.status).toBe(405)

@@ -17,7 +17,7 @@ export function routeGuard(routes: readonly Route[]): RequestHandler {
       throw new HttpError(405, 'Method Not Allowed', { Allow: result.allow })
 
     if (path !== '/') {
-      const toggled = path.endsWith('/') ? path.replace(/\/+$/, '') : `${path}/`
+      const toggled = path.endsWith('/') ? withoutTrailingSlashes(path) : `${path}/`
       if (toggled !== '' && match(method, toggled).kind !== 'not-found') {
         const query = req.url.slice(path.length)
         // Not res.redirect(): it adds a body and re-encodes the location.
@@ -30,4 +30,11 @@ export function routeGuard(routes: readonly Route[]): RequestHandler {
     }
     throw new HttpError(404, 'Not Found')
   }
+}
+
+/** Not a regular expression: those take long on paths with many slashes. */
+function withoutTrailingSlashes(path: string): string {
+  let end = path.length
+  while (path[end - 1] === '/') end--
+  return path.slice(0, end)
 }

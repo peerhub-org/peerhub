@@ -12,6 +12,37 @@ afterEach(() => void vi.useRealTimers())
 const as = (name: string) => ({ Authorization: `Bearer ${contractTokens.tokens[name]}` })
 const exchange = () => request(context.app).post('/api/v1/users/exchange-token').send({ code: '' })
 
+describe('authorization header', () => {
+  const account = (authorization: string) =>
+    request(context.app).get('/api/v1/account').set('Authorization', authorization)
+  const token = as('alice').Authorization.replace('Bearer ', '')
+
+  test.each([`Bearer ${token}`, `bearer ${token}`, `BEARER   ${token}`])(
+    'is accepted: %#',
+    async (header) => {
+      expect((await account(header)).status).toBe(200)
+    },
+  )
+
+  test.each(['Bearer', 'Bearer ', `Bearer ${token} x`, `Bearer${' '.repeat(12_000)}x`])(
+    'has no valid token: %#',
+    async (header) => {
+      const response = await account(header)
+      expect(response.status).toBe(401)
+      expect(response.body).toEqual({ detail: 'Could not validate credentials' })
+    },
+  )
+
+  test.each([`Basic ${token}`, token, `Bearer${token}`, `x Bearer ${token}`])(
+    'is not a bearer token: %#',
+    async (header) => {
+      const response = await account(header)
+      expect(response.status).toBe(401)
+      expect(response.body).toEqual({ detail: 'Not authenticated' })
+    },
+  )
+})
+
 describe('rate limits', () => {
   test('start again after the window', async () => {
     vi.useFakeTimers({ toFake: ['Date'] })
