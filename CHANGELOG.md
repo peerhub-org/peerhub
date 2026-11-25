@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0] - 2026-11-25
+
+### Added
+
+### Changed
+- Replace the Python backend with Node.js (Express and TypeScript), keeping API, data and tokens
+
+### Fixed
+
 ## [1.6.70] - 2026-11-19
 
 ### Added

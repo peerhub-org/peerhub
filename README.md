@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/peerhub-org/peerhub/actions/workflows/ci.yml/badge.svg)](https://github.com/peerhub-org/peerhub/actions/workflows/ci.yml)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.6.70-green.svg)](VERSION)
+[![Version](https://img.shields.io/badge/version-2.0.0-green.svg)](VERSION)
 
 PeerHub is an open-source developer reputation network. Think Glassdoor meets GitHub: sign in with GitHub, see how peers rate your work, leave PR-style reviews, and stay anonymous when it matters.
 
@@ -18,7 +18,7 @@ PeerHub is an open-source developer reputation network. Think Glassdoor meets Gi
 
 ## Repository Layout
 
-- `backend/`: FastAPI application (domain/application/infrastructure/presentation layers)
+- `backend/`: Express application (domain/application/infrastructure/presentation layers)
 - `frontend/`: React + Vite web application
 - `.github/workflows/ci.yml`: backend/frontend CI pipeline
 
@@ -27,7 +27,7 @@ PeerHub is an open-source developer reputation network. Think Glassdoor meets Gi
 | Layer    | Technology                                                        |
 | -------- | ----------------------------------------------------------------- |
 | Frontend | React 19, TypeScript, Material UI 7, Vite, Vitest                |
-| Backend  | Python 3.13, FastAPI, Beanie/Motor (MongoDB), Pydantic           |
+| Backend  | Node.js 26, TypeScript, Express 5, MongoDB driver, Zod            |
 | Auth     | GitHub OAuth, JWT tokens                                          |
 | Observability | PostHog, OpenTelemetry                                       |
 | CI       | GitHub Actions (lint, type check, tests, build)                  |
@@ -36,10 +36,8 @@ PeerHub is an open-source developer reputation network. Think Glassdoor meets Gi
 
 ### Prerequisites
 
-- Python 3.13
-- uv
-- Node.js 22
-- npm 10
+- Node.js 26
+- npm 11
 - Docker (required for backend integration tests; optional for running backend container)
 
 ### 1. Clone and configure
@@ -56,7 +54,7 @@ Update env files as needed:
 - Backend (`backend/.env.development`)
   - Required for authenticated flows: `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`, `SSO_CALLBACK_HOSTNAME`
   - Required in production: `SECRET_KEY`, `MONGO_URI`, `MONGO_DB`
-  - Optional: `POSTHOG_*`, `RESEND_API_KEY`, `SENDER_EMAIL`, `ABUSE_CONTROL_EMAIL`
+  - Optional: `POSTHOG_*`, `RESEND_API_KEY`, `SENDER_EMAIL`, `ABUSE_CONTROL_EMAIL`, `PORT`, `CLIENT_IP_HEADER`
 - Frontend (`frontend/.env.development`)
   - `VITE_BACKEND_API_URL` (default in example: `http://localhost:8000/api/v1/`)
   - Optional PostHog vars: `VITE_PUBLIC_POSTHOG_HOST`, `VITE_PUBLIC_POSTHOG_KEY`
@@ -65,8 +63,8 @@ Update env files as needed:
 
 ```bash
 cd backend
-uv sync --dev
-uv run fastapi dev app/main.py
+npm ci
+npm run dev
 ```
 
 Or with Docker:
@@ -108,10 +106,10 @@ Backend:
 
 ```bash
 cd backend
-uv lock --check
-uv run ruff check app tests
-uv run mypy
-uv run pytest
+npm run lint
+npm run typecheck
+npm run test:run
+npm run build
 ```
 
 Frontend:

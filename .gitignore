@@ -23,39 +23,19 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-# Backend artifacts
+# Local leftovers of the former Python backend
 __pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-*.so
 .python-version
 .venv/
-venv/
-ENV/
-env/
-env.bak/
-venv.bak/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
-.pyre/
-.pytype/
-.hypothesis/
-.tox/
-.nox/
-.dmypy.json
-dmypy.json
-.coverage
-.coverage.*
-htmlcov/
-coverage.xml
-*.cover
+
+# Build artifacts
 build/
 dist/
-*.egg-info/
 
-# Frontend artifacts
+# Node.js artifacts
 node_modules/
 dist-ssr/
 coverage/

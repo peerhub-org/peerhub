@@ -1,0 +1,298 @@
+[
+  {"name": "health ok", "steps": [{"method": "GET", "path": "/api/v1/health"}]},
+  {"name": "health database down", "mongo_down": true, "steps": [{"method": "GET", "path": "/api/v1/health"}]},
+
+  {"name": "http unknown route", "steps": [{"method": "GET", "path": "/api/v1/nope"}, {"method": "GET", "path": "/"}]},
+  {"name": "http method not allowed", "steps": [{"method": "PUT", "path": "/api/v1/reviews"}, {"method": "POST", "path": "/api/v1/health"}]},
+  {"name": "http trailing slash", "steps": [{"method": "GET", "path": "/api/v1/account/", "as": "alice"}, {"method": "GET", "path": "/api/v1/watchlist/", "as": "alice"}]},
+  {"name": "http path is case sensitive", "steps": [{"method": "GET", "path": "/API/v1/health"}, {"method": "GET", "path": "/api/v1/Health"}]},
+  {"name": "http HEAD", "steps": [{"method": "HEAD", "path": "/api/v1/health"}]},
+  {"name": "cors allowed origin", "steps": [
+    {"method": "GET", "path": "/api/v1/users/auth", "headers": {"Origin": "http://localhost:5173"}},
+    {"method": "OPTIONS", "path": "/api/v1/reviews", "headers": {"Origin": "http://localhost:5173", "Access-Control-Request-Method": "POST", "Access-Control-Request-Headers": "authorization,content-type"}},
+    {"method": "GET", "path": "/api/v1/account", "headers": {"Origin": "http://localhost:5173"}}]},
+  {"name": "cors on internal error", "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/not-an-id/visibility", "as": "alice", "headers": {"Origin": "http://localhost:5173"}, "body": {"hidden": true}}]},
+  {"name": "cors denied origin", "steps": [
+    {"method": "GET", "path": "/api/v1/users/auth", "headers": {"Origin": "http://evil.test"}},
+    {"method": "OPTIONS", "path": "/api/v1/reviews", "headers": {"Origin": "http://evil.test", "Access-Control-Request-Method": "POST"}}]},
+
+  {"name": "auth failures", "steps": [
+    {"method": "GET", "path": "/api/v1/account"},
+    {"method": "GET", "path": "/api/v1/account", "headers": {"Authorization": "Basic abc"}},
+    {"method": "GET", "path": "/api/v1/account", "headers": {"Authorization": "Bearer"}},
+    {"method": "GET", "path": "/api/v1/account", "headers": {"Authorization": "Bearer not-a-jwt"}},
+    {"method": "GET", "path": "/api/v1/account", "as": "expired"},
+    {"method": "GET", "path": "/api/v1/account", "as": "wrong_key"},
+    {"method": "GET", "path": "/api/v1/account", "as": "alg_none"},
+    {"method": "GET", "path": "/api/v1/account", "as": "alg_hs512"},
+    {"method": "GET", "path": "/api/v1/account", "as": "no_sub"},
+    {"method": "GET", "path": "/api/v1/account", "as": "sub_not_uuid"},
+    {"method": "GET", "path": "/api/v1/account", "as": "future_nbf"}]},
+  {"name": "auth accepted variants", "steps": [
+    {"method": "GET", "path": "/api/v1/account", "as": "no_exp"},
+    {"method": "GET", "path": "/api/v1/account", "as": "sub_uppercase"},
+    {"method": "GET", "path": "/api/v1/account", "as": "sub_no_dashes"},
+    {"method": "GET", "path": "/api/v1/account", "as": "alice", "scheme": "bearer"}]},
+  {"name": "auth precedes validation", "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "body": {}},
+    {"method": "POST", "path": "/api/v1/watchlist", "body": {}},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=0"}]},
+
+  {"name": "users auth url", "steps": [{"method": "GET", "path": "/api/v1/users/auth"}]},
+  {"name": "users exchange existing account", "db": true, "steps": [{"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "good-existing"}}]},
+  {"name": "users exchange new account", "db": true, "steps": [{"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "good-new"}}]},
+  {"name": "users exchange new account with failing email", "db": true, "email_fails": true, "steps": [{"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "good-new"}}]},
+  {"name": "users exchange reactivates deleted account", "db": true, "steps": [{"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "good-ghost"}}]},
+  {"name": "users exchange failures", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": ""}},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "bad-code"}},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "oauth-down"}},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "user-fails"}},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": "no-login"}}]},
+  {"name": "users exchange validation", "steps": [
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {}},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": 5}},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": null}},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": []},
+    {"method": "POST", "path": "/api/v1/users/exchange-token"},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "raw": "{bad json", "headers": {"Content-Type": "application/json"}}]},
+  {"name": "users exchange rate limit", "steps": [
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": ""}, "repeat": 6}]},
+  {"name": "users exchange rate limit ignores invalid bodies", "steps": [
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {}, "repeat": 6},
+    {"method": "POST", "path": "/api/v1/users/exchange-token", "body": {"code": ""}}]},
+  {"name": "users search", "steps": [
+    {"method": "GET", "path": "/api/v1/users/search?q=ali", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/users/search?q=zzz", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/users/search?q=boom", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/users/search?q=", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/users/search", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/users/search?q=ali", "as": "unknown"},
+    {"method": "GET", "path": "/api/v1/users/search?q=ali"}]},
+  {"name": "users search rate limit", "steps": [{"method": "GET", "path": "/api/v1/users/search?q=zzz", "as": "alice", "repeat": 31, "last_only": true}]},
+  {"name": "users get cached", "db": true, "steps": [
+    {"method": "GET", "path": "/api/v1/users/alice", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/ALICE", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/dave", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/ghost", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/acme", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/legacyuser", "as": "bob"}]},
+  {"name": "users get stale refreshes from github", "db": true, "steps": [{"method": "GET", "path": "/api/v1/users/stale", "as": "bob"}]},
+  {"name": "users get creates uncached", "db": true, "steps": [
+    {"method": "GET", "path": "/api/v1/users/brandnew", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/neworg", "as": "bob"}]},
+  {"name": "users get failures", "db": true, "steps": [
+    {"method": "GET", "path": "/api/v1/users/missing", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/broken", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/users/missing", "as": "unknown"},
+    {"method": "GET", "path": "/api/v1/users/alice"}]},
+  {"name": "users refresh own", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/users/alice/refresh", "as": "alice"},
+    {"method": "POST", "path": "/api/v1/users/alice/refresh", "as": "alice"}]},
+  {"name": "users refresh other or different case", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/users/bob/refresh", "as": "alice"},
+    {"method": "POST", "path": "/api/v1/users/ALICE/refresh", "as": "alice"},
+    {"method": "POST", "path": "/api/v1/users/alice/refresh", "as": "unknown"},
+    {"method": "POST", "path": "/api/v1/users/alice/refresh"}]},
+
+  {"name": "account get", "steps": [
+    {"method": "GET", "path": "/api/v1/account", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account", "as": "moddy"},
+    {"method": "GET", "path": "/api/v1/account", "as": "ghost"},
+    {"method": "GET", "path": "/api/v1/account", "as": "unknown"},
+    {"method": "GET", "path": "/api/v1/account", "as": "legacy"}]},
+  {"name": "account delete", "db": true, "steps": [
+    {"method": "DELETE", "path": "/api/v1/account", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account", "as": "alice"}]},
+  {"name": "account delete unknown", "db": true, "steps": [{"method": "DELETE", "path": "/api/v1/account", "as": "unknown"}]},
+  {"name": "account my reviews", "steps": [
+    {"method": "GET", "path": "/api/v1/account/reviews", "as": "carol"},
+    {"method": "GET", "path": "/api/v1/account/reviews", "as": "moddy"},
+    {"method": "GET", "path": "/api/v1/account/reviews", "as": "legacy"},
+    {"method": "GET", "path": "/api/v1/account/reviews", "as": "ghost"},
+    {"method": "GET", "path": "/api/v1/account/reviews", "as": "unknown"}]},
+  {"name": "account requires authentication", "db": true, "steps": [
+    {"method": "DELETE", "path": "/api/v1/account"},
+    {"method": "GET", "path": "/api/v1/account/reviews"}]},
+  {"name": "account feed", "steps": [
+    {"method": "GET", "path": "/api/v1/account/feed", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?filter=mine", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?filter=watching", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=2", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=2&offset=2", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?offset=500", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?filter=watching", "as": "carol"},
+    {"method": "GET", "path": "/api/v1/account/feed", "as": "unknown"}]},
+  {"name": "account feed draft profiles closed", "flags": {"open_draft_profiles": false}, "steps": [
+    {"method": "GET", "path": "/api/v1/account/feed", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?filter=watching&limit=2", "as": "bob"}]},
+  {"name": "account feed validation", "steps": [
+    {"method": "GET", "path": "/api/v1/account/feed?filter=bogus", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=0", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=101", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=abc", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=1.5", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?offset=-1", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=0&offset=-1&filter=x", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=1&limit=2", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=1.0", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=%201%20", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=%2B1", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=1_0", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/account/feed?limit=1e1", "as": "alice"}]},
+
+  {"name": "reviews create", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "dave", "status": "approve"}}]},
+  {"name": "reviews create with comment", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "carol", "body": {"reviewed_username": "bob", "status": "comment", "comment": "  Nice\r\nwork\u200b\u202e ﬁne\u0000 ", "anonymous": false}}]},
+  {"name": "reviews create anonymous", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "moddy", "status": "request_change", "comment": "hmm", "anonymous": true}}]},
+  {"name": "reviews create for unknown profile", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "neverseen", "status": "approve", "comment": null}}]},
+  {"name": "reviews create with failing email", "db": true, "email_fails": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "neverseen", "status": "approve"}}]},
+  {"name": "reviews update", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "ALICE", "status": "request_change", "comment": "changed"}}]},
+  {"name": "reviews update keeps hidden state", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "moddy", "body": {"reviewed_username": "alice", "status": "comment", "comment": "edited"}}]},
+  {"name": "reviews update cannot change anonymity", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "alice", "status": "approve", "anonymous": true}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "carol", "body": {"reviewed_username": "alice", "status": "approve"}}]},
+  {"name": "reviews create business errors", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": "alice", "status": "approve"}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": "ALICE", "status": "approve"}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": "acme", "status": "approve"}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": "typeless", "status": "approve"}}]},
+  {"name": "reviews create by deleted account", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "ghost", "body": {"reviewed_username": "bob", "status": "approve"}}]},
+  {"name": "reviews create by unknown account", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "unknown", "body": {"reviewed_username": "bob", "status": "approve"}}]},
+  {"name": "reviews create validation", "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": "bob", "status": "bogus"}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": "bob", "status": "comment", "comment": "   "}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": "bob", "status": "bogus", "comment": "   "}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "body": {"reviewed_username": 1, "status": "approve", "comment": 2, "anonymous": "maybe"}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "raw": "nope", "headers": {"Content-Type": "application/json"}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "alice", "raw": "{}", "headers": {"Content-Type": "text/plain"}}]},
+  {"name": "reviews comment status without comment key", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "dave", "status": "comment"}}]},
+  {"name": "reviews comment length in code points", "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "dave", "status": "approve"}, "comment_repeat": ["😀", 1024]},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "dave", "status": "approve"}, "comment_repeat": ["😀", 1025]},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "dave", "status": "approve"}, "comment_repeat": ["ﬁ", 600]}]},
+  {"name": "reviews boolean coercion", "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "dave", "status": "approve", "anonymous": "true"}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "neverseen", "status": "approve", "anonymous": 1}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "neverseen2", "status": "approve", "anonymous": null}},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "neverseen3", "status": "approve", "anonymous": 2}}]},
+  {"name": "reviews rate limit", "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "bob", "status": "approve"}, "repeat": 6}]},
+  {"name": "reviews rate limit ignores 401 and 422", "steps": [
+    {"method": "POST", "path": "/api/v1/reviews", "body": {"reviewed_username": "bob", "status": "approve"}, "repeat": 3},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {}, "repeat": 3},
+    {"method": "POST", "path": "/api/v1/reviews", "as": "bob", "body": {"reviewed_username": "bob", "status": "approve"}, "repeat": 6}]},
+  {"name": "reviews list visibility", "steps": [
+    {"method": "GET", "path": "/api/v1/reviews/alice", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/alice", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/reviews/alice", "as": "moddy"},
+    {"method": "GET", "path": "/api/v1/reviews/ALICE", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/reviews/CarolX", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/carolx", "as": "carol"},
+    {"method": "GET", "path": "/api/v1/reviews/dave", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/nobody", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/alice", "as": "unknown"},
+    {"method": "GET", "path": "/api/v1/reviews/alice"}]},
+  {"name": "reviews list pagination and filters", "steps": [
+    {"method": "GET", "path": "/api/v1/reviews/popular", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/popular?limit=5&offset=15", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/popular?limit=3&status=approve", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/popular?status=bogus", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/popular?status=", "as": "bob"}]},
+  {"name": "reviews list validation", "steps": [
+    {"method": "GET", "path": "/api/v1/reviews/alice?limit=0", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/alice?limit=129", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/alice?offset=-1", "as": "bob"}]},
+  {"name": "reviews list draft profiles closed", "flags": {"open_draft_profiles": false}, "steps": [
+    {"method": "GET", "path": "/api/v1/reviews/dave", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/dave", "as": "carol"},
+    {"method": "GET", "path": "/api/v1/reviews/alice", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/popular?limit=1", "as": "bob"}]},
+  {"name": "reviews reviewers", "steps": [
+    {"method": "GET", "path": "/api/v1/reviews/alice/reviewers", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/ALICE/reviewers", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/dave/reviewers", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/legacy/reviewers", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/nobody/reviewers", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/alice/reviewers"}]},
+  {"name": "reviews reviewers draft profiles closed", "flags": {"open_draft_profiles": false}, "steps": [
+    {"method": "GET", "path": "/api/v1/reviews/dave/reviewers", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/dave/reviewers", "as": "carol"}]},
+  {"name": "reviews suggestions", "steps": [
+    {"method": "GET", "path": "/api/v1/reviews/suggestions", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/reviews/suggestions?limit=1", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/reviews/suggestions", "as": "bob"},
+    {"method": "GET", "path": "/api/v1/reviews/suggestions", "as": "moddy"},
+    {"method": "GET", "path": "/api/v1/reviews/suggestions", "as": "notoken"},
+    {"method": "GET", "path": "/api/v1/reviews/suggestions", "as": "unknown"},
+    {"method": "GET", "path": "/api/v1/reviews/suggestions?limit=17", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/reviews/suggestions"}]},
+  {"name": "reviews delete", "db": true, "steps": [
+    {"method": "DELETE", "path": "/api/v1/reviews/ALICE", "as": "bob"},
+    {"method": "DELETE", "path": "/api/v1/reviews/alice", "as": "bob"},
+    {"method": "DELETE", "path": "/api/v1/reviews/nobody", "as": "unknown"},
+    {"method": "DELETE", "path": "/api/v1/reviews/alice"}]},
+  {"name": "reviews hide by owner", "db": true, "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "alice", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "moddy", "body": {"hidden": false}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "alice", "body": {"hidden": false}}]},
+  {"name": "reviews hide by moderator", "db": true, "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "moddy", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "alice", "body": {"hidden": false}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "modtwo", "body": {"hidden": false}}]},
+  {"name": "reviews hide case mismatch owner", "db": true, "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/{modtwo_on_ALICE}/visibility", "as": "alice", "body": {"hidden": true}}]},
+  {"name": "reviews hide anonymous", "db": true, "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/{carol_on_alice_anon}/visibility", "as": "alice", "body": {"hidden": true}}]},
+  {"name": "reviews hide errors", "db": true, "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "bob", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/ffffffffffffffffffffffff/visibility", "as": "alice", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/not-an-id/visibility", "as": "alice", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "unknown", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "alice", "body": {}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "alice", "body": {"hidden": "x"}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "body": {"hidden": true}}]},
+  {"name": "reviews hide review by deleted author", "db": true, "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/{ghost_on_alice}/visibility", "as": "alice", "body": {"hidden": true}}]},
+
+  {"name": "watchlist get", "steps": [
+    {"method": "GET", "path": "/api/v1/watchlist", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist?limit=1&offset=1", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist", "as": "carol"},
+    {"method": "GET", "path": "/api/v1/watchlist", "as": "unknown"},
+    {"method": "GET", "path": "/api/v1/watchlist?limit=0", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist?limit=501", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist?offset=-1", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist"}]},
+  {"name": "watchlist add", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/watchlist", "as": "alice", "body": {"username": "CarolX"}},
+    {"method": "POST", "path": "/api/v1/watchlist", "as": "alice", "body": {"username": "carolx"}},
+    {"method": "POST", "path": "/api/v1/watchlist", "as": "alice", "body": {"username": "neverseen"}}]},
+  {"name": "watchlist add errors", "db": true, "steps": [
+    {"method": "POST", "path": "/api/v1/watchlist", "as": "alice", "body": {"username": "Alice"}},
+    {"method": "POST", "path": "/api/v1/watchlist", "as": "alice", "body": {"username": "acme"}},
+    {"method": "POST", "path": "/api/v1/watchlist", "as": "alice", "body": {}},
+    {"method": "POST", "path": "/api/v1/watchlist", "as": "alice", "body": {"username": ["x"]}},
+    {"method": "POST", "path": "/api/v1/watchlist", "body": {"username": "bob"}}]},
+  {"name": "watchlist remove", "db": true, "steps": [
+    {"method": "DELETE", "path": "/api/v1/watchlist/BOB", "as": "alice"},
+    {"method": "DELETE", "path": "/api/v1/watchlist/bob", "as": "alice"},
+    {"method": "DELETE", "path": "/api/v1/watchlist/bob"}]},
+  {"name": "watchlist check", "steps": [
+    {"method": "GET", "path": "/api/v1/watchlist/check/bob", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist/check/BOB", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist/check/CarolX", "as": "alice"},
+    {"method": "GET", "path": "/api/v1/watchlist/check/bob"}]}
+]

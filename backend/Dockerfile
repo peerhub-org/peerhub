@@ -1,21 +1,26 @@
-FROM python:3.13-slim-bookworm
-
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    UV_COMPILE_BYTECODE=1 \
-    UV_LINK_MODE=copy \
-    PATH="/app/.venv/bin:$PATH"
+FROM node:26-bookworm-slim AS build
 
 WORKDIR /app
 
-COPY --from=ghcr.io/astral-sh/uv:0.9.27 /uv /uvx /bin/
+COPY backend/package.json backend/package-lock.json ./
+RUN npm ci
 
-COPY VERSION ../VERSION
-COPY backend/pyproject.toml backend/uv.lock ./
-COPY backend/app ./app
+COPY backend/tsconfig.json backend/tsconfig.build.json ./
+COPY backend/src ./src
+RUN npm run build && npm prune --omit=dev
 
-RUN uv sync --frozen --no-dev
+FROM node:26-bookworm-slim
+
+ENV NODE_ENV=production
+
+WORKDIR /app
+
+COPY --from=build /app/package.json ./
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+
+USER node
 
 EXPOSE 8000
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["node", "--enable-source-maps", "dist/main.js"]

@@ -19,28 +19,27 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
         with:
-          python-version: "3.13"
-
-      - name: Set up uv
-        uses: astral-sh/setup-uv@v7
-
-      - name: Check lockfile is up to date
-        run: uv lock --check
+          node-version-file: backend/.node-version
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
 
       - name: Install dependencies
-        run: uv sync --dev --frozen
+        run: npm ci
 
       - name: Lint
-        run: uv run ruff check app tests
+        run: npm run lint
 
       - name: Type check
-        run: uv run mypy
+        run: npm run typecheck
 
       - name: Test
-        run: uv run pytest
+        run: npm run test:run
+
+      - name: Build
+        run: npm run build
 
   frontend:
     runs-on: ubuntu-latest

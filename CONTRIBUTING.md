@@ -11,10 +11,8 @@ Thanks for contributing.
 ## Development setup
 
 Prerequisites:
-- Python 3.13
-- uv
-- Node.js 22
-- npm 10
+- Node.js 26
+- npm 11
 - Docker (required for integration tests that use Testcontainers)
 
 1. Prepare env files:
@@ -33,8 +31,8 @@ cp frontend/.env.example frontend/.env.development
 
 ```bash
 cd backend
-uv sync --dev
-uv run fastapi dev app/main.py
+npm ci
+npm run dev
 ```
 
 4. Frontend setup:
@@ -53,10 +51,10 @@ Backend:
 
 ```bash
 cd backend
-uv lock --check
-uv run ruff check app tests
-uv run mypy
-uv run pytest
+npm run lint
+npm run typecheck
+npm run test:run
+npm run build
 ```
 
 Frontend:
