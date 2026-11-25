@@ -17,14 +17,19 @@ beforeEach(() => {
 })
 
 /** Toggle, as the given user, a comment on alice's page. */
-function toggle(as: string, hidden: boolean, hiddenBy: string | null = null) {
+function toggle(
+  as: string,
+  hidden: boolean,
+  hiddenBy: string | null = null,
+  alreadyHidden = hiddenBy !== null,
+) {
   const account = makeAccount({ username: as })
   domain.repositories.accounts.getByUuid.mockResolvedValue(account)
   domain.repositories.reviews.getById.mockResolvedValue(
     makeReview({
       reviewerUuid: reviewer.uuid,
       reviewedUsername: 'alice',
-      commentHidden: hiddenBy !== null,
+      commentHidden: alreadyHidden,
       commentHiddenBy: hiddenBy,
     }),
   )
@@ -39,6 +44,7 @@ function toggle(as: string, hidden: boolean, hiddenBy: string | null = null) {
 describe('hiding', () => {
   test.each([
     ['alice', true, false],
+    ['Alice', true, false],
     ['mod1', false, true],
   ])('%s may hide', async (as, isPageOwner, isModerator) => {
     expect(await toggle(as, true)).toMatchObject({
@@ -52,8 +58,7 @@ describe('hiding', () => {
     expect(domain.repositories.reviews.update).toHaveBeenCalledOnce()
   })
 
-  // Task 53: "Alice" is the owner of the page, but the comparison is case-sensitive.
-  test.each(['bob', 'someone', 'Alice', 'MOD1'])('%s may not hide', async (as) => {
+  test.each(['bob', 'someone', 'MOD1'])('%s may not hide', async (as) => {
     await expect(toggle(as, true)).rejects.toThrow(
       new UnauthorizedActionException('Only the page owner or moderators can hide/unhide comments'),
     )
@@ -61,9 +66,30 @@ describe('hiding', () => {
   })
 })
 
+describe('hiding what is already hidden', () => {
+  test.each(['mod1', 'MOD1', null])('owners may not take over from %s', async (hiddenBy) => {
+    await expect(toggle('alice', true, hiddenBy, true)).rejects.toThrow(
+      new UnauthorizedActionException('This comment was already hidden by a moderator'),
+    )
+    expect(domain.repositories.reviews.update).not.toHaveBeenCalled()
+  })
+
+  test.each([
+    ['alice', 'alice'],
+    ['alice', 'ALICE'],
+    ['mod1', 'mod1'],
+    ['mod1', 'mod2'],
+    ['mod1', 'alice'],
+  ])('%s may hide again what %s hid', async (as, hiddenBy) => {
+    const { reviewWithUsername } = await toggle(as, true, hiddenBy)
+    expect(reviewWithUsername.review).toMatchObject({ commentHidden: true, commentHiddenBy: as })
+  })
+})
+
 describe('showing again', () => {
   test.each([
     ['alice', 'alice'],
+    ['alice', 'ALICE'],
     ['mod1', 'mod1'],
     ['mod1', 'mod2'],
     ['mod1', null],
@@ -78,6 +104,7 @@ describe('showing again', () => {
   test.each([
     ['alice', 'mod1'],
     ['mod1', 'alice'],
+    ['mod1', 'ALICE'],
     ['alice', null],
   ])('%s may not show what %s hid', async (as, hiddenBy) => {
     await expect(toggle(as, false, hiddenBy)).rejects.toThrow(
@@ -99,9 +126,8 @@ test('fails for an unknown review', async () => {
   )
 })
 
-// Task 50: the Python backend also fails only after storing the change.
-test('fails after storing the change when the reviewer was deleted', async () => {
+test('changes nothing in a review by a deleted account', async () => {
   domain.repositories.accounts.getByUuids.mockResolvedValue([])
-  await expect(toggle('alice', true)).rejects.toThrow('Reviewer has no active account')
-  expect(domain.repositories.reviews.update).toHaveBeenCalledOnce()
+  await expect(toggle('alice', true)).rejects.toThrow(ReviewNotFoundException)
+  expect(domain.repositories.reviews.update).not.toHaveBeenCalled()
 })

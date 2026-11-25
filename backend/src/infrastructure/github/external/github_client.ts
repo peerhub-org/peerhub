@@ -52,6 +52,9 @@ const URLS: GitHubUrls = {
   oauth: 'https://github.com/login/oauth/access_token',
 }
 
+/** Letters, digits, hyphens, "_" in managed accounts and "[bot]" in bots. */
+const USERNAME = /^[a-z\d_-]{1,100}(\[bot\])?$/i
+
 /** Client for the GitHub API and OAuth. */
 export class GitHubClient {
   readonly #settings: GitHubSettings
@@ -79,7 +82,9 @@ export class GitHubClient {
   }
 
   async fetchUserByUsername(username: string, accessToken: string): Promise<GitHubProfile> {
-    const response = await this.#get(`/users/${username}`, accessToken)
+    // Anything else cannot exist, and must not reach the URL.
+    if (!USERNAME.test(username)) throw new UserNotFoundException(username)
+    const response = await this.#get(`/users/${encodeURIComponent(username)}`, accessToken)
     if (response.status === 404) throw new UserNotFoundException(username)
     if (response.status !== 200) {
       this.#logger.error(`GitHub API error fetching user ${username}: status=${response.status}`)
@@ -107,7 +112,10 @@ export class GitHubClient {
 
   /** Fetch a single page of the users the given username follows. */
   async fetchFollowingSample(username: string, accessToken: string): Promise<GitHubListedUser[]> {
-    const response = await this.#get(`/users/${username}/following?per_page=100`, accessToken)
+    const response = await this.#get(
+      `/users/${encodeURIComponent(username)}/following?per_page=100`,
+      accessToken,
+    )
     if (response.status !== 200) {
       this.#logger.error(
         `GitHub API error fetching following for ${username}: status=${response.status}`,

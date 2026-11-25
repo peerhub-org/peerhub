@@ -6,21 +6,21 @@ import { loadSettings, type Settings } from '../../src/infrastructure/shared/con
 import { createApp } from '../../src/presentation/api/app.ts'
 import { createContainer, type ContainerOptions } from '../../src/presentation/api/container.ts'
 import { createRoutes } from '../../src/presentation/api/routes.ts'
-import { contractTokens, CONTRACT_ORIGIN } from './contract.ts'
 import { memoryLogger } from './logger.ts'
+import { ALLOWED_ORIGIN } from './requests.ts'
+import { SECRET_KEY } from './tokens.ts'
 
-/** Same settings as contract/generate.py. */
-export const contractSettings: Settings = loadSettings(
+const testSettings: Settings = loadSettings(
   {
     ENVIRONMENT: 'test',
     PROJECT_NAME: 'peerhub',
-    SECRET_KEY: contractTokens.secret_key,
-    BACKEND_CORS_ORIGINS: JSON.stringify([CONTRACT_ORIGIN]),
+    SECRET_KEY,
+    BACKEND_CORS_ORIGINS: JSON.stringify([ALLOWED_ORIGIN]),
     GITHUB_CLIENT_ID: 'client-id',
     GITHUB_CLIENT_SECRET: 'client-secret',
-    SSO_CALLBACK_HOSTNAME: CONTRACT_ORIGIN,
+    SSO_CALLBACK_HOSTNAME: ALLOWED_ORIGIN,
     MODERATOR_USERNAMES: '["moddy", "modtwo"]',
-    RESEND_API_KEY: 'contract',
+    RESEND_API_KEY: 're_key',
     SENDER_EMAIL: 'sender@example.test',
     ABUSE_CONTROL_EMAIL: 'abuse@example.test',
   },
@@ -40,7 +40,7 @@ export function createTestApp(
   changes: Partial<Settings> = {},
 ): TestApp {
   const { logger, lines } = memoryLogger()
-  const settings = { ...contractSettings, MONGO_URI: inject('mongoUri'), ...changes }
+  const settings = { ...testSettings, MONGO_URI: inject('mongoUri'), ...changes }
   const emails: Email[] = []
   const container = createContainer({
     settings,

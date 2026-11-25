@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.1] - 2026-11-25
+
+### Added
+
+### Changed
+- `/health` and the OpenAPI document report the application version
+- `GET /reviews/{username}` refuses an unknown `status`
+
+### Fixed
+- Refuse tokens of deleted or unknown accounts
+- Check the OAuth `state` when signing in
+- Validate usernames before asking GitHub for them
+- Accept any explicitly set `SECRET_KEY` in production
+- Answer 404 instead of 500 for invalid review ids and reviews by deleted accounts
+- Handle simultaneous requests that create the same review or watch
+- Compare page owners without case when hiding comments
+- Keep page owners from showing again what a moderator hid
+- Count reviews of mixed-case usernames in suggestions
+- Show the whole activity feed, with correct pagination
+- Reuse the database connection in `/health`
+- Show validation errors as text in forms
+
 ## [2.0.0] - 2026-11-25
 
 ### Added

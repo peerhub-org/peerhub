@@ -1,5 +1,5 @@
 import type { IAccountRepository } from '../../accounts/repositories/account_repository.ts'
-import { SelfWatchException } from '../../shared/exceptions.ts'
+import { DuplicateEntityError, SelfWatchException } from '../../shared/exceptions.ts'
 import { checkNotSelfAction, checkTargetIsUserType } from '../../shared/services/validators.ts'
 import type { Uuid } from '../../shared/uuid.ts'
 import type { IUserRepository } from '../../users/repositories/user_repository.ts'
@@ -29,7 +29,21 @@ export class WatchlistService {
     const existing = await this.#watchlist.getByWatcherAndUsername(watcherUuid, watchedUsername)
     if (existing) return existing
 
-    return this.#watchlist.create({ id: null, watcherUuid, watchedUsername, createdAt: new Date() })
+    try {
+      return await this.#watchlist.create({
+        id: null,
+        watcherUuid,
+        watchedUsername,
+        createdAt: new Date(),
+      })
+    } catch (error) {
+      // Created in the meantime by another request
+      const created =
+        error instanceof DuplicateEntityError &&
+        (await this.#watchlist.getByWatcherAndUsername(watcherUuid, watchedUsername))
+      if (!created) throw error
+      return created
+    }
   }
 
   async unwatch(watcherUuid: Uuid, watchedUsername: string): Promise<void> {

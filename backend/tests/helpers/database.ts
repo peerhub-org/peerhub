@@ -12,9 +12,9 @@ interface Fixtures {
   collections: Record<string, Document[]>
 }
 
-/** Documents written by the Python backend. Dates and UUIDs become BSON values. */
+/** Documents as found in production. Dates and UUIDs become BSON values. */
 export const fixtures = BSON.EJSON.parse(
-  readFileSync(new URL('../../contract/reference/fixtures.json', import.meta.url), 'utf8'),
+  readFileSync(new URL('../fixtures/database.json', import.meta.url), 'utf8'),
 ) as Fixtures
 
 /** A database of its own for the test file, emptied (or refilled) before each test. */

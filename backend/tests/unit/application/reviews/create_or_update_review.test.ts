@@ -1,8 +1,10 @@
-import { randomUUID } from 'node:crypto'
 import { expect, test, vi } from 'vitest'
 import { CreateOrUpdateReviewUseCase } from '../../../../src/application/reviews/use_cases/create_or_update_review.ts'
 import type { CreateOrUpdateReview } from '../../../../src/domain/reviews/services/review_service.ts'
-import { SelfReviewException } from '../../../../src/domain/shared/exceptions.ts'
+import {
+  AccountNotFoundException,
+  SelfReviewException,
+} from '../../../../src/domain/shared/exceptions.ts'
 import { User } from '../../../../src/domain/users/entities/user.ts'
 import { createDomain, makeAccount, makeReview, PAST } from '../../../helpers/domain.ts'
 import { memoryLogger } from '../../../helpers/logger.ts'
@@ -84,15 +86,14 @@ test('does nothing else when the review is refused', async () => {
   expect(repositories.watchlist.create).not.toHaveBeenCalled()
 })
 
-// Task 50: the Python backend also fails only after storing the review.
 test.each([
-  ['deleted', [makeAccount({ uuid: alice.uuid, deletedAt: PAST })]],
-  ['unknown', []],
-])('fails after storing the review of a(n) %s account', async (_, accounts) => {
-  const { useCase, repositories } = setup()
-  repositories.accounts.getByUuids.mockResolvedValue(accounts)
-  await expect(useCase.execute({ ...input, reviewerUuid: randomUUID() })).rejects.toThrow(
-    'Reviewer has no active account',
-  )
-  expect(repositories.reviews.create).toHaveBeenCalledOnce()
+  ['deleted', makeAccount({ uuid: alice.uuid, deletedAt: PAST })],
+  ['unknown', null],
+])('stores nothing for a(n) %s account', async (_, account) => {
+  const { useCase, repositories, sendNewReviewNotification } = setup()
+  repositories.accounts.getByUuid.mockResolvedValue(account)
+  await expect(useCase.execute(input)).rejects.toThrow(AccountNotFoundException)
+  expect(repositories.reviews.create).not.toHaveBeenCalled()
+  expect(repositories.watchlist.create).not.toHaveBeenCalled()
+  expect(sendNewReviewNotification).not.toHaveBeenCalled()
 })

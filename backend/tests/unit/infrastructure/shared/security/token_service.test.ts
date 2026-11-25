@@ -1,23 +1,18 @@
-import { readFileSync } from 'node:fs'
 import { decodeJwt, decodeProtectedHeader } from 'jose'
 import { afterEach, describe, expect, test, vi } from 'vitest'
 import { TokenService } from '../../../../../src/infrastructure/shared/security/token_service.ts'
-
-const contract = JSON.parse(
-  readFileSync(new URL('../../../../../contract/reference/tokens.json', import.meta.url), 'utf8'),
-) as { secret_key: string; tokens: Record<string, string> }
+import { ALICE, SECRET_KEY, tokens } from '../../../../helpers/tokens.ts'
 
 const service = new TokenService({
-  SECRET_KEY: contract.secret_key,
+  SECRET_KEY: SECRET_KEY,
   ACCESS_TOKEN_EXPIRE_MINUTES: 10080,
 })
-const ALICE = 'a0000000-0000-4000-8000-000000000001'
 
 afterEach(() => void vi.useRealTimers())
 
-describe('tokens issued by the Python backend', () => {
+describe('tokens issued elsewhere with the same key', () => {
   test.each(['alice', 'no_exp', 'sub_uppercase', 'sub_no_dashes'])('%s is valid', async (name) => {
-    expect(await service.verify(contract.tokens[name]!)).toBe(ALICE)
+    expect(await service.verify(tokens[name]!)).toBe(ALICE)
   })
 
   test.each([
@@ -29,8 +24,8 @@ describe('tokens issued by the Python backend', () => {
     'sub_not_uuid',
     'future_nbf',
   ])('%s is not valid', async (name) => {
-    expect(contract.tokens[name]).toBeDefined()
-    expect(await service.verify(contract.tokens[name]!)).toBeNull()
+    expect(tokens[name]).toBeDefined()
+    expect(await service.verify(tokens[name]!)).toBeNull()
   })
 })
 
@@ -39,7 +34,7 @@ test.each(['', 'not-a-jwt', 'a.b.c', 'a.b'])('%j is not valid', async (token) =>
 })
 
 describe('issued tokens', () => {
-  test('have the format of the Python backend', async () => {
+  test('carry account and expiration only', async () => {
     vi.useFakeTimers({ now: new Date('2026-01-01T00:00:00.900Z'), toFake: ['Date'] })
     const token = await service.createAccessToken(ALICE)
     expect(decodeProtectedHeader(token)).toEqual({ alg: 'HS256', typ: 'JWT' })

@@ -1,5 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
 import type { z } from 'zod'
+import type { AccountService } from '../../domain/accounts/services/account_service.ts'
 import type { Uuid } from '../../domain/shared/uuid.ts'
 import type { RateLimit } from '../../infrastructure/shared/constants.ts'
 import type { TokenService } from '../../infrastructure/shared/security/token_service.ts'
@@ -43,6 +44,7 @@ interface Spec<Q extends z.ZodObject, B extends z.ZodObject, R extends z.ZodType
 
 export interface EndpointContext {
   tokenService: TokenService
+  accountService: AccountService
   clientIpHeader: string | null
 }
 
@@ -56,7 +58,7 @@ export function endpoint<
 >(spec: Spec<Q, B, R, { accountUuid: Uuid }>): Endpoint {
   return (context) =>
     toRoute(spec, context, async (req) => ({
-      accountUuid: await authenticate(req, context.tokenService),
+      accountUuid: await authenticate(req, context.tokenService, context.accountService),
     }))
 }
 

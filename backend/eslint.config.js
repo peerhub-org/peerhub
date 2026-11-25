@@ -5,7 +5,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default defineConfig([
-  globalIgnores(['dist/', 'contract/', 'coverage/']),
+  globalIgnores(['dist/', 'coverage/']),
   { files: ['**/*.{js,ts}'], plugins: { js }, extends: ['js/recommended'] },
   { files: ['**/*.{js,ts}'], languageOptions: { globals: globals.node } },
   tseslint.configs.recommended,

@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { Binary, ObjectId } from 'mongodb'
 import { describe, expect, test } from 'vitest'
+import { DuplicateEntityError } from '../../../../src/domain/shared/exceptions.ts'
 import { MongoDBAccountRepository } from '../../../../src/infrastructure/accounts/database/repositories/mongodb_account_repository.ts'
 import { useDatabase } from '../../../helpers/database.ts'
 import { makeAccount, PAST } from '../../../helpers/domain.ts'
@@ -9,7 +10,7 @@ const ALICE = 'a0000000-0000-4000-8000-000000000001'
 const CAROL = 'a0000000-0000-4000-8000-000000000003'
 const LEGACY = 'a0000000-0000-4000-8000-000000000008'
 
-describe('documents written by the Python backend', () => {
+describe('existing documents', () => {
   const db = useDatabase({ withFixtures: true })
   const repository = () => new MongoDBAccountRepository(db())
 
@@ -69,7 +70,7 @@ describe('new documents', () => {
   const db = useDatabase()
   const repository = () => new MongoDBAccountRepository(db())
 
-  test('have the format of the Python backend', async () => {
+  test('have the format of the existing ones', async () => {
     const uuid = randomUUID()
     const created = await repository().create(
       makeAccount({ id: null, uuid, username: 'Alice', createdAt: PAST }),
@@ -97,7 +98,9 @@ describe('new documents', () => {
 
   test('cannot repeat a username', async () => {
     await repository().create(makeAccount({ id: null }))
-    await expect(repository().create(makeAccount({ id: null }))).rejects.toThrow('E11000')
+    await expect(repository().create(makeAccount({ id: null }))).rejects.toThrow(
+      DuplicateEntityError,
+    )
   })
 
   test('must exist to be updated', async () => {

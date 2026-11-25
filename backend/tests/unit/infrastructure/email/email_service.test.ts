@@ -1,6 +1,5 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import { readFileSync } from 'node:fs'
 import { afterAll, beforeAll, beforeEach, describe, expect, test } from 'vitest'
 import { EmailService, type Email } from '../../../../src/infrastructure/email/email_service.ts'
 import { memoryLogger } from '../../../helpers/logger.ts'
@@ -24,25 +23,33 @@ const review = {
   anonymous: false,
 }
 
-describe('emails are the same as in the Python backend', () => {
-  const recorded = (
-    JSON.parse(
-      readFileSync(
-        new URL('../../../../contract/reference/responses.json', import.meta.url),
-        'utf8',
-      ),
-    ) as { name: string; emails?: Email[] }[]
-  ).flatMap((c) => c.emails?.map((email) => ({ name: c.name, email })) ?? [])
-  const wanted = (name: string) => recorded.find((entry) => entry.name === name)!.email
-
+describe('emails', () => {
   test('new account', async () => {
     await service.sendNewAccountNotification('newbie')
-    expect(sent).toEqual([wanted('users exchange new account')])
+    expect(sent).toEqual([
+      {
+        from: 'PeerHub <sender@example.test>',
+        to: ['abuse@example.test'],
+        subject: 'New account: newbie',
+        html: "<p><strong>Username:</strong> <a href='https://peerhub.dev/newbie'>newbie</a></p>",
+      },
+    ])
   })
 
   test('new review without comment', async () => {
     await service.sendNewReviewNotification(review)
-    expect(sent).toEqual([wanted('reviews create')])
+    expect(sent).toEqual([
+      {
+        from: 'PeerHub <sender@example.test>',
+        to: ['abuse@example.test'],
+        subject: 'New review: bob → dave',
+        html:
+          "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob</a></p>" +
+          "<p><strong>Reviewed:</strong> <a href='https://peerhub.dev/dave'>dave</a></p>" +
+          '<p><strong>Status:</strong> approve</p>' +
+          '<p><strong>Comment:</strong> (no comment)</p>',
+      },
+    ])
   })
 
   test('new anonymous review', async () => {
@@ -53,7 +60,18 @@ describe('emails are the same as in the Python backend', () => {
       comment: 'hmm',
       anonymous: true,
     })
-    expect(sent).toEqual([wanted('reviews create anonymous')])
+    expect(sent).toEqual([
+      {
+        from: 'PeerHub <sender@example.test>',
+        to: ['abuse@example.test'],
+        subject: 'New review: bob (as anonymous) → moddy',
+        html:
+          "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob (as anonymous)</a></p>" +
+          "<p><strong>Reviewed:</strong> <a href='https://peerhub.dev/moddy'>moddy</a></p>" +
+          '<p><strong>Status:</strong> request_change</p>' +
+          '<p><strong>Comment:</strong> hmm</p>',
+      },
+    ])
   })
 })
 

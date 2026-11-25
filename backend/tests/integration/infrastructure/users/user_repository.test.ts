@@ -7,7 +7,7 @@ import { PAST } from '../../../helpers/domain.ts'
 
 const FAR_FUTURE = new Date('2099-01-01T00:00:00.000Z')
 
-describe('documents written by the Python backend', () => {
+describe('existing documents', () => {
   const db = useDatabase({ withFixtures: true })
   const repository = () => new MongoDBUserRepository(db())
 

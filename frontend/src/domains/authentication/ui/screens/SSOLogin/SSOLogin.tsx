@@ -24,6 +24,7 @@ export default function SSOLogin() {
     const handleOAuthCallback = async () => {
       const code = searchParams.get('code')
       const error = searchParams.get('error')
+      const isOwnSignIn = authService.consumeOAuthState(searchParams.get('state'))
 
       // Handle OAuth error from GitHub
       if (error) {
@@ -35,6 +36,13 @@ export default function SSOLogin() {
       // No code means invalid callback
       if (!code) {
         posthog?.capture('login_failed', { provider: 'github', reason: 'missing_code' })
+        navigate('/', { replace: true, state: { authError: true } })
+        return
+      }
+
+      // Not started in this tab: the code may belong to somebody else
+      if (!isOwnSignIn) {
+        posthog?.capture('login_failed', { provider: 'github', reason: 'state_mismatch' })
         navigate('/', { replace: true, state: { authError: true } })
         return
       }

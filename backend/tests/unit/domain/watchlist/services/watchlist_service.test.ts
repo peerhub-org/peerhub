@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto'
 import { beforeEach, describe, expect, test } from 'vitest'
 import {
+  DuplicateEntityError,
   NotUserTypeException,
   SelfWatchException,
 } from '../../../../../src/domain/shared/exceptions.ts'
@@ -32,6 +33,20 @@ describe('watch', () => {
     domain.repositories.watchlist.getByWatcherAndUsername.mockResolvedValue(existing)
     expect(await domain.watchlistService.watch(alice.uuid, 'bob')).toBe(existing)
     expect(domain.repositories.watchlist.create).not.toHaveBeenCalled()
+  })
+
+  test('returns the watch another request creates first', async () => {
+    const created = makeWatch()
+    domain.repositories.watchlist.create.mockRejectedValue(new DuplicateEntityError(null))
+    domain.repositories.watchlist.getByWatcherAndUsername
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce(created)
+    expect(await domain.watchlistService.watch(alice.uuid, 'bob')).toBe(created)
+  })
+
+  test('other failures to create are not hidden', async () => {
+    domain.repositories.watchlist.create.mockRejectedValue(new Error('db down'))
+    await expect(domain.watchlistService.watch(alice.uuid, 'bob')).rejects.toThrow('db down')
   })
 
   test('refuses to watch yourself, whatever the case', async () => {

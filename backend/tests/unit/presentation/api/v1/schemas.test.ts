@@ -101,10 +101,10 @@ describe('hidden comments', () => {
     })
   })
 
-  // Task 53: "Alice" is the owner, but the comparison is case-sensitive.
-  test('compare the owner with case', () => {
+  test('are attributed to the owner whatever the case', () => {
     const hidden = item({ commentHidden: true, commentHiddenBy: 'Alice' })
-    expect(toReviewResponse(hidden).comment_hidden_by).toBe('moderator')
+    expect(toReviewResponse(hidden).comment_hidden_by).toBe('user')
+    expect(toReviewResponse(hidden, owner).comment).toBe('Great work!')
   })
 })
 

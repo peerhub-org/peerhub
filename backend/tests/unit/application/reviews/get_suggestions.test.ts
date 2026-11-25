@@ -110,13 +110,15 @@ describe('order', () => {
     expect(await names(2)).toEqual(['openreviewed', 'open1'])
   })
 
-  // Task 52: counts are keyed by the stored spelling.
-  test('counts of mixed-case usernames are missed', async () => {
+  test('counts reviews of mixed-case usernames', async () => {
     domain.repositories.reviews.getReviewCountsForUsernames.mockResolvedValue(
-      new Map([['Mixed', 9]]),
+      new Map([
+        ['mixed', 9],
+        ['few', 1],
+      ]),
     )
-    following = [follows('Mixed'), follows('open1')]
-    expect(await names()).toEqual(['open1', 'Mixed'])
+    following = [follows('few'), follows('Mixed')]
+    expect(await names()).toEqual(['Mixed', 'few'])
   })
 })
 

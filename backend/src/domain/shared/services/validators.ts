@@ -1,6 +1,7 @@
 import type { IAccountRepository } from '../../accounts/repositories/account_repository.ts'
 import type { IUserRepository } from '../../users/repositories/user_repository.ts'
 import { NotUserTypeException, type DomainException } from '../exceptions.ts'
+import { sameUsername } from '../usernames.ts'
 import type { Uuid } from '../uuid.ts'
 
 /** Check that nobody performs an action on themselves (case-insensitive). */
@@ -11,8 +12,7 @@ export async function checkNotSelfAction(
   Exception: new (username: string) => DomainException,
 ): Promise<void> {
   const account = await accountRepository.getByUuid(actorUuid)
-  if (account && account.username.toLowerCase() === targetUsername.toLowerCase())
-    throw new Exception(targetUsername)
+  if (account && sameUsername(account.username, targetUsername)) throw new Exception(targetUsername)
 }
 
 /** Check that the target, when known, is a regular user (not an Organization or Bot). */

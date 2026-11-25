@@ -11,8 +11,6 @@ const ENV_FILE_BY_ENV: Record<string, string> = {
   production: '.env.production',
 }
 
-const DEFAULT_SECRET_KEY_LENGTH = 43 // length of randomBytes(32) in base64url
-
 const json = <T extends z.ZodType>(schema: T) =>
   z
     .string()
@@ -36,46 +34,37 @@ const origin = z.url({ protocol: /^https?$/ }).transform((value) => {
   return new URL(value).href.replace(/\/+$/, '')
 })
 
-const settingsSchema = z
-  .object({
-    API_V1_STR: z.string().default('/api/v1'),
-    SECRET_KEY: z.string().default(() => randomBytes(32).toString('base64url')),
-    ENVIRONMENT: z.enum(['test', 'development', 'production']).default('development'),
-    // 60 minutes * 24 hours * 7 days = 7 days
-    ACCESS_TOKEN_EXPIRE_MINUTES: integer.default(60 * 24 * 7),
-    PORT: integer.pipe(z.number().min(1).max(65535)).default(8000),
-    // Header with the client address, for rate limits. Only set one that the proxy in front
-    // always overwrites: clients could choose their address otherwise.
-    CLIENT_IP_HEADER: z
-      .string()
-      .regex(/^[\w-]+$/, 'Expected a header name')
-      .transform((name) => name.toLowerCase())
-      .nullable()
-      .default(null),
-    BACKEND_CORS_ORIGINS: json(z.array(origin)).default([]),
-    PROJECT_NAME: z.string().default('PeerHub'),
-    MONGO_URI: z.string().default('mongodb://localhost:27017'),
-    MONGO_DB: z.string().default('peerhub'),
-    GITHUB_CLIENT_ID: z.string().nullable().default(null),
-    GITHUB_CLIENT_SECRET: z.string().nullable().default(null),
-    SSO_CALLBACK_HOSTNAME: z.string().nullable().default(null),
-    MODERATOR_USERNAMES: json(z.array(z.string()))
-      .default([])
-      .transform((names): ReadonlySet<string> => new Set(names)),
-    POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
-    POSTHOG_API_KEY: z.string().nullable().default(null),
-    RESEND_API_KEY: z.string().nullable().default(null),
-    SENDER_EMAIL: z.string().nullable().default(null),
-    ABUSE_CONTROL_EMAIL: z.string().nullable().default(null),
-  })
-  .refine(
-    (s) => s.ENVIRONMENT !== 'production' || [...s.SECRET_KEY].length !== DEFAULT_SECRET_KEY_LENGTH,
-    {
-      path: ['SECRET_KEY'],
-      message:
-        'SECRET_KEY must be explicitly set in production to prevent token invalidation on restart',
-    },
-  )
+const settingsSchema = z.object({
+  API_V1_STR: z.string().default('/api/v1'),
+  SECRET_KEY: z.string().default(() => randomBytes(32).toString('base64url')),
+  ENVIRONMENT: z.enum(['test', 'development', 'production']).default('development'),
+  // 60 minutes * 24 hours * 7 days = 7 days
+  ACCESS_TOKEN_EXPIRE_MINUTES: integer.default(60 * 24 * 7),
+  PORT: integer.pipe(z.number().min(1).max(65535)).default(8000),
+  // Header with the client address, for rate limits. Only set one that the proxy in front
+  // always overwrites: clients could choose their address otherwise.
+  CLIENT_IP_HEADER: z
+    .string()
+    .regex(/^[\w-]+$/, 'Expected a header name')
+    .transform((name) => name.toLowerCase())
+    .nullable()
+    .default(null),
+  BACKEND_CORS_ORIGINS: json(z.array(origin)).default([]),
+  PROJECT_NAME: z.string().default('PeerHub'),
+  MONGO_URI: z.string().default('mongodb://localhost:27017'),
+  MONGO_DB: z.string().default('peerhub'),
+  GITHUB_CLIENT_ID: z.string().nullable().default(null),
+  GITHUB_CLIENT_SECRET: z.string().nullable().default(null),
+  SSO_CALLBACK_HOSTNAME: z.string().nullable().default(null),
+  MODERATOR_USERNAMES: json(z.array(z.string()))
+    .default([])
+    .transform((names): ReadonlySet<string> => new Set(names)),
+  POSTHOG_HOST: z.string().default('https://us.i.posthog.com'),
+  POSTHOG_API_KEY: z.string().nullable().default(null),
+  RESEND_API_KEY: z.string().nullable().default(null),
+  SENDER_EMAIL: z.string().nullable().default(null),
+  ABUSE_CONTROL_EMAIL: z.string().nullable().default(null),
+})
 
 export type Settings = Readonly<z.output<typeof settingsSchema>>
 
@@ -100,11 +89,15 @@ export function loadSettings(
 ): Settings {
   const fileValues =
     envFile !== null && existsSync(envFile) ? parseDotenv(readFileSync(envFile, 'utf8')) : {}
-  const result = settingsSchema.safeParse({ ...present(fileValues), ...present(env) })
-  if (!result.success) {
-    // Only names and reasons: values may be secrets.
-    const problems = result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`)
+  const values = { ...present(fileValues), ...present(env) }
+  const result = settingsSchema.safeParse(values)
+  // Only names and reasons: values may be secrets.
+  const problems = result.error?.issues.map((i) => `${i.path.join('.')}: ${i.message}`) ?? []
+  if (values.ENVIRONMENT === 'production' && values.SECRET_KEY === undefined)
+    problems.push(
+      'SECRET_KEY: must be explicitly set in production to prevent token invalidation on restart',
+    )
+  if (!result.success || problems.length > 0)
     throw new Error(`Invalid configuration:\n  ${problems.join('\n  ')}`)
-  }
   return result.data
 }

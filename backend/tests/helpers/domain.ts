@@ -37,6 +37,7 @@ export function createDomain() {
       async () => null,
     ),
     getAllForUsername: vi.fn<IReviewRepository['getAllForUsername']>(async () => []),
+    getFeed: vi.fn<IReviewRepository['getFeed']>(async () => []),
     getAllByReviewerUuid: vi.fn<IReviewRepository['getAllByReviewerUuid']>(async () => []),
     getReviewCountsForUsernames: vi.fn<IReviewRepository['getReviewCountsForUsernames']>(
       async () => new Map(),

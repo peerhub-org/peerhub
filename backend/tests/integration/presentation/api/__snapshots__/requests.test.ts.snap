@@ -1,0 +1,6335 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`account delete > database changes 1`] = `
+{
+  "accounts": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650100000000000000000001",
+        },
+        "access_token": "",
+        "created_at": {
+          "$date": "2024-01-02T03:04:05.123Z",
+        },
+        "deleted_at": {
+          "$date": "<date>",
+        },
+        "email": "alice@example.test",
+        "username": "alice",
+        "uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000001",
+        },
+      },
+    ],
+  },
+  "reviews": {
+    "removed": [
+      {
+        "$oid": "650200000000000000000007",
+      },
+    ],
+  },
+  "watchlist": {
+    "removed": [
+      {
+        "$oid": "650400000000000000000001",
+      },
+      {
+        "$oid": "650400000000000000000002",
+      },
+      {
+        "$oid": "650400000000000000000003",
+      },
+    ],
+  },
+}
+`;
+
+exports[`account delete > emails 1`] = `[]`;
+
+exports[`account delete > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": "<date>",
+      "id": "650100000000000000000001",
+      "is_moderator": false,
+      "username": "alice",
+      "uuid": "a0000000-0000-4000-8000-000000000001",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`account delete unknown > database changes 1`] = `{}`;
+
+exports[`account delete unknown > emails 1`] = `[]`;
+
+exports[`account delete unknown > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`account feed > emails 1`] = `[]`;
+
+exports[`account feed > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-16T03:04:05.123Z",
+          "review_id": "650200000000000000000007",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "dave",
+          "reviewer_avatar_url": "https://avatars.test/alice.png",
+          "reviewer_username": "alice",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+          "status": "approve",
+          "updated_at": "2024-01-16T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "review_id": "650200000000000000000004",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "review_id": "650200000000000000000003",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "review_id": "650200000000000000000002",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "review_id": "650200000000000000000001",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "review_id": "650200000000000000000006",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "review_id": "650200000000000000000004",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "review_id": "650200000000000000000003",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "review_id": "650200000000000000000002",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "review_id": "650200000000000000000001",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "review_id": "650200000000000000000006",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-16T03:04:05.123Z",
+          "review_id": "650200000000000000000007",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "dave",
+          "reviewer_avatar_url": "https://avatars.test/alice.png",
+          "reviewer_username": "alice",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+          "status": "approve",
+          "updated_at": "2024-01-16T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-16T03:04:05.123Z",
+          "review_id": "650200000000000000000007",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "dave",
+          "reviewer_avatar_url": "https://avatars.test/alice.png",
+          "reviewer_username": "alice",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+          "status": "approve",
+          "updated_at": "2024-01-16T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "review_id": "650200000000000000000004",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "review_id": "650200000000000000000003",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`account feed draft profiles closed > emails 1`] = `[]`;
+
+exports[`account feed draft profiles closed > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-16T03:04:05.123Z",
+          "review_id": "650200000000000000000007",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "dave",
+          "reviewer_avatar_url": "https://avatars.test/alice.png",
+          "reviewer_username": "alice",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+          "status": "approve",
+          "updated_at": "2024-01-16T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "review_id": "650200000000000000000004",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "review_id": "650200000000000000000003",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "review_id": "650200000000000000000002",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "review_id": "650200000000000000000001",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "review_id": "650200000000000000000006",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [],
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`account feed validation > emails 1`] = `[]`;
+
+exports[`account feed validation > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "expected": "'all', 'mine' or 'watching'",
+          },
+          "input": "bogus",
+          "loc": [
+            "query",
+            "filter",
+          ],
+          "msg": "Input should be 'all', 'mine' or 'watching'",
+          "type": "literal_error",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "ge": 1,
+          },
+          "input": "0",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be greater than or equal to 1",
+          "type": "greater_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "le": 100,
+          },
+          "input": "101",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be less than or equal to 100",
+          "type": "less_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": "abc",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be a valid integer, unable to parse string as an integer",
+          "type": "int_parsing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": "1.5",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be a valid integer, unable to parse string as an integer",
+          "type": "int_parsing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": "",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be a valid integer, unable to parse string as an integer",
+          "type": "int_parsing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "ge": 0,
+          },
+          "input": "-1",
+          "loc": [
+            "query",
+            "offset",
+          ],
+          "msg": "Input should be greater than or equal to 0",
+          "type": "greater_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "expected": "'all', 'mine' or 'watching'",
+          },
+          "input": "x",
+          "loc": [
+            "query",
+            "filter",
+          ],
+          "msg": "Input should be 'all', 'mine' or 'watching'",
+          "type": "literal_error",
+        },
+        {
+          "ctx": {
+            "ge": 1,
+          },
+          "input": "0",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be greater than or equal to 1",
+          "type": "greater_than_equal",
+        },
+        {
+          "ctx": {
+            "ge": 0,
+          },
+          "input": "-1",
+          "loc": [
+            "query",
+            "offset",
+          ],
+          "msg": "Input should be greater than or equal to 0",
+          "type": "greater_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-16T03:04:05.123Z",
+          "review_id": "650200000000000000000007",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "dave",
+          "reviewer_avatar_url": "https://avatars.test/alice.png",
+          "reviewer_username": "alice",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+          "status": "approve",
+          "updated_at": "2024-01-16T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "review_id": "650200000000000000000008",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-16T03:04:05.123Z",
+          "review_id": "650200000000000000000007",
+          "reviewed_user_avatar_url": "https://avatars.test/dave.png",
+          "reviewed_username": "dave",
+          "reviewer_avatar_url": "https://avatars.test/alice.png",
+          "reviewer_username": "alice",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+          "status": "approve",
+          "updated_at": "2024-01-16T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "review_id": "650200000000000000000004",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "review_id": "650200000000000000000003",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "review_id": "650200000000000000000002",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "review_id": "650200000000000000000001",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "review_id": "650200000000000000000006",
+          "reviewed_user_avatar_url": "https://avatars.test/alice.png",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": "1e1",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be a valid integer, unable to parse string as an integer",
+          "type": "int_parsing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+]
+`;
+
+exports[`account get > emails 1`] = `[]`;
+
+exports[`account get > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": null,
+      "id": "650100000000000000000001",
+      "is_moderator": false,
+      "username": "alice",
+      "uuid": "a0000000-0000-4000-8000-000000000001",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": null,
+      "id": "650100000000000000000004",
+      "is_moderator": true,
+      "username": "moddy",
+      "uuid": "a0000000-0000-4000-8000-000000000004",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": null,
+      "id": "650100000000000000000008",
+      "is_moderator": false,
+      "username": "legacy",
+      "uuid": "a0000000-0000-4000-8000-000000000008",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`account my reviews > emails 1`] = `[]`;
+
+exports[`account my reviews > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "anonymous": true,
+        "comment": "anon draft",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": "2024-01-17T03:04:05.123Z",
+        "id": "650200000000000000000008",
+        "reviewed_username": "Dave",
+        "reviewer_avatar_url": "https://avatars.test/carolx.png",
+        "reviewer_username": "CarolX",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000003",
+        "status": "request_change",
+        "updated_at": "2024-01-17T03:04:05.456Z",
+      },
+      {
+        "anonymous": true,
+        "comment": "secret",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": "2024-01-12T03:04:05.123Z",
+        "id": "650200000000000000000002",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": "https://avatars.test/carolx.png",
+        "reviewer_username": "CarolX",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000003",
+        "status": "request_change",
+        "updated_at": "2024-01-12T03:04:05.456Z",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "anonymous": false,
+        "comment": "owner, other case",
+        "comment_hidden": true,
+        "comment_hidden_by": "user",
+        "created_at": "2024-01-19T03:04:05.123Z",
+        "id": "65020000000000000000000a",
+        "reviewed_username": "carolx",
+        "reviewer_avatar_url": "https://avatars.test/moddy.png",
+        "reviewer_username": "moddy",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+        "status": "comment",
+        "updated_at": "2024-01-19T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "comment": "hidden by owner",
+        "comment_hidden": true,
+        "comment_hidden_by": "user",
+        "created_at": "2024-01-13T03:04:05.123Z",
+        "id": "650200000000000000000003",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": "https://avatars.test/moddy.png",
+        "reviewer_username": "moddy",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+        "status": "comment",
+        "updated_at": "2024-01-13T03:04:05.456Z",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "anonymous": false,
+        "comment": null,
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": "2024-01-10T03:04:05.123Z",
+        "id": "650200000000000000000006",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": null,
+        "reviewer_username": "legacy",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+        "status": "approve",
+        "updated_at": "2024-01-10T03:04:05.123Z",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`account requires authentication > database changes 1`] = `{}`;
+
+exports[`account requires authentication > emails 1`] = `[]`;
+
+exports[`account requires authentication > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`auth accepted variants > emails 1`] = `[]`;
+
+exports[`auth accepted variants > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": null,
+      "id": "650100000000000000000001",
+      "is_moderator": false,
+      "username": "alice",
+      "uuid": "a0000000-0000-4000-8000-000000000001",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": null,
+      "id": "650100000000000000000001",
+      "is_moderator": false,
+      "username": "alice",
+      "uuid": "a0000000-0000-4000-8000-000000000001",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": null,
+      "id": "650100000000000000000001",
+      "is_moderator": false,
+      "username": "alice",
+      "uuid": "a0000000-0000-4000-8000-000000000001",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "deleted_at": null,
+      "id": "650100000000000000000001",
+      "is_moderator": false,
+      "username": "alice",
+      "uuid": "a0000000-0000-4000-8000-000000000001",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`auth failures > emails 1`] = `[]`;
+
+exports[`auth failures > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`auth precedes validation > emails 1`] = `[]`;
+
+exports[`auth precedes validation > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`cors allowed origin > emails 1`] = `[]`;
+
+exports[`cors allowed origin > responses 1`] = `
+[
+  {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-origin": "http://localhost:5173",
+      "content-type": "application/json",
+      "vary": "Origin",
+    },
+    "json": {
+      "url": "https://github.com/login/oauth/authorize?client_id=client-id&redirect_uri=http://localhost:5173/oauth/callback&scope=read:user user:email",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept, Accept-Language, Authorization, Content-Language, Content-Type",
+      "access-control-allow-methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+      "access-control-allow-origin": "http://localhost:5173",
+      "access-control-max-age": "600",
+      "content-type": "text/plain; charset=utf-8",
+      "vary": "Origin",
+    },
+    "status": 200,
+    "text": "OK",
+  },
+  {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-origin": "http://localhost:5173",
+      "content-type": "application/json",
+      "vary": "Origin",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`cors denied origin > emails 1`] = `[]`;
+
+exports[`cors denied origin > responses 1`] = `
+[
+  {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "content-type": "application/json",
+    },
+    "json": {
+      "url": "https://github.com/login/oauth/authorize?client_id=client-id&redirect_uri=http://localhost:5173/oauth/callback&scope=read:user user:email",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-headers": "Accept, Accept-Language, Authorization, Content-Language, Content-Type",
+      "access-control-allow-methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+      "access-control-max-age": "600",
+      "content-type": "text/plain; charset=utf-8",
+      "vary": "Origin",
+    },
+    "status": 400,
+    "text": "Disallowed CORS origin",
+  },
+]
+`;
+
+exports[`cors on internal error > emails 1`] = `[]`;
+
+exports[`cors on internal error > responses 1`] = `
+[
+  {
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "access-control-allow-origin": "http://localhost:5173",
+      "content-type": "application/json",
+      "vary": "Origin",
+    },
+    "json": {
+      "detail": "Review not found: not-an-id",
+    },
+    "status": 404,
+  },
+]
+`;
+
+exports[`health database down > emails 1`] = `[]`;
+
+exports[`health database down > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "database": "unhealthy",
+      "status": "degraded",
+      "version": "<version>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`health ok > emails 1`] = `[]`;
+
+exports[`health ok > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "database": "healthy",
+      "status": "healthy",
+      "version": "<version>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`http HEAD > emails 1`] = `[]`;
+
+exports[`http HEAD > responses 1`] = `
+[
+  {
+    "headers": {
+      "allow": "GET",
+      "content-type": "application/json",
+    },
+    "json": null,
+    "status": 405,
+  },
+]
+`;
+
+exports[`http method not allowed > emails 1`] = `[]`;
+
+exports[`http method not allowed > responses 1`] = `
+[
+  {
+    "headers": {
+      "allow": "POST",
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Method Not Allowed",
+    },
+    "status": 405,
+  },
+  {
+    "headers": {
+      "allow": "GET",
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Method Not Allowed",
+    },
+    "status": 405,
+  },
+]
+`;
+
+exports[`http path is case sensitive > emails 1`] = `[]`;
+
+exports[`http path is case sensitive > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Not Found",
+    },
+    "status": 404,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Not Found",
+    },
+    "status": 404,
+  },
+]
+`;
+
+exports[`http trailing slash > emails 1`] = `[]`;
+
+exports[`http trailing slash > responses 1`] = `
+[
+  {
+    "headers": {
+      "location": "http://test/api/v1/account",
+    },
+    "status": 307,
+  },
+  {
+    "headers": {
+      "location": "http://test/api/v1/watchlist",
+    },
+    "status": 307,
+  },
+]
+`;
+
+exports[`http unknown route > emails 1`] = `[]`;
+
+exports[`http unknown route > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Not Found",
+    },
+    "status": 404,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Not Found",
+    },
+    "status": 404,
+  },
+]
+`;
+
+exports[`reviews boolean coercion > emails 1`] = `
+[
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob (as anonymous)</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/dave'>dave</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>",
+    "subject": "New review: bob (as anonymous) → dave",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob (as anonymous)</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/neverseen'>neverseen</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>",
+    "subject": "New review: bob (as anonymous) → neverseen",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+]
+`;
+
+exports[`reviews boolean coercion > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": true,
+      "comment": null,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "dave",
+      "reviewer_avatar_url": null,
+      "reviewer_username": null,
+      "reviewer_uuid": null,
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": true,
+      "comment": null,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "neverseen",
+      "reviewer_avatar_url": null,
+      "reviewer_username": null,
+      "reviewer_uuid": null,
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": null,
+          "loc": [
+            "body",
+            "anonymous",
+          ],
+          "msg": "Input should be a valid boolean",
+          "type": "bool_type",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": 2,
+          "loc": [
+            "body",
+            "anonymous",
+          ],
+          "msg": "Input should be a valid boolean, unable to interpret input",
+          "type": "bool_parsing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+]
+`;
+
+exports[`reviews comment length in code points > emails 1`] = `
+[
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/dave'>dave</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> 😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀</p>",
+    "subject": "New review: bob → dave",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+]
+`;
+
+exports[`reviews comment length in code points > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "dave",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "max_length": 1024,
+          },
+          "input": "😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀😀",
+          "loc": [
+            "body",
+            "comment",
+          ],
+          "msg": "String should have at most 1024 characters",
+          "type": "string_too_long",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Review validation error: Comment exceeds maximum length",
+    },
+    "status": 400,
+  },
+]
+`;
+
+exports[`reviews comment status without comment key > database changes 1`] = `{}`;
+
+exports[`reviews comment status without comment key > emails 1`] = `[]`;
+
+exports[`reviews comment status without comment key > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Review validation error: Comment is required for 'comment' status",
+    },
+    "status": 400,
+  },
+]
+`;
+
+exports[`reviews create > database changes 1`] = `
+{
+  "reviews": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "anonymous": false,
+        "comment": null,
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "<date>",
+        },
+        "reviewed_username": "dave",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+        "status": "approve",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews create > emails 1`] = `
+[
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/dave'>dave</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>",
+    "subject": "New review: bob → dave",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+]
+`;
+
+exports[`reviews create > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": null,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "dave",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews create anonymous > database changes 1`] = `
+{
+  "reviews": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "anonymous": true,
+        "comment": "hmm",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "<date>",
+        },
+        "reviewed_username": "moddy",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+        "status": "request_change",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+  "watchlist": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "moddy",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews create anonymous > emails 1`] = `
+[
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob (as anonymous)</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/moddy'>moddy</a></p><p><strong>Status:</strong> request_change</p><p><strong>Comment:</strong> hmm</p>",
+    "subject": "New review: bob (as anonymous) → moddy",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+]
+`;
+
+exports[`reviews create anonymous > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": true,
+      "comment": "hmm",
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "moddy",
+      "reviewer_avatar_url": null,
+      "reviewer_username": null,
+      "reviewer_uuid": null,
+      "status": "request_change",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews create business errors > database changes 1`] = `{}`;
+
+exports[`reviews create business errors > emails 1`] = `[]`;
+
+exports[`reviews create business errors > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: alice",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: ALICE",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Action not allowed: acme is not a regular user",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Action not allowed: typeless is not a regular user",
+    },
+    "status": 400,
+  },
+]
+`;
+
+exports[`reviews create by deleted account > database changes 1`] = `{}`;
+
+exports[`reviews create by deleted account > emails 1`] = `[]`;
+
+exports[`reviews create by deleted account > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`reviews create by unknown account > database changes 1`] = `{}`;
+
+exports[`reviews create by unknown account > emails 1`] = `[]`;
+
+exports[`reviews create by unknown account > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`reviews create for unknown profile > database changes 1`] = `
+{
+  "reviews": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "anonymous": false,
+        "comment": null,
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "<date>",
+        },
+        "reviewed_username": "neverseen",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+        "status": "approve",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+  "watchlist": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "neverseen",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews create for unknown profile > emails 1`] = `
+[
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/neverseen'>neverseen</a></p><p><strong>Status:</strong> approve</p><p><strong>Comment:</strong> (no comment)</p>",
+    "subject": "New review: bob → neverseen",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+]
+`;
+
+exports[`reviews create for unknown profile > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": null,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "neverseen",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews create validation > emails 1`] = `[]`;
+
+exports[`reviews create validation > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "reviewed_username",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "status",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "expected": "'approve', 'request_change' or 'comment'",
+          },
+          "input": "bogus",
+          "loc": [
+            "body",
+            "status",
+          ],
+          "msg": "Input should be 'approve', 'request_change' or 'comment'",
+          "type": "enum",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "error": {},
+          },
+          "input": "   ",
+          "loc": [
+            "body",
+            "comment",
+          ],
+          "msg": "Value error, Comment is required",
+          "type": "value_error",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "expected": "'approve', 'request_change' or 'comment'",
+          },
+          "input": "bogus",
+          "loc": [
+            "body",
+            "status",
+          ],
+          "msg": "Input should be 'approve', 'request_change' or 'comment'",
+          "type": "enum",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": 1,
+          "loc": [
+            "body",
+            "reviewed_username",
+          ],
+          "msg": "Input should be a valid string",
+          "type": "string_type",
+        },
+        {
+          "input": 2,
+          "loc": [
+            "body",
+            "comment",
+          ],
+          "msg": "Input should be a valid string",
+          "type": "string_type",
+        },
+        {
+          "input": "maybe",
+          "loc": [
+            "body",
+            "anonymous",
+          ],
+          "msg": "Input should be a valid boolean, unable to interpret input",
+          "type": "bool_parsing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "error": "Invalid JSON",
+          },
+          "input": {},
+          "loc": [
+            "body",
+            0,
+          ],
+          "msg": "JSON decode error",
+          "type": "json_invalid",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": "{}",
+          "loc": [
+            "body",
+          ],
+          "msg": "Input should be a valid dictionary or object to extract fields from",
+          "type": "model_attributes_type",
+        },
+      ],
+    },
+    "status": 422,
+  },
+]
+`;
+
+exports[`reviews create with comment > database changes 1`] = `
+{
+  "reviews": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "anonymous": false,
+        "comment": "Nice
+work fine",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "<date>",
+        },
+        "reviewed_username": "bob",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000003",
+        },
+        "status": "comment",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+  "watchlist": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "bob",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000003",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews create with comment > emails 1`] = `
+[
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Reviewer:</strong> <a href='https://peerhub.dev/CarolX'>CarolX</a></p><p><strong>Reviewed:</strong> <a href='https://peerhub.dev/bob'>bob</a></p><p><strong>Status:</strong> comment</p><p><strong>Comment:</strong> Nice
+work fine</p>",
+    "subject": "New review: CarolX → bob",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+]
+`;
+
+exports[`reviews create with comment > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "Nice
+work fine",
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "bob",
+      "reviewer_avatar_url": "https://avatars.test/carolx.png",
+      "reviewer_username": "CarolX",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000003",
+      "status": "comment",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews create with failing email > database changes 1`] = `
+{
+  "reviews": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "anonymous": false,
+        "comment": null,
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "<date>",
+        },
+        "reviewed_username": "neverseen",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+        "status": "approve",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+  "watchlist": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "neverseen",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews create with failing email > emails 1`] = `[]`;
+
+exports[`reviews create with failing email > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": null,
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "<date>",
+      "id": "<oid>",
+      "reviewed_username": "neverseen",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews delete > database changes 1`] = `
+{
+  "reviews": {
+    "removed": [
+      {
+        "$oid": "650200000000000000000001",
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews delete > emails 1`] = `[]`;
+
+exports[`reviews delete > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": null,
+    "status": 204,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": null,
+    "status": 204,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`reviews hide anonymous > database changes 1`] = `
+{
+  "reviews": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650200000000000000000002",
+        },
+        "anonymous": true,
+        "comment": "secret",
+        "comment_hidden": true,
+        "comment_hidden_by": "alice",
+        "created_at": {
+          "$date": "2024-01-12T03:04:05.123Z",
+        },
+        "reviewed_username": "alice",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000003",
+        },
+        "status": "request_change",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews hide anonymous > emails 1`] = `[]`;
+
+exports[`reviews hide anonymous > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": true,
+      "comment": "secret",
+      "comment_hidden": true,
+      "comment_hidden_by": "user",
+      "created_at": "2024-01-12T03:04:05.123Z",
+      "id": "650200000000000000000002",
+      "reviewed_username": "alice",
+      "reviewer_avatar_url": null,
+      "reviewer_username": null,
+      "reviewer_uuid": null,
+      "status": "request_change",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews hide by moderator > database changes 1`] = `
+{
+  "reviews": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650200000000000000000001",
+        },
+        "anonymous": false,
+        "comment": "Great <b>work</b>",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "2024-01-11T03:04:05.123Z",
+        },
+        "reviewed_username": "alice",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+        "status": "approve",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews hide by moderator > emails 1`] = `[]`;
+
+exports[`reviews hide by moderator > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "Great <b>work</b>",
+      "comment_hidden": true,
+      "comment_hidden_by": "moderator",
+      "created_at": "2024-01-11T03:04:05.123Z",
+      "id": "650200000000000000000001",
+      "reviewed_username": "alice",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Unauthorized: You can only unhide comments that you hid",
+    },
+    "status": 403,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "Great <b>work</b>",
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "2024-01-11T03:04:05.123Z",
+      "id": "650200000000000000000001",
+      "reviewed_username": "alice",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews hide by owner > database changes 1`] = `
+{
+  "reviews": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650200000000000000000001",
+        },
+        "anonymous": false,
+        "comment": "Great <b>work</b>",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "2024-01-11T03:04:05.123Z",
+        },
+        "reviewed_username": "alice",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+        "status": "approve",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews hide by owner > emails 1`] = `[]`;
+
+exports[`reviews hide by owner > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "Great <b>work</b>",
+      "comment_hidden": true,
+      "comment_hidden_by": "user",
+      "created_at": "2024-01-11T03:04:05.123Z",
+      "id": "650200000000000000000001",
+      "reviewed_username": "alice",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Unauthorized: You can only unhide comments that you hid",
+    },
+    "status": 403,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "Great <b>work</b>",
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "2024-01-11T03:04:05.123Z",
+      "id": "650200000000000000000001",
+      "reviewed_username": "alice",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "approve",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews hide case mismatch owner > database changes 1`] = `
+{
+  "reviews": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "65020000000000000000000a",
+        },
+        "anonymous": false,
+        "comment": "owner, other case",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "2024-01-19T03:04:05.123Z",
+        },
+        "reviewed_username": "carolx",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000004",
+        },
+        "status": "comment",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews hide case mismatch owner > emails 1`] = `[]`;
+
+exports[`reviews hide case mismatch owner > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "owner, other case",
+      "comment_hidden": true,
+      "comment_hidden_by": "user",
+      "created_at": "2024-01-19T03:04:05.123Z",
+      "id": "65020000000000000000000a",
+      "reviewed_username": "carolx",
+      "reviewer_avatar_url": "https://avatars.test/moddy.png",
+      "reviewer_username": "moddy",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+      "status": "comment",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "owner, other case",
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "2024-01-19T03:04:05.123Z",
+      "id": "65020000000000000000000a",
+      "reviewed_username": "carolx",
+      "reviewer_avatar_url": "https://avatars.test/moddy.png",
+      "reviewer_username": "moddy",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+      "status": "comment",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews hide errors > database changes 1`] = `{}`;
+
+exports[`reviews hide errors > emails 1`] = `[]`;
+
+exports[`reviews hide errors > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Unauthorized: Only the page owner or moderators can hide/unhide comments",
+    },
+    "status": 403,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Review not found: ffffffffffffffffffffffff",
+    },
+    "status": 404,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Review not found: not-an-id",
+    },
+    "status": 404,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "hidden",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": "x",
+          "loc": [
+            "body",
+            "hidden",
+          ],
+          "msg": "Input should be a valid boolean, unable to interpret input",
+          "type": "bool_parsing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`reviews hide over moderation > database changes 1`] = `{}`;
+
+exports[`reviews hide over moderation > emails 1`] = `[]`;
+
+exports[`reviews hide over moderation > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Unauthorized: This comment was already hidden by a moderator",
+    },
+    "status": 403,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Unauthorized: You can only unhide comments that you hid",
+    },
+    "status": 403,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "id": "650200000000000000000004",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews hide review by deleted author > database changes 1`] = `{}`;
+
+exports[`reviews hide review by deleted author > emails 1`] = `[]`;
+
+exports[`reviews hide review by deleted author > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Review not found: 650200000000000000000005",
+    },
+    "status": 404,
+  },
+]
+`;
+
+exports[`reviews list draft profiles closed > emails 1`] = `[]`;
+
+exports[`reviews list draft profiles closed > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "id": "650200000000000000000008",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "id": "650200000000000000000004",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "id": "650200000000000000000003",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "id": "650200000000000000000002",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "id": "650200000000000000000001",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "id": "650200000000000000000006",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [],
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews list pagination and filters > emails 1`] = `[]`;
+
+exports[`reviews list pagination and filters > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": "comment 17",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-07T03:04:05.123Z",
+          "id": "650200000000000000000075",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan17",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000117",
+          "status": "comment",
+          "updated_at": "2024-02-07T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 16",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-06T03:04:05.123Z",
+          "id": "650200000000000000000074",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan16",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000116",
+          "status": "request_change",
+          "updated_at": "2024-02-06T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 15",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-05T03:04:05.123Z",
+          "id": "650200000000000000000073",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan15",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000115",
+          "status": "approve",
+          "updated_at": "2024-02-05T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 14",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-04T03:04:05.123Z",
+          "id": "650200000000000000000072",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan14",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000114",
+          "status": "comment",
+          "updated_at": "2024-02-04T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 13",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-03T03:04:05.123Z",
+          "id": "650200000000000000000071",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan13",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000113",
+          "status": "request_change",
+          "updated_at": "2024-02-03T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 12",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-02T03:04:05.123Z",
+          "id": "650200000000000000000070",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan12",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000112",
+          "status": "approve",
+          "updated_at": "2024-02-02T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 11",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-01T03:04:05.123Z",
+          "id": "65020000000000000000006f",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan11",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000111",
+          "status": "comment",
+          "updated_at": "2024-02-01T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 10",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-31T03:04:05.123Z",
+          "id": "65020000000000000000006e",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan10",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000110",
+          "status": "request_change",
+          "updated_at": "2024-01-31T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 9",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-30T03:04:05.123Z",
+          "id": "65020000000000000000006d",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan09",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000109",
+          "status": "approve",
+          "updated_at": "2024-01-30T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 8",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-29T03:04:05.123Z",
+          "id": "65020000000000000000006c",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan08",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000108",
+          "status": "comment",
+          "updated_at": "2024-01-29T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 7",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-28T03:04:05.123Z",
+          "id": "65020000000000000000006b",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan07",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000107",
+          "status": "request_change",
+          "updated_at": "2024-01-28T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 6",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-27T03:04:05.123Z",
+          "id": "65020000000000000000006a",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan06",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000106",
+          "status": "approve",
+          "updated_at": "2024-01-27T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 5",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-26T03:04:05.123Z",
+          "id": "650200000000000000000069",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan05",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000105",
+          "status": "comment",
+          "updated_at": "2024-01-26T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 4",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-25T03:04:05.123Z",
+          "id": "650200000000000000000068",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan04",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000104",
+          "status": "request_change",
+          "updated_at": "2024-01-25T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 3",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-24T03:04:05.123Z",
+          "id": "650200000000000000000067",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan03",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000103",
+          "status": "approve",
+          "updated_at": "2024-01-24T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 2",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-23T03:04:05.123Z",
+          "id": "650200000000000000000066",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan02",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000102",
+          "status": "comment",
+          "updated_at": "2024-01-23T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": "comment 2",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-23T03:04:05.123Z",
+          "id": "650200000000000000000066",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan02",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000102",
+          "status": "comment",
+          "updated_at": "2024-01-23T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 1",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-22T03:04:05.123Z",
+          "id": "650200000000000000000065",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan01",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000101",
+          "status": "request_change",
+          "updated_at": "2024-01-22T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 0",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-21T03:04:05.123Z",
+          "id": "650200000000000000000064",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan00",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000100",
+          "status": "approve",
+          "updated_at": "2024-01-21T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": true,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": "comment 15",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-05T03:04:05.123Z",
+          "id": "650200000000000000000073",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan15",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000115",
+          "status": "approve",
+          "updated_at": "2024-02-05T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 12",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-02-02T03:04:05.123Z",
+          "id": "650200000000000000000070",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan12",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000112",
+          "status": "approve",
+          "updated_at": "2024-02-02T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "comment 9",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-30T03:04:05.123Z",
+          "id": "65020000000000000000006d",
+          "reviewed_username": "popular",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "fan09",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000109",
+          "status": "approve",
+          "updated_at": "2024-01-30T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "expected": "'approve', 'request_change' or 'comment'",
+          },
+          "input": "bogus",
+          "loc": [
+            "query",
+            "status",
+          ],
+          "msg": "Input should be 'approve', 'request_change' or 'comment'",
+          "type": "literal_error",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "expected": "'approve', 'request_change' or 'comment'",
+          },
+          "input": "",
+          "loc": [
+            "query",
+            "status",
+          ],
+          "msg": "Input should be 'approve', 'request_change' or 'comment'",
+          "type": "literal_error",
+        },
+      ],
+    },
+    "status": 422,
+  },
+]
+`;
+
+exports[`reviews list validation > emails 1`] = `[]`;
+
+exports[`reviews list validation > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "ge": 1,
+          },
+          "input": "0",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be greater than or equal to 1",
+          "type": "greater_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "le": 128,
+          },
+          "input": "129",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be less than or equal to 128",
+          "type": "less_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "ge": 0,
+          },
+          "input": "-1",
+          "loc": [
+            "query",
+            "offset",
+          ],
+          "msg": "Input should be greater than or equal to 0",
+          "type": "greater_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+]
+`;
+
+exports[`reviews list visibility > emails 1`] = `[]`;
+
+exports[`reviews list visibility > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "id": "650200000000000000000004",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "id": "650200000000000000000003",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "id": "650200000000000000000002",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "id": "650200000000000000000001",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "id": "650200000000000000000006",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "id": "650200000000000000000004",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "hidden by owner",
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "id": "650200000000000000000003",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "id": "650200000000000000000002",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "id": "650200000000000000000001",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "id": "650200000000000000000006",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": "hidden by mod",
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "id": "650200000000000000000004",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "id": "650200000000000000000003",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "id": "650200000000000000000002",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "id": "650200000000000000000001",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "id": "650200000000000000000006",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "moderator",
+          "created_at": "2024-01-14T03:04:05.123Z",
+          "id": "650200000000000000000004",
+          "reviewed_username": "ALICE",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "modtwo",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+          "status": "comment",
+          "updated_at": "2024-01-14T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "hidden by owner",
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-13T03:04:05.123Z",
+          "id": "650200000000000000000003",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-13T03:04:05.456Z",
+        },
+        {
+          "anonymous": true,
+          "comment": "secret",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-12T03:04:05.123Z",
+          "id": "650200000000000000000002",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-12T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "Great <b>work</b>",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-11T03:04:05.123Z",
+          "id": "650200000000000000000001",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "approve",
+          "updated_at": "2024-01-11T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-10T03:04:05.123Z",
+          "id": "650200000000000000000006",
+          "reviewed_username": "alice",
+          "reviewer_avatar_url": null,
+          "reviewer_username": "legacy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+          "status": "approve",
+          "updated_at": "2024-01-10T03:04:05.123Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-19T03:04:05.123Z",
+          "id": "65020000000000000000000a",
+          "reviewed_username": "carolx",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-19T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-18T03:04:05.123Z",
+          "id": "650200000000000000000009",
+          "reviewed_username": "CarolX",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "comment",
+          "updated_at": "2024-01-18T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": false,
+          "comment": "owner, other case",
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-19T03:04:05.123Z",
+          "id": "65020000000000000000000a",
+          "reviewed_username": "carolx",
+          "reviewer_avatar_url": "https://avatars.test/moddy.png",
+          "reviewer_username": "moddy",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+          "status": "comment",
+          "updated_at": "2024-01-19T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": "owner hid this",
+          "comment_hidden": true,
+          "comment_hidden_by": "user",
+          "created_at": "2024-01-18T03:04:05.123Z",
+          "id": "650200000000000000000009",
+          "reviewed_username": "CarolX",
+          "reviewer_avatar_url": "https://avatars.test/bob.png",
+          "reviewer_username": "bob",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+          "status": "comment",
+          "updated_at": "2024-01-18T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [
+        {
+          "anonymous": true,
+          "comment": "anon draft",
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-17T03:04:05.123Z",
+          "id": "650200000000000000000008",
+          "reviewed_username": "Dave",
+          "reviewer_avatar_url": null,
+          "reviewer_username": null,
+          "reviewer_uuid": null,
+          "status": "request_change",
+          "updated_at": "2024-01-17T03:04:05.456Z",
+        },
+        {
+          "anonymous": false,
+          "comment": null,
+          "comment_hidden": false,
+          "comment_hidden_by": null,
+          "created_at": "2024-01-16T03:04:05.123Z",
+          "id": "650200000000000000000007",
+          "reviewed_username": "dave",
+          "reviewer_avatar_url": "https://avatars.test/alice.png",
+          "reviewer_username": "alice",
+          "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+          "status": "approve",
+          "updated_at": "2024-01-16T03:04:05.456Z",
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "has_more": false,
+      "items": [],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`reviews rate limit > emails 1`] = `[]`;
+
+exports[`reviews rate limit > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "error": "Rate limit exceeded: 5 per 1 minute",
+    },
+    "status": 429,
+  },
+]
+`;
+
+exports[`reviews rate limit ignores 401 and 422 > emails 1`] = `[]`;
+
+exports[`reviews rate limit ignores 401 and 422 > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "reviewed_username",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "status",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "reviewed_username",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "status",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "reviewed_username",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "status",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot review yourself: bob",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "error": "Rate limit exceeded: 5 per 1 minute",
+    },
+    "status": 429,
+  },
+]
+`;
+
+exports[`reviews reviewers > emails 1`] = `[]`;
+
+exports[`reviews reviewers > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "anonymous": false,
+        "id": "650200000000000000000004",
+        "reviewed_username": "ALICE",
+        "reviewer_avatar_url": null,
+        "reviewer_username": "modtwo",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+        "status": "comment",
+        "updated_at": "2024-01-14T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "id": "650200000000000000000003",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": "https://avatars.test/moddy.png",
+        "reviewer_username": "moddy",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+        "status": "comment",
+        "updated_at": "2024-01-13T03:04:05.456Z",
+      },
+      {
+        "anonymous": true,
+        "id": "650200000000000000000002",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": null,
+        "reviewer_username": null,
+        "reviewer_uuid": null,
+        "status": "request_change",
+        "updated_at": "2024-01-12T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "id": "650200000000000000000001",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": "https://avatars.test/bob.png",
+        "reviewer_username": "bob",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+        "status": "approve",
+        "updated_at": "2024-01-11T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "id": "650200000000000000000006",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": null,
+        "reviewer_username": "legacy",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+        "status": "approve",
+        "updated_at": "2024-01-10T03:04:05.123Z",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "anonymous": false,
+        "id": "650200000000000000000004",
+        "reviewed_username": "ALICE",
+        "reviewer_avatar_url": null,
+        "reviewer_username": "modtwo",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000005",
+        "status": "comment",
+        "updated_at": "2024-01-14T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "id": "650200000000000000000003",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": "https://avatars.test/moddy.png",
+        "reviewer_username": "moddy",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+        "status": "comment",
+        "updated_at": "2024-01-13T03:04:05.456Z",
+      },
+      {
+        "anonymous": true,
+        "id": "650200000000000000000002",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": null,
+        "reviewer_username": null,
+        "reviewer_uuid": null,
+        "status": "request_change",
+        "updated_at": "2024-01-12T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "id": "650200000000000000000001",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": "https://avatars.test/bob.png",
+        "reviewer_username": "bob",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+        "status": "approve",
+        "updated_at": "2024-01-11T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "id": "650200000000000000000006",
+        "reviewed_username": "alice",
+        "reviewer_avatar_url": null,
+        "reviewer_username": "legacy",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000008",
+        "status": "approve",
+        "updated_at": "2024-01-10T03:04:05.123Z",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "anonymous": true,
+        "id": "650200000000000000000008",
+        "reviewed_username": "Dave",
+        "reviewer_avatar_url": null,
+        "reviewer_username": null,
+        "reviewer_uuid": null,
+        "status": "request_change",
+        "updated_at": "2024-01-17T03:04:05.456Z",
+      },
+      {
+        "anonymous": false,
+        "id": "650200000000000000000007",
+        "reviewed_username": "dave",
+        "reviewer_avatar_url": "https://avatars.test/alice.png",
+        "reviewer_username": "alice",
+        "reviewer_uuid": "a0000000-0000-4000-8000-000000000001",
+        "status": "approve",
+        "updated_at": "2024-01-16T03:04:05.456Z",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`reviews reviewers draft profiles closed > emails 1`] = `[]`;
+
+exports[`reviews reviewers draft profiles closed > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "anonymous": true,
+        "id": "650200000000000000000008",
+        "reviewed_username": "Dave",
+        "reviewer_avatar_url": null,
+        "reviewer_username": null,
+        "reviewer_uuid": null,
+        "status": "request_change",
+        "updated_at": "2024-01-17T03:04:05.456Z",
+      },
+    ],
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews suggestions > emails 1`] = `[]`;
+
+exports[`reviews suggestions > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "avatar_url": "https://avatars.test/carol.png",
+        "username": "CarolX",
+      },
+      {
+        "avatar_url": null,
+        "username": "moddy",
+      },
+      {
+        "avatar_url": "https://avatars.test/popular.png",
+        "username": "popular",
+      },
+      {
+        "avatar_url": "https://avatars.test/pm.png",
+        "username": "PopularMixed",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "avatar_url": "https://avatars.test/carol.png",
+        "username": "CarolX",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub API error: Failed to fetch GitHub following list",
+    },
+    "status": 502,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub access token is missing",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "le": 16,
+          },
+          "input": "17",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be less than or equal to 16",
+          "type": "less_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`reviews update > database changes 1`] = `
+{
+  "reviews": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650200000000000000000001",
+        },
+        "anonymous": false,
+        "comment": "changed",
+        "comment_hidden": false,
+        "comment_hidden_by": null,
+        "created_at": {
+          "$date": "2024-01-11T03:04:05.123Z",
+        },
+        "reviewed_username": "alice",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+        "status": "request_change",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+  "watchlist": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "ALICE",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000002",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews update > emails 1`] = `[]`;
+
+exports[`reviews update > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": "changed",
+      "comment_hidden": false,
+      "comment_hidden_by": null,
+      "created_at": "2024-01-11T03:04:05.123Z",
+      "id": "650200000000000000000001",
+      "reviewed_username": "alice",
+      "reviewer_avatar_url": "https://avatars.test/bob.png",
+      "reviewer_username": "bob",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000002",
+      "status": "request_change",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`reviews update cannot change anonymity > database changes 1`] = `{}`;
+
+exports[`reviews update cannot change anonymity > emails 1`] = `[]`;
+
+exports[`reviews update cannot change anonymity > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot change anonymous status after review creation",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot change anonymous status after review creation",
+    },
+    "status": 400,
+  },
+]
+`;
+
+exports[`reviews update keeps hidden state > database changes 1`] = `
+{
+  "reviews": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650200000000000000000003",
+        },
+        "anonymous": false,
+        "comment": "edited",
+        "comment_hidden": true,
+        "comment_hidden_by": "alice",
+        "created_at": {
+          "$date": "2024-01-13T03:04:05.123Z",
+        },
+        "reviewed_username": "alice",
+        "reviewer_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000004",
+        },
+        "status": "comment",
+        "updated_at": {
+          "$date": "<date>",
+        },
+      },
+    ],
+  },
+  "watchlist": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "alice",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000004",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`reviews update keeps hidden state > emails 1`] = `[]`;
+
+exports[`reviews update keeps hidden state > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "anonymous": false,
+      "comment": null,
+      "comment_hidden": true,
+      "comment_hidden_by": "user",
+      "created_at": "2024-01-13T03:04:05.123Z",
+      "id": "650200000000000000000003",
+      "reviewed_username": "alice",
+      "reviewer_avatar_url": "https://avatars.test/moddy.png",
+      "reviewer_username": "moddy",
+      "reviewer_uuid": "a0000000-0000-4000-8000-000000000004",
+      "status": "comment",
+      "updated_at": "<date>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users auth url > emails 1`] = `[]`;
+
+exports[`users auth url > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "url": "https://github.com/login/oauth/authorize?client_id=client-id&redirect_uri=http://localhost:5173/oauth/callback&scope=read:user user:email",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users exchange existing account > database changes 1`] = `
+{
+  "accounts": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650100000000000000000001",
+        },
+        "access_token": "gho_alice_new",
+        "created_at": {
+          "$date": "2024-01-02T03:04:05.123Z",
+        },
+        "deleted_at": null,
+        "email": "alice-new@example.test",
+        "username": "alice",
+        "uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000001",
+        },
+      },
+    ],
+  },
+  "users": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650300000000000000000001",
+        },
+        "avatar_url": "https://avatars.test/alice-new.png",
+        "bio": null,
+        "name": "Alice Renamed",
+        "type": "User",
+        "updated_at": {
+          "$date": "2099-01-01T00:00:00Z",
+        },
+        "username": "alice",
+      },
+    ],
+  },
+}
+`;
+
+exports[`users exchange existing account > emails 1`] = `[]`;
+
+exports[`users exchange existing account > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "token": "<jwt>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users exchange failures > database changes 1`] = `{}`;
+
+exports[`users exchange failures > emails 1`] = `[]`;
+
+exports[`users exchange failures > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authorization code not provided.",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub API error: Failed to get access token from GitHub.",
+    },
+    "status": 502,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub API error: Failed to get access token from GitHub.",
+    },
+    "status": 502,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub API error: Failed to fetch user data from GitHub.",
+    },
+    "status": 502,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authentication failed",
+    },
+    "status": 400,
+  },
+]
+`;
+
+exports[`users exchange new account > database changes 1`] = `
+{
+  "accounts": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "access_token": "gho_newbie",
+        "created_at": {
+          "$date": "<date>",
+        },
+        "deleted_at": null,
+        "email": null,
+        "username": "newbie",
+        "uuid": {
+          "$uuid": "<uuid>",
+        },
+      },
+    ],
+  },
+  "users": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "avatar_url": "https://avatars.test/newbie.png",
+        "bio": "hi",
+        "name": null,
+        "type": "User",
+        "updated_at": {
+          "$date": "<date>",
+        },
+        "username": "newbie",
+      },
+    ],
+  },
+}
+`;
+
+exports[`users exchange new account > emails 1`] = `
+[
+  {
+    "from": "PeerHub <sender@example.test>",
+    "html": "<p><strong>Username:</strong> <a href='https://peerhub.dev/newbie'>newbie</a></p>",
+    "subject": "New account: newbie",
+    "to": [
+      "abuse@example.test",
+    ],
+  },
+]
+`;
+
+exports[`users exchange new account > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "token": "<jwt>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users exchange new account with failing email > database changes 1`] = `
+{
+  "accounts": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "access_token": "gho_newbie",
+        "created_at": {
+          "$date": "<date>",
+        },
+        "deleted_at": null,
+        "email": null,
+        "username": "newbie",
+        "uuid": {
+          "$uuid": "<uuid>",
+        },
+      },
+    ],
+  },
+  "users": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "avatar_url": "https://avatars.test/newbie.png",
+        "bio": "hi",
+        "name": null,
+        "type": "User",
+        "updated_at": {
+          "$date": "<date>",
+        },
+        "username": "newbie",
+      },
+    ],
+  },
+}
+`;
+
+exports[`users exchange new account with failing email > emails 1`] = `[]`;
+
+exports[`users exchange new account with failing email > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "token": "<jwt>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users exchange rate limit > emails 1`] = `[]`;
+
+exports[`users exchange rate limit > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authorization code not provided.",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authorization code not provided.",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authorization code not provided.",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authorization code not provided.",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authorization code not provided.",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "error": "Rate limit exceeded: 5 per 1 minute",
+    },
+    "status": 429,
+  },
+]
+`;
+
+exports[`users exchange rate limit ignores invalid bodies > emails 1`] = `[]`;
+
+exports[`users exchange rate limit ignores invalid bodies > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Authorization code not provided.",
+    },
+    "status": 400,
+  },
+]
+`;
+
+exports[`users exchange reactivates deleted account > database changes 1`] = `
+{
+  "accounts": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650100000000000000000006",
+        },
+        "access_token": "gho_ghost_new",
+        "created_at": {
+          "$date": "2024-01-07T03:04:05.123Z",
+        },
+        "deleted_at": null,
+        "email": "ghost@example.test",
+        "username": "ghost",
+        "uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000006",
+        },
+      },
+    ],
+  },
+  "users": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650300000000000000000005",
+        },
+        "avatar_url": "https://avatars.test/ghost.png",
+        "bio": null,
+        "name": "Ghost",
+        "type": "User",
+        "updated_at": {
+          "$date": "2099-01-01T00:00:00Z",
+        },
+        "username": "ghost",
+      },
+    ],
+  },
+}
+`;
+
+exports[`users exchange reactivates deleted account > emails 1`] = `[]`;
+
+exports[`users exchange reactivates deleted account > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "token": "<jwt>",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users exchange validation > emails 1`] = `[]`;
+
+exports[`users exchange validation > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": 5,
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Input should be a valid string",
+          "type": "string_type",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": null,
+          "loc": [
+            "body",
+            "code",
+          ],
+          "msg": "Input should be a valid string",
+          "type": "string_type",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": [],
+          "loc": [
+            "body",
+          ],
+          "msg": "Input should be a valid dictionary or object to extract fields from",
+          "type": "model_attributes_type",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": null,
+          "loc": [
+            "body",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "error": "Invalid JSON",
+          },
+          "input": {},
+          "loc": [
+            "body",
+            1,
+          ],
+          "msg": "JSON decode error",
+          "type": "json_invalid",
+        },
+      ],
+    },
+    "status": 422,
+  },
+]
+`;
+
+exports[`users get cached > database changes 1`] = `{}`;
+
+exports[`users get cached > emails 1`] = `[]`;
+
+exports[`users get cached > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/alice.png",
+      "bio": "alice bio",
+      "created_at": "2024-01-02T03:04:05.123Z",
+      "deleted_at": null,
+      "name": "alice name",
+      "type": "User",
+      "username": "alice",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/alice.png",
+      "bio": "alice bio",
+      "created_at": "2024-01-02T03:04:05.123Z",
+      "deleted_at": null,
+      "name": "alice name",
+      "type": "User",
+      "username": "alice",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/dave.png",
+      "bio": "dave bio",
+      "created_at": null,
+      "deleted_at": null,
+      "name": "dave name",
+      "type": "User",
+      "username": "dave",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/ghost.png",
+      "bio": "ghost bio",
+      "created_at": "2024-01-07T03:04:05.123Z",
+      "deleted_at": "2024-02-10T03:04:05.123Z",
+      "name": "ghost name",
+      "type": "User",
+      "username": "ghost",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/acme.png",
+      "bio": "acme bio",
+      "created_at": null,
+      "deleted_at": null,
+      "name": "acme name",
+      "type": "Organization",
+      "username": "acme",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": null,
+      "bio": null,
+      "created_at": null,
+      "deleted_at": null,
+      "name": null,
+      "type": null,
+      "username": "legacyuser",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users get creates uncached > database changes 1`] = `
+{
+  "users": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "avatar_url": "https://avatars.test/brandnew.png",
+        "bio": null,
+        "name": "Brand New",
+        "type": "User",
+        "updated_at": {
+          "$date": "<date>",
+        },
+        "username": "BrandNew",
+      },
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "avatar_url": null,
+        "bio": null,
+        "name": null,
+        "type": "Organization",
+        "updated_at": {
+          "$date": "<date>",
+        },
+        "username": "neworg",
+      },
+    ],
+  },
+}
+`;
+
+exports[`users get creates uncached > emails 1`] = `[]`;
+
+exports[`users get creates uncached > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/brandnew.png",
+      "bio": null,
+      "created_at": null,
+      "deleted_at": null,
+      "name": "Brand New",
+      "type": "User",
+      "username": "BrandNew",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": null,
+      "bio": null,
+      "created_at": null,
+      "deleted_at": null,
+      "name": null,
+      "type": "Organization",
+      "username": "neworg",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users get failures > database changes 1`] = `{}`;
+
+exports[`users get failures > emails 1`] = `[]`;
+
+exports[`users get failures > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "User not found: missing",
+    },
+    "status": 404,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub API error: Failed to fetch GitHub user",
+    },
+    "status": 502,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`users get stale refreshes from github > database changes 1`] = `
+{
+  "users": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "65030000000000000000000a",
+        },
+        "avatar_url": "https://avatars.test/stale-new.png",
+        "bio": "fresh bio",
+        "name": "Stale Updated",
+        "type": "User",
+        "updated_at": {
+          "$date": "<date>",
+        },
+        "username": "stale",
+      },
+    ],
+  },
+}
+`;
+
+exports[`users get stale refreshes from github > emails 1`] = `[]`;
+
+exports[`users get stale refreshes from github > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/stale-new.png",
+      "bio": "fresh bio",
+      "created_at": null,
+      "deleted_at": null,
+      "name": "Stale Updated",
+      "type": "User",
+      "username": "stale",
+    },
+    "status": 200,
+  },
+]
+`;
+
+exports[`users refresh other or different case > database changes 1`] = `{}`;
+
+exports[`users refresh other or different case > emails 1`] = `[]`;
+
+exports[`users refresh other or different case > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "You can only refresh your own profile data.",
+    },
+    "status": 403,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "You can only refresh your own profile data.",
+    },
+    "status": 403,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`users refresh own > database changes 1`] = `
+{
+  "users": {
+    "changed": [
+      {
+        "_id": {
+          "$oid": "650300000000000000000001",
+        },
+        "avatar_url": "https://avatars.test/alice-r.png",
+        "bio": "refreshed",
+        "name": "Alice Refreshed",
+        "type": "User",
+        "updated_at": {
+          "$date": "<date>",
+        },
+        "username": "alice",
+      },
+    ],
+  },
+}
+`;
+
+exports[`users refresh own > emails 1`] = `[]`;
+
+exports[`users refresh own > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "avatar_url": "https://avatars.test/alice-r.png",
+      "bio": "refreshed",
+      "created_at": "2024-01-02T03:04:05.123Z",
+      "deleted_at": null,
+      "name": "Alice Refreshed",
+      "type": "User",
+      "username": "alice",
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "error": "Rate limit exceeded: 1 per 1 hour",
+    },
+    "status": 429,
+  },
+]
+`;
+
+exports[`users search > emails 1`] = `[]`;
+
+exports[`users search > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "users": [
+        {
+          "avatar_url": "https://avatars.test/alice.png",
+          "login": "alice",
+          "type": "User",
+        },
+        {
+          "avatar_url": "https://avatars.test/alina.png",
+          "login": "Alina",
+          "type": null,
+        },
+      ],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "users": [],
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub API error: Failed to search GitHub users",
+    },
+    "status": 502,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "GitHub API error: Failed to search GitHub users",
+    },
+    "status": 502,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": null,
+          "loc": [
+            "query",
+            "q",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`users search rate limit > emails 1`] = `[]`;
+
+exports[`users search rate limit > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "error": "Rate limit exceeded: 30 per 1 minute",
+    },
+    "status": 429,
+  },
+]
+`;
+
+exports[`watchlist add > database changes 1`] = `
+{
+  "watchlist": {
+    "added": [
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "CarolX",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000001",
+        },
+      },
+      {
+        "_id": {
+          "$oid": "<oid>",
+        },
+        "created_at": {
+          "$date": "<date>",
+        },
+        "watched_username": "neverseen",
+        "watcher_uuid": {
+          "$uuid": "a0000000-0000-4000-8000-000000000001",
+        },
+      },
+    ],
+  },
+}
+`;
+
+exports[`watchlist add > emails 1`] = `[]`;
+
+exports[`watchlist add > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "message": "Watched successfully",
+    },
+    "status": 201,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "message": "Watched successfully",
+    },
+    "status": 201,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "message": "Watched successfully",
+    },
+    "status": 201,
+  },
+]
+`;
+
+exports[`watchlist add errors > database changes 1`] = `{}`;
+
+exports[`watchlist add errors > emails 1`] = `[]`;
+
+exports[`watchlist add errors > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Cannot watch yourself: Alice",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": "Action not allowed: acme is not a regular user",
+    },
+    "status": 400,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": {},
+          "loc": [
+            "body",
+            "username",
+          ],
+          "msg": "Field required",
+          "type": "missing",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "input": [
+            "x",
+          ],
+          "loc": [
+            "body",
+            "username",
+          ],
+          "msg": "Input should be a valid string",
+          "type": "string_type",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`watchlist check > emails 1`] = `[]`;
+
+exports[`watchlist check > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "is_watching": true,
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "is_watching": true,
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "is_watching": false,
+    },
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`watchlist get > emails 1`] = `[]`;
+
+exports[`watchlist get > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "created_at": "2024-02-02T03:04:05.123Z",
+        "id": "650400000000000000000003",
+        "watched_avatar_url": null,
+        "watched_name": null,
+        "watched_username": "neverseenprofile",
+      },
+      {
+        "created_at": "2024-02-01T03:04:05.123Z",
+        "id": "650400000000000000000002",
+        "watched_avatar_url": "https://avatars.test/dave.png",
+        "watched_name": "dave name",
+        "watched_username": "dave",
+      },
+      {
+        "created_at": "2024-01-31T03:04:05.123Z",
+        "id": "650400000000000000000001",
+        "watched_avatar_url": "https://avatars.test/bob.png",
+        "watched_name": "bob name",
+        "watched_username": "bob",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "created_at": "2024-02-01T03:04:05.123Z",
+        "id": "650400000000000000000002",
+        "watched_avatar_url": "https://avatars.test/dave.png",
+        "watched_name": "dave name",
+        "watched_username": "dave",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": [
+      {
+        "created_at": "2024-02-05T03:04:05.123Z",
+        "id": "650400000000000000000006",
+        "watched_avatar_url": "https://avatars.test/ghost.png",
+        "watched_name": "ghost name",
+        "watched_username": "ghost",
+      },
+    ],
+    "status": 200,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Could not validate credentials",
+    },
+    "status": 401,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "ge": 1,
+          },
+          "input": "0",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be greater than or equal to 1",
+          "type": "greater_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "le": 500,
+          },
+          "input": "501",
+          "loc": [
+            "query",
+            "limit",
+          ],
+          "msg": "Input should be less than or equal to 500",
+          "type": "less_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": {
+      "detail": [
+        {
+          "ctx": {
+            "ge": 0,
+          },
+          "input": "-1",
+          "loc": [
+            "query",
+            "offset",
+          ],
+          "msg": "Input should be greater than or equal to 0",
+          "type": "greater_than_equal",
+        },
+      ],
+    },
+    "status": 422,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;
+
+exports[`watchlist remove > database changes 1`] = `
+{
+  "watchlist": {
+    "removed": [
+      {
+        "$oid": "650400000000000000000001",
+      },
+    ],
+  },
+}
+`;
+
+exports[`watchlist remove > emails 1`] = `[]`;
+
+exports[`watchlist remove > responses 1`] = `
+[
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": null,
+    "status": 204,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "json": null,
+    "status": 204,
+  },
+  {
+    "headers": {
+      "content-type": "application/json",
+      "www-authenticate": "Bearer",
+    },
+    "json": {
+      "detail": "Not authenticated",
+    },
+    "status": 401,
+  },
+]
+`;

@@ -72,7 +72,6 @@ export class GetSuggestionsUseCase {
       suggestions.push({
         ...candidate,
         hasOpenAccount: existing !== undefined,
-        // Task 52: counts are keyed by the stored spelling, not by lowercase.
         reviewCount: reviewCounts.get(key) ?? 0,
       })
     }

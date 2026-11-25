@@ -16,7 +16,7 @@ interface StubRoute {
 }
 
 const routes = JSON.parse(
-  readFileSync(new URL('../../contract/github-stub.json', import.meta.url), 'utf8'),
+  readFileSync(new URL('../fixtures/github.json', import.meta.url), 'utf8'),
 ) as StubRoute[]
 
 export interface GitHubStub {
@@ -26,7 +26,7 @@ export interface GitHubStub {
   close(): void
 }
 
-/** GitHub as seen when the Python backend was recorded. */
+/** GitHub, as described in tests/fixtures/github.json. */
 export async function startGitHubStub(): Promise<GitHubStub> {
   const unmatched: string[] = []
   const server = createServer((req, res) => {

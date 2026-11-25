@@ -1,3 +1,4 @@
+import { setTimeout } from 'node:timers/promises'
 import { MongoClient, type Db, type IndexDescription } from 'mongodb'
 import type { Settings } from '../config/config.ts'
 
@@ -48,12 +49,12 @@ export async function connectDatabase(
 
 const PING_TIMEOUT_MS = 2000
 
-/** Check that the server answers. Task 57: opens a connection of its own every time. */
-export async function pingDatabase(settings: Pick<Settings, 'MONGO_URI'>): Promise<void> {
-  const client = new MongoClient(settings.MONGO_URI, { serverSelectionTimeoutMS: PING_TIMEOUT_MS })
-  try {
-    await client.db('admin').command({ ping: 1 })
-  } finally {
-    await client.close()
-  }
+/** Check that the server answers, within the time a health check can wait. */
+export async function pingDatabase(db: Db): Promise<void> {
+  const ping = db.command({ ping: 1 })
+  // The driver can wait longer than this, for instance while it connects.
+  const giveUp = setTimeout(PING_TIMEOUT_MS, undefined, { ref: false }).then(() => {
+    throw new Error(`Database did not answer in ${PING_TIMEOUT_MS} ms`)
+  })
+  await Promise.race([ping, giveUp])
 }

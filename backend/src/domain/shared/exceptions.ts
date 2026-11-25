@@ -8,6 +8,14 @@ export abstract class DomainException extends Error {
   }
 }
 
+/** A stored entity already has the same unique key. Not shown to clients as such. */
+export class DuplicateEntityError extends Error {
+  constructor(cause: unknown) {
+    super('Entity already exists', { cause })
+    this.name = 'DuplicateEntityError'
+  }
+}
+
 export class AccountNotFoundException extends DomainException {
   readonly statusCode = 404
 

@@ -1,9 +1,10 @@
 import { randomUUID } from 'node:crypto'
 import { beforeEach, describe, expect, test } from 'vitest'
-import { ReviewStatus } from '../../../../../src/domain/reviews/entities/review.ts'
+import { ReviewStatus, type Review } from '../../../../../src/domain/reviews/entities/review.ts'
 import type { CreateOrUpdateReview } from '../../../../../src/domain/reviews/services/review_service.ts'
 import {
   AnonymousFieldImmutableException,
+  DuplicateEntityError,
   NotUserTypeException,
   ReviewValidationException,
   SelfReviewException,
@@ -60,6 +61,39 @@ describe('createOrUpdateReview', () => {
     })
     expect(domain.repositories.reviews.update).toHaveBeenCalledExactlyOnceWith(existing)
     expect(domain.repositories.reviews.create).not.toHaveBeenCalled()
+  })
+
+  describe('when another request creates the review first', () => {
+    const created = () => makeReview({ reviewerUuid: reviewer.uuid })
+    beforeEach(() => {
+      domain.repositories.reviews.create.mockRejectedValue(new DuplicateEntityError(null))
+    })
+    const race = (second: Review | null) =>
+      domain.repositories.reviews.getByReviewerAndUsername
+        .mockResolvedValueOnce(null)
+        .mockResolvedValueOnce(second)
+
+    test('updates it', async () => {
+      race(created())
+      const { review, isNew } = await submit({ comment: 'mine' })
+      expect(isNew).toBe(false)
+      expect(review).toMatchObject({ id: 'r1', comment: 'mine' })
+    })
+
+    test('still refuses to change anonymity', async () => {
+      race(created())
+      await expect(submit({ anonymous: true })).rejects.toThrow(AnonymousFieldImmutableException)
+    })
+
+    test('fails if it is gone again', async () => {
+      race(null)
+      await expect(submit()).rejects.toThrow(DuplicateEntityError)
+    })
+  })
+
+  test('other failures to create are not hidden', async () => {
+    domain.repositories.reviews.create.mockRejectedValue(new Error('db down'))
+    await expect(submit()).rejects.toThrow('db down')
   })
 
   test('refuses to review yourself, whatever the case', async () => {

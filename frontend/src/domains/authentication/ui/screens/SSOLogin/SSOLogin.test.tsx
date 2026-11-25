@@ -17,11 +17,13 @@ vi.mock('react-router', async () => {
 
 const mockExchangeCodeForToken = vi.fn()
 const mockStoreToken = vi.fn()
+const mockConsumeOAuthState = vi.fn()
 
 vi.mock('@domains/authentication/application/services/authenticationService', () => ({
   default: {
     exchangeCodeForToken: (...args: unknown[]) => mockExchangeCodeForToken(...args),
     storeToken: (...args: unknown[]) => mockStoreToken(...args),
+    consumeOAuthState: (...args: unknown[]) => mockConsumeOAuthState(...args),
   },
 }))
 
@@ -38,6 +40,7 @@ function renderSSOLogin(searchParams = '') {
 describe('SSOLogin', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockConsumeOAuthState.mockReturnValue(true)
     localStorage.clear()
     localStorage.removeItem('theme-mode')
   })
@@ -51,13 +54,26 @@ describe('SSOLogin', () => {
   it('exchanges code for token and redirects on success', async () => {
     mockExchangeCodeForToken.mockResolvedValue('jwt-token-123')
 
-    renderSSOLogin('?code=test-code')
+    renderSSOLogin('?code=test-code&state=the-state')
 
     await waitFor(() => {
+      expect(mockConsumeOAuthState).toHaveBeenCalledExactlyOnceWith('the-state')
       expect(mockExchangeCodeForToken).toHaveBeenCalledWith('test-code')
       expect(mockStoreToken).toHaveBeenCalledWith('jwt-token-123')
       expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true })
     })
+  })
+
+  it('does not use a code that was not asked for in this tab', async () => {
+    mockConsumeOAuthState.mockReturnValue(false)
+
+    renderSSOLogin('?code=code-of-somebody-else&state=forged')
+
+    await waitFor(() => {
+      expect(mockNavigate).toHaveBeenCalledWith('/', { replace: true, state: { authError: true } })
+    })
+    expect(mockExchangeCodeForToken).not.toHaveBeenCalled()
+    expect(mockStoreToken).not.toHaveBeenCalled()
   })
 
   it('redirects with error state when no code present', async () => {

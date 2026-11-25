@@ -83,10 +83,14 @@ describe('loadSettings', () => {
   })
 
   test('requires an explicit secret key in production', () => {
-    expect(() => load({ ENVIRONMENT: 'production' })).toThrow('SECRET_KEY must be explicitly set')
-    expect(load({ ENVIRONMENT: 'production', SECRET_KEY: 'x'.repeat(64) }).SECRET_KEY).toHaveLength(
-      64,
-    )
+    expect(() => load({ ENVIRONMENT: 'production' })).toThrow('SECRET_KEY: must be explicitly set')
+    expect(() => load({ ENVIRONMENT: 'production', SECRET_KEY: '' })).toThrow('SECRET_KEY')
+  })
+
+  // 43 characters is what generators of 32 bytes in base64url produce.
+  test.each([43, 64])('accepts a secret key of %d characters in production', (length) => {
+    const SECRET_KEY = 'x'.repeat(length)
+    expect(load({ ENVIRONMENT: 'production', SECRET_KEY }).SECRET_KEY).toBe(SECRET_KEY)
   })
 })
 
