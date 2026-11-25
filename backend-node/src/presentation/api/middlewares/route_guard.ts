@@ -1,6 +1,6 @@
 import type { RequestHandler } from 'express'
 import { HttpError } from '../errors.ts'
-import { createRouteMatcher, type Route } from '../routes.ts'
+import { createRouteMatcher, type Route } from '../route.ts'
 
 /**
  * Reject requests that match no route before Express sees them. Express would otherwise

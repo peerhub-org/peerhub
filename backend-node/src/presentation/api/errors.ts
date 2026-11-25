@@ -10,3 +10,23 @@ export class HttpError extends Error {
     this.headers = headers
   }
 }
+
+/** One problem in a request, in the format of Pydantic. */
+export interface ValidationIssue {
+  type: string
+  loc: (string | number)[]
+  msg: string
+  input: unknown
+  ctx?: Record<string, unknown>
+}
+
+/** Rendered as a 422 with {"detail": issues}. */
+export class RequestValidationError extends Error {
+  readonly issues: ValidationIssue[]
+
+  constructor(issues: ValidationIssue[]) {
+    super('Request validation failed')
+    this.name = 'RequestValidationError'
+    this.issues = issues
+  }
+}

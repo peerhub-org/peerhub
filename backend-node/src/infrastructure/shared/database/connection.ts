@@ -45,3 +45,15 @@ export async function connectDatabase(
     throw error
   }
 }
+
+const PING_TIMEOUT_MS = 2000
+
+/** Check that the server answers. Task 57: opens a connection of its own every time. */
+export async function pingDatabase(settings: Pick<Settings, 'MONGO_URI'>): Promise<void> {
+  const client = new MongoClient(settings.MONGO_URI, { serverSelectionTimeoutMS: PING_TIMEOUT_MS })
+  try {
+    await client.db('admin').command({ ping: 1 })
+  } finally {
+    await client.close()
+  }
+}

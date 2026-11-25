@@ -5,7 +5,7 @@ import { accessLog } from './middlewares/access_log.ts'
 import { cors } from './middlewares/cors.ts'
 import { errorHandler, type CaptureException } from './middlewares/error_handler.ts'
 import { routeGuard } from './middlewares/route_guard.ts'
-import type { Route } from './routes.ts'
+import type { Route } from './route.ts'
 
 export interface AppOptions {
   settings: Pick<Settings, 'BACKEND_CORS_ORIGINS'>

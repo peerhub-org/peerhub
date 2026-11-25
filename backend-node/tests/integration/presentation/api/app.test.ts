@@ -6,7 +6,7 @@ import { AccountNotFoundException } from '../../../../src/domain/shared/exceptio
 import { createApp } from '../../../../src/presentation/api/app.ts'
 import { HttpError } from '../../../../src/presentation/api/errors.ts'
 import { sendJson } from '../../../../src/presentation/api/responses.ts'
-import type { Route } from '../../../../src/presentation/api/routes.ts'
+import type { Route } from '../../../../src/presentation/api/route.ts'
 import { startServer, stopServer } from '../../../../src/server.ts'
 import { CONTRACT_ORIGIN, expectSameAsPython, operations } from '../../../helpers/contract.ts'
 import { memoryLogger } from '../../../helpers/logger.ts'

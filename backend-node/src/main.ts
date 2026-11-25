@@ -4,6 +4,8 @@ import { createLogger, namedLogger } from './infrastructure/shared/observability
 import { createPostHog } from './infrastructure/shared/observability/posthog.ts'
 import { createTelemetry } from './infrastructure/shared/observability/telemetry.ts'
 import { createApp } from './presentation/api/app.ts'
+import { createContainer } from './presentation/api/container.ts'
+import { createRoutes } from './presentation/api/routes.ts'
 import { startServer, stopServer } from './server.ts'
 
 const PORT = 8000
@@ -17,10 +19,11 @@ const posthog = createPostHog(settings, logger)
 const database = await connectDatabase(settings)
 logger.info('Database connection established')
 
+const container = createContainer({ settings, db: database.db, logger: rootLogger, posthog })
 const app = createApp({
   settings,
   logger: rootLogger,
-  routes: [],
+  routes: createRoutes(container),
   captureException: (error, properties) => posthog?.captureException(error, { properties }),
 })
 const server = await startServer(app, PORT)

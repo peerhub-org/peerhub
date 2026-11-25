@@ -1,34 +1,23 @@
-import type { RequestHandler } from 'express'
+import type { Container } from './container.ts'
+import { docsRoutes } from './openapi.ts'
+import type { Route } from './route.ts'
+import { accountEndpoints } from './v1/account/account.ts'
+import { healthEndpoints } from './v1/health/health.ts'
+import { reviewEndpoints } from './v1/review/review.ts'
+import { usersEndpoints } from './v1/users/users.ts'
+import { watchlistEndpoints } from './v1/watchlist/watchlist.ts'
 
-export interface Route {
-  method: 'GET' | 'POST' | 'PATCH' | 'DELETE'
-  /** Full path, Express syntax. Static paths must come before parametrized ones. */
-  path: string
-  handlers: RequestHandler[]
-}
-
-const toPattern = (path: string): RegExp =>
-  new RegExp(
-    `^${path
-      .split('/')
-      .map((part) => (part.startsWith(':') ? '[^/]+' : part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')))
-      .join('/')}$`,
-  )
-
-export type RouteMatch =
-  | { kind: 'found' }
-  | { kind: 'method-not-allowed'; allow: string }
-  | { kind: 'not-found' }
-
-export function createRouteMatcher(
-  routes: readonly Route[],
-): (method: string, path: string) => RouteMatch {
-  const table = routes.map((route) => ({ method: route.method, pattern: toPattern(route.path) }))
-  return (method, path) => {
-    const candidates = table.filter((route) => route.pattern.test(path))
-    if (candidates.some((route) => route.method === method)) return { kind: 'found' }
-    // Only the first candidate is reported, as Starlette does.
-    const first = candidates[0]
-    return first ? { kind: 'method-not-allowed', allow: first.method } : { kind: 'not-found' }
-  }
+/** Every route of the application. Rate limits are counted per call to this function. */
+export function createRoutes(container: Container): Route[] {
+  const { settings, tokenService } = container
+  const routes = [
+    ...healthEndpoints(container),
+    ...accountEndpoints(container),
+    ...usersEndpoints(container),
+    ...reviewEndpoints(container),
+    ...watchlistEndpoints(container),
+  ]
+    .map((endpoint) => endpoint(tokenService))
+    .map((route) => ({ ...route, path: `${settings.API_V1_STR}${route.path}` }))
+  return [...routes, ...docsRoutes(routes, settings)]
 }
