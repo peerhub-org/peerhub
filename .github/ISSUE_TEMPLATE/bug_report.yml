@@ -43,8 +43,8 @@ body:
     id: environment
     attributes:
       label: Environment
-      description: OS, browser, Node/Python versions, and commit/tag if known.
-      placeholder: Windows 11, Chrome 131, Node 22, Python 3.13, main@abcdef1
+      description: OS, browser, Node version, and commit/tag if known.
+      placeholder: Windows 11, Chrome 131, Node 26, main@abcdef1
   - type: textarea
     id: logs
     attributes:
