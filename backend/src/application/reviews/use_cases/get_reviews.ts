@@ -2,6 +2,7 @@ import type { AccountService } from '../../../domain/accounts/services/account_s
 import type { ReviewEnrichmentService } from '../../../domain/reviews/services/review_enrichment_service.ts'
 import type { ReviewService } from '../../../domain/reviews/services/review_service.ts'
 import type { ReviewWithUsername } from '../../../domain/reviews/value_objects/review_with_username.ts'
+import { sameUsername } from '../../../domain/shared/usernames.ts'
 import type { Uuid } from '../../../domain/shared/uuid.ts'
 import type { FeatureFlagService } from '../../../infrastructure/shared/observability/feature_flags.ts'
 
@@ -67,7 +68,7 @@ export class GetReviewsUseCase {
     return {
       items: await this.#enrichmentService.enrichReviews(reviews.slice(0, limit)),
       hasMore: reviews.length > limit,
-      isPageOwner: viewer.username.toLowerCase() === reviewedUsername.toLowerCase(),
+      isPageOwner: sameUsername(viewer.username, reviewedUsername),
       isModerator: this.#moderators.has(viewer.username),
     }
   }

@@ -1,5 +1,14 @@
-import { ObjectId, type Collection, type OptionalUnlessRequiredId, type Filter } from 'mongodb'
+import {
+  MongoServerError,
+  ObjectId,
+  type Collection,
+  type Filter,
+  type OptionalUnlessRequiredId,
+} from 'mongodb'
+import { DuplicateEntityError } from '../../../../domain/shared/exceptions.ts'
 import type { Mapper } from '../mappers/base_mapper.ts'
+
+const DUPLICATE_KEY = 11000
 
 /** Base repository with shared CRUD operations. */
 export abstract class BaseRepository<
@@ -14,12 +23,19 @@ export abstract class BaseRepository<
     this.mapper = mapper
   }
 
+  /** Throws DuplicateEntityError when a unique key is already taken. */
   async create(entity: TEntity): Promise<TEntity> {
     const document = {
       _id: entity.id === null ? new ObjectId() : new ObjectId(entity.id),
       ...this.mapper.toFields(entity),
     } as TDocument
-    await this.collection.insertOne(document as OptionalUnlessRequiredId<TDocument>)
+    try {
+      await this.collection.insertOne(document as OptionalUnlessRequiredId<TDocument>)
+    } catch (error) {
+      if (error instanceof MongoServerError && error.code === DUPLICATE_KEY)
+        throw new DuplicateEntityError(error)
+      throw error
+    }
     return this.mapper.toEntity(document)
   }
 

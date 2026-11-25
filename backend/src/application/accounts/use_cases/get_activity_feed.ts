@@ -49,46 +49,37 @@ export class GetActivityFeedUseCase {
     offset: number,
   ): Promise<ActivityFeedItem[]> {
     const account = await this.#accountService.getAccountByUuid(accountUuid)
-    const reviews = await this.#fetchReviews(accountUuid, account.username, filter)
-    const page = reviews
-      .toSorted((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime())
-      .slice(offset, offset + limit)
-    return this.#enrichReviews(page)
+    const usernames = await this.#usernames(accountUuid, account.username, filter)
+    const accounts = await this.#accountService.getAccountsByUsernames(usernames)
+    const accountOf = (username: string) => accounts.get(username.toLowerCase())
+
+    // Deleted profiles are left out and, when drafts are closed, what others wrote about them.
+    const drafts = usernames.filter((username) => !accountOf(username))
+    const openDraftProfiles =
+      drafts.length === 0 || (await this.#featureFlags.getFeatureFlags()).openDraftProfiles
+    const active = usernames.filter((username) => accountOf(username)?.deletedAt === null)
+
+    const reviews = await this.#reviewService.getFeed(
+      {
+        usernames: openDraftProfiles ? [...active, ...drafts] : active,
+        onlyByViewer: openDraftProfiles ? [] : drafts,
+        viewerUuid: accountUuid,
+      },
+      limit,
+      offset,
+    )
+    return this.#enrichReviews(reviews)
   }
 
-  async #fetchReviews(
+  async #usernames(
     accountUuid: Uuid,
     username: string,
     filter: ActivityFeedFilter,
-  ): Promise<Review[]> {
-    const usernames: string[] = []
-    if (filter !== 'watching') usernames.push(username)
-    if (filter !== 'mine') {
-      const watchlist = await this.#watchlistService.getWatchlist(accountUuid)
-      usernames.push(...watchlist.map((watch) => watch.watchedUsername))
-    }
-
-    const lists = await Promise.all(
-      usernames.map((name) => this.#reviewService.getReviewsForUser(name)),
-    )
-    return this.#visibleReviews(lists.flat(), accountUuid)
-  }
-
-  /** Leave out deleted profiles and, when drafts are closed, what others wrote about them. */
-  async #visibleReviews(reviews: Review[], viewerUuid: Uuid): Promise<Review[]> {
-    const reviewedUsernames = [...new Set(reviews.map((review) => review.reviewedUsername))]
-    const accounts = await this.#accountService.getAccountsByUsernames(reviewedUsernames)
-    const accountOf = (review: Review) => accounts.get(review.reviewedUsername.toLowerCase())
-
-    const hasDrafts = reviews.some((review) => !accountOf(review))
-    const openDraftProfiles =
-      !hasDrafts || (await this.#featureFlags.getFeatureFlags()).openDraftProfiles
-
-    return reviews.filter((review) => {
-      const account = accountOf(review)
-      if (account) return account.deletedAt === null
-      return openDraftProfiles || review.reviewerUuid === viewerUuid
-    })
+  ): Promise<string[]> {
+    const watchlist =
+      filter === 'mine' ? [] : await this.#watchlistService.getWatchlist(accountUuid, 0)
+    const watched = watchlist.map((watch) => watch.watchedUsername)
+    return filter === 'watching' ? watched : [username, ...watched]
   }
 
   /** Reviews whose reviewer is unknown or deleted are left out. */

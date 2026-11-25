@@ -5,7 +5,7 @@ import {
 } from '../../../../../src/infrastructure/shared/observability/logging.ts'
 import { memoryLogger } from '../../../../helpers/logger.ts'
 
-test('production lines are JSON with the fields of the Python backend', () => {
+test('production lines are JSON with the fields log queries use', () => {
   const { logger, lines } = memoryLogger()
   namedLogger(logger, 'github').warn('slow')
   expect(lines).toEqual([

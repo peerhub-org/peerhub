@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import { ReviewStatus, Role, type Review } from '../../../../domain/reviews/entities/review.ts'
+import { sameUsername } from '../../../../domain/shared/usernames.ts'
 
 export const dateTime = z.iso.datetime()
 
@@ -15,8 +16,8 @@ export function storedId(entity: { id: string | null }): string {
   return entity.id
 }
 
-/** Who hid the comment, without saying the name. Task 53: case-sensitive. */
+/** Who hid the comment, without saying the name. */
 export function hiddenByRole(review: Review): Role | null {
   if (!review.commentHidden || review.commentHiddenBy === null) return null
-  return review.commentHiddenBy === review.reviewedUsername ? Role.USER : Role.MODERATOR
+  return sameUsername(review.commentHiddenBy, review.reviewedUsername) ? Role.USER : Role.MODERATOR
 }

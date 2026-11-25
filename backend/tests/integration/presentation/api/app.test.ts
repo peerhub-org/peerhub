@@ -8,20 +8,30 @@ import { HttpError } from '../../../../src/presentation/api/errors.ts'
 import { sendJson } from '../../../../src/presentation/api/responses.ts'
 import type { Route } from '../../../../src/presentation/api/route.ts'
 import { startServer, stopServer } from '../../../../src/server.ts'
-import { CONTRACT_ORIGIN, expectSameAsPython, operations } from '../../../helpers/contract.ts'
+import { ALLOWED_ORIGIN } from '../../../helpers/requests.ts'
 import { memoryLogger } from '../../../helpers/logger.ts'
 
 const { logger, lines } = memoryLogger()
-const settings = { BACKEND_CORS_ORIGINS: [CONTRACT_ORIGIN] }
+const settings = { BACKEND_CORS_ORIGINS: [ALLOWED_ORIGIN] }
 
-/** The real route table, with handlers that only echo which route was reached. */
-const stubs = operations.map(
-  ({ method, path }): Route => ({
-    method: method as Route['method'],
-    path,
-    handlers: [(_req, res) => sendJson(res, 200, { route: path })],
-  }),
-)
+/** Routes with handlers that only echo which one was reached. */
+const stubs = [
+  'GET /api/v1/health',
+  'GET /api/v1/account',
+  'DELETE /api/v1/account',
+  'GET /api/v1/account/feed',
+  'GET /api/v1/users/auth',
+  'GET /api/v1/users/search',
+  'GET /api/v1/users/:username',
+  'POST /api/v1/reviews',
+  'GET /api/v1/reviews/suggestions',
+  'GET /api/v1/reviews/:username/reviewers',
+  'GET /api/v1/reviews/:username',
+  'GET /api/v1/watchlist/check/:username',
+].map((line): Route => {
+  const [method, path] = line.split(' ') as [Route['method'], string]
+  return { method, path, handlers: [(_req, res) => sendJson(res, 200, { route: path })] }
+})
 const app = createApp({ settings, logger, routes: stubs })
 
 const captured: unknown[] = []
@@ -51,27 +61,6 @@ const failing = createApp({
     },
     { method: 'GET', path: '/users/:username', handlers: [(_req, res) => sendJson(res, 200, {})] },
   ],
-})
-
-test('knows the 20 operations', () => {
-  expect(operations).toHaveLength(20)
-})
-
-describe('answers like the Python backend', () => {
-  test.each([
-    'http unknown route',
-    'http method not allowed',
-    'http trailing slash',
-    'http path is case sensitive',
-    'http HEAD',
-  ])('%s', async (name) => {
-    await expectSameAsPython(app, name)
-  })
-
-  test('cors preflight, allowed and denied', async () => {
-    await expectSameAsPython(app, 'cors allowed origin', [1])
-    await expectSameAsPython(app, 'cors denied origin', [1])
-  })
 })
 
 describe('routing', () => {
@@ -132,9 +121,9 @@ describe('routing', () => {
 
 describe('cors', () => {
   test('simple request from an allowed origin', async () => {
-    const { headers } = await request(app).get('/api/v1/users/auth').set('Origin', CONTRACT_ORIGIN)
+    const { headers } = await request(app).get('/api/v1/users/auth').set('Origin', ALLOWED_ORIGIN)
     expect(headers).toMatchObject({
-      'access-control-allow-origin': CONTRACT_ORIGIN,
+      'access-control-allow-origin': ALLOWED_ORIGIN,
       'access-control-allow-credentials': 'true',
       vary: 'Origin',
     })
@@ -153,7 +142,7 @@ describe('cors', () => {
     ['GET', 'x-other', 400, 'Disallowed CORS headers'],
   ])('preflight for %s with %s', async (method, header, status, text) => {
     const response = await request(app).options('/api/v1/reviews').set({
-      Origin: CONTRACT_ORIGIN,
+      Origin: ALLOWED_ORIGIN,
       'Access-Control-Request-Method': method,
       'Access-Control-Request-Headers': header,
     })
@@ -163,7 +152,7 @@ describe('cors', () => {
 
   test('is off when no origin is configured', async () => {
     const closed = createApp({ settings: { BACKEND_CORS_ORIGINS: [] }, logger, routes: stubs })
-    const { headers } = await request(closed).get('/api/v1/health').set('Origin', CONTRACT_ORIGIN)
+    const { headers } = await request(closed).get('/api/v1/health').set('Origin', ALLOWED_ORIGIN)
     expect(headers).not.toHaveProperty('access-control-allow-credentials')
   })
 })
@@ -174,7 +163,7 @@ describe('errors', () => {
     captured.length = 0
     const response = await request(failing)
       .get('/async-error?token=x')
-      .set('Origin', CONTRACT_ORIGIN)
+      .set('Origin', ALLOWED_ORIGIN)
     expect(response.status).toBe(500)
     expect(response.text).toBe('Internal Server Error')
     expect(response.headers['content-type']).toBe('text/plain; charset=utf-8')
@@ -194,7 +183,7 @@ describe('errors', () => {
 
   test('domain errors carry their own status', async () => {
     captured.length = 0
-    const response = await request(failing).get('/domain-error').set('Origin', CONTRACT_ORIGIN)
+    const response = await request(failing).get('/domain-error').set('Origin', ALLOWED_ORIGIN)
     expect(response.status).toBe(404)
     expect(response.body).toEqual({ detail: 'Account not found: x' })
     expect(captured).toEqual([])
@@ -202,12 +191,12 @@ describe('errors', () => {
   })
 
   test('HTTP errors carry detail, headers and CORS', async () => {
-    const response = await request(failing).get('/http-error').set('Origin', CONTRACT_ORIGIN)
+    const response = await request(failing).get('/http-error').set('Origin', ALLOWED_ORIGIN)
     expect(response.status).toBe(401)
     expect(response.body).toEqual({ detail: 'Not authenticated' })
     expect(response.headers).toMatchObject({
       'www-authenticate': 'Bearer',
-      'access-control-allow-origin': CONTRACT_ORIGIN,
+      'access-control-allow-origin': ALLOWED_ORIGIN,
     })
   })
 })

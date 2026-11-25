@@ -1,10 +1,9 @@
-import { describe, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
 import type { Db } from 'mongodb'
 import { createContainer } from '../../../../src/presentation/api/container.ts'
 import { createOpenApi } from '../../../../src/presentation/api/openapi.ts'
 import { createRoutes } from '../../../../src/presentation/api/routes.ts'
 import { loadSettings } from '../../../../src/infrastructure/shared/config/config.ts'
-import { openapi as python, type Operation, type Schema } from '../../../helpers/contract.ts'
 import { memoryLogger } from '../../../helpers/logger.ts'
 
 const settings = loadSettings({ ENVIRONMENT: 'test' }, null)
@@ -15,57 +14,25 @@ const container = createContainer({
   posthog: null,
 })
 const routes = createRoutes(container)
-const document = createOpenApi(routes, 'peerhub') as unknown as typeof python
+const document = createOpenApi(routes, 'peerhub') as {
+  info: { version: string }
+  paths: Record<string, Record<string, unknown>>
+  components: { schemas: Record<string, unknown> }
+}
 
-/** Parameters reduced to what clients depend on. */
-const parametersOf = (operation: Operation) =>
-  (operation.parameters ?? []).map(({ name, in: place, required, schema }) => {
-    // Python: "anyOf string or null". Here: an optional string.
-    const { type = 'string', default: fallback, minimum, maximum } = schema
-    return { name, place, required, type, fallback, minimum, maximum, options: schema.enum }
-  })
-
-const operations = Object.entries(python.paths).flatMap(([path, methods]) =>
-  Object.entries(methods).map(([method, operation]) => ({ path, method, operation })),
-)
-
-test('has the same operations as the Python backend', () => {
-  const list = (paths: typeof python.paths) =>
-    Object.entries(paths)
-      .flatMap(([path, methods]) => Object.keys(methods).map((method) => `${method} ${path}`))
-      .sort()
-  expect(list(document.paths)).toEqual(list(python.paths))
+test('describes every route of the API', () => {
+  const described = Object.entries(document.paths).flatMap(([path, methods]) =>
+    Object.keys(methods).map((method) => `${method.toUpperCase()} ${path}`),
+  )
+  const served = routes
+    .filter((route) => route.docs)
+    .map((route) => `${route.method} ${route.path.replace(/:(\w+)/g, '{$1}')}`)
+  expect(described.sort()).toEqual(served.sort())
+  expect(described).toHaveLength(20)
 })
 
-describe.each(operations)('$method $path', ({ path, method, operation }) => {
-  const ours = document.paths[path]![method]!
-
-  test('has the same parameters', () => {
-    expect(parametersOf(ours)).toEqual(parametersOf(operation))
-  })
-
-  test('has the same body, success status and protection', () => {
-    expect(ours.requestBody !== undefined).toBe(operation.requestBody !== undefined)
-    const success = (o: Operation) => Object.keys(o.responses).filter((s) => s.startsWith('2'))
-    expect(success(ours)).toEqual(success(operation))
-    expect(ours.security !== undefined).toBe(operation.security !== undefined)
-  })
-})
-
-describe('schemas', () => {
-  const fieldsOf = (schema: Schema) => Object.keys(schema.properties ?? {}).sort()
-
-  test.each(
-    Object.entries(python.components.schemas).filter(
-      ([name]) => !['HTTPValidationError', 'ValidationError'].includes(name),
-    ),
-  )('%s has the same fields', (name, schema) => {
-    const ours = document.components.schemas[name]
-    expect(ours).toBeDefined()
-    expect(fieldsOf(ours!)).toEqual(fieldsOf(schema))
-    expect(ours!.enum).toEqual(schema.enum)
-    if (name.endsWith('Request')) expect(ours!.required).toEqual(schema.required)
-  })
+test('is stable', () => {
+  expect({ ...document, info: { ...document.info, version: '<version>' } }).toMatchSnapshot()
 })
 
 test('every reference resolves', () => {

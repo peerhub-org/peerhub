@@ -57,8 +57,7 @@ export const toggleCommentHiddenRequest = z
 export const reviewsQuery = z.object({
   limit: queryInt({ default: DEFAULT_PAGE_SIZE, min: 1, max: MAX_PAGE_SIZE }),
   offset: queryInt({ default: 0, min: 0 }),
-  // Task 56: any text is accepted.
-  status: z.string().optional(),
+  status: reviewStatus.optional(),
 })
 
 export const suggestionsQuery = z.object({ limit: queryInt({ default: 4, min: 1, max: 16 }) })

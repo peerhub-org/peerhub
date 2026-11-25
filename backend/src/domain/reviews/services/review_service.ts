@@ -2,6 +2,7 @@ import type { IAccountRepository } from '../../accounts/repositories/account_rep
 import { MAX_COMMENT_LENGTH } from '../../shared/constants.ts'
 import {
   AnonymousFieldImmutableException,
+  DuplicateEntityError,
   ReviewValidationException,
   SelfReviewException,
 } from '../../shared/exceptions.ts'
@@ -9,7 +10,7 @@ import { checkNotSelfAction, checkTargetIsUserType } from '../../shared/services
 import type { Uuid } from '../../shared/uuid.ts'
 import type { IUserRepository } from '../../users/repositories/user_repository.ts'
 import { Review, ReviewStatus } from '../entities/review.ts'
-import type { IReviewRepository } from '../repositories/review_repository.ts'
+import type { IReviewRepository, ReviewFeed } from '../repositories/review_repository.ts'
 import { sanitizeComment } from './comment_sanitizer.ts'
 
 export interface CreateOrUpdateReview {
@@ -47,11 +48,7 @@ export class ReviewService {
     await checkTargetIsUserType(this.#users, reviewedUsername)
 
     const existing = await this.#reviews.getByReviewerAndUsername(reviewerUuid, reviewedUsername)
-    if (existing) {
-      if (existing.anonymous !== anonymous) throw new AnonymousFieldImmutableException()
-      existing.updateStatus(status, comment)
-      return { review: await this.#reviews.update(existing), isNew: false }
-    }
+    if (existing) return this.#updateExisting(existing, status, comment, anonymous)
 
     const now = new Date()
     const review = new Review({
@@ -64,7 +61,16 @@ export class ReviewService {
       createdAt: now,
       updatedAt: now,
     })
-    return { review: await this.#reviews.create(review), isNew: true }
+    try {
+      return { review: await this.#reviews.create(review), isNew: true }
+    } catch (error) {
+      // Created in the meantime by another request
+      const created =
+        error instanceof DuplicateEntityError &&
+        (await this.#reviews.getByReviewerAndUsername(reviewerUuid, reviewedUsername))
+      if (!created) throw error
+      return this.#updateExisting(created, status, comment, anonymous)
+    }
   }
 
   async getReviewsForUser(
@@ -74,6 +80,10 @@ export class ReviewService {
     status: string | null = null,
   ): Promise<Review[]> {
     return this.#reviews.getAllForUsername(reviewedUsername, limit, offset, status)
+  }
+
+  async getFeed(feed: ReviewFeed, limit: number, offset: number): Promise<Review[]> {
+    return this.#reviews.getFeed(feed, limit, offset)
   }
 
   async getReviewsByReviewer(reviewerUuid: Uuid, limit = 100, offset = 0): Promise<Review[]> {
@@ -100,6 +110,17 @@ export class ReviewService {
 
   async updateReview(review: Review): Promise<Review> {
     return this.#reviews.update(review)
+  }
+
+  async #updateExisting(
+    review: Review,
+    status: ReviewStatus,
+    comment: string | null,
+    anonymous: boolean,
+  ): Promise<{ review: Review; isNew: boolean }> {
+    if (review.anonymous !== anonymous) throw new AnonymousFieldImmutableException()
+    review.updateStatus(status, comment)
+    return { review: await this.#reviews.update(review), isNew: false }
   }
 
   #validateComment(status: ReviewStatus, comment: string | null): void {

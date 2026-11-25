@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs'
 import type { Express } from 'express'
 import { BSON, type Db, type Document } from 'mongodb'
 import request from 'supertest'
-import { expect } from 'vitest'
+import { readVersion } from '../../src/infrastructure/shared/config/version.ts'
+import { tokens } from './tokens.ts'
 
 export interface Step {
   method: string
@@ -18,7 +19,7 @@ export interface Step {
   last_only?: boolean
 }
 
-export interface ContractCase {
+export interface RequestCase {
   name: string
   steps: Step[]
   /** Compare what changed in the database */
@@ -35,65 +36,21 @@ export interface RecordedResponse {
   text?: string
 }
 
-export interface RecordedCase {
-  name: string
-  responses: RecordedResponse[]
-  db?: unknown
-  emails?: unknown[]
-}
-
 const load = <T>(file: string): T =>
-  JSON.parse(readFileSync(new URL(`../../contract/${file}`, import.meta.url), 'utf8')) as T
+  JSON.parse(readFileSync(new URL(`../fixtures/${file}`, import.meta.url), 'utf8')) as T
 
-export const cases = load<ContractCase[]>('cases.json')
-export const openapi = load<{
-  paths: Record<string, Record<string, Operation>>
-  components: { schemas: Record<string, Schema> }
-}>('reference/openapi.json')
-const recordedCases = load<RecordedCase[]>('reference/responses.json')
+/** Requests whose responses are kept as snapshots. */
+export const cases = load<RequestCase[]>('requests.json')
 const fixtures = load<{
   review_ids: Record<string, string>
   collections: Record<string, Document[]>
-}>('reference/fixtures.json')
-export const contractTokens = load<{ secret_key: string; tokens: Record<string, string> }>(
-  'reference/tokens.json',
-)
+}>('database.json')
 
-export interface Schema {
-  type?: string
-  properties?: Record<string, Schema>
-  required?: string[]
-  [key: string]: unknown
-}
+export const ALLOWED_ORIGIN = 'http://localhost:5173'
 
-export interface Operation {
-  parameters?: { name: string; in: string; required: boolean; schema: Schema }[]
-  requestBody?: unknown
-  responses: Record<string, { content?: unknown }>
-  security?: unknown[]
-}
+const KEPT_HEADERS = ['content-type', 'www-authenticate', 'allow', 'location', 'vary']
 
-export function recorded(name: string): RecordedCase {
-  const found = recordedCases.find((c) => c.name === name)
-  if (!found) throw new Error(`Unknown contract case: ${name}`)
-  return found
-}
-
-/** Every operation of the API, static paths first. */
-export const operations = Object.entries(openapi.paths)
-  .flatMap(([path, methods]) =>
-    Object.keys(methods).map((method) => ({
-      method: method.toUpperCase(),
-      path: path.replace(/\{(\w+)\}/g, ':$1'),
-    })),
-  )
-  .sort((a, b) => a.path.split(':').length - b.path.split(':').length)
-
-export const CONTRACT_ORIGIN = 'http://localhost:5173'
-
-const RECORDED_HEADERS = ['content-type', 'www-authenticate', 'allow', 'location', 'vary']
-
-/** Run the steps of a contract case, recording responses like the Python generator does. */
+/** Run the steps of a case, keeping the parts of the responses that matter. */
 export async function runSteps(app: Express, steps: Step[]): Promise<RecordedResponse[]> {
   const responses: RecordedResponse[] = []
   for (const step of steps) {
@@ -121,8 +78,7 @@ async function runStep(app: Express, step: Step): Promise<RecordedResponse> {
       res.on('data', (chunk: string) => (data += chunk))
       res.on('end', () => done(null, data))
     })
-  if (step.as)
-    call.set('Authorization', `${step.scheme ?? 'Bearer'} ${contractTokens.tokens[step.as]}`)
+  if (step.as) call.set('Authorization', `${step.scheme ?? 'Bearer'} ${tokens[step.as]}`)
   if (step.raw !== undefined) {
     if (!step.headers?.['Content-Type']) throw new Error('Raw bodies need a content type')
     // As text, so that supertest does not serialize it again.
@@ -139,7 +95,7 @@ async function runStep(app: Express, step: Step): Promise<RecordedResponse> {
   const out: RecordedResponse = { status: response.status }
   const headers = Object.entries(response.headers as Record<string, string>).filter(
     ([key]) =>
-      RECORDED_HEADERS.includes(key) ||
+      KEPT_HEADERS.includes(key) ||
       key.startsWith('access-control-') ||
       key.startsWith('x-ratelimit'),
   )
@@ -152,29 +108,10 @@ async function runStep(app: Express, step: Step): Promise<RecordedResponse> {
   return out
 }
 
-/** Run steps of a contract case and compare them with what the Python backend answered. */
-export async function expectSameAsPython(
-  app: Express,
-  name: string,
-  only?: number[],
-): Promise<void> {
-  const steps = cases.find((c) => c.name === name)!.steps
-  for (const [i, step] of steps.entries()) {
-    if (only && !only.includes(i)) continue
-    const [response] = await runSteps(app, [step])
-    expect(response, `${name} #${i}`).toEqual(recorded(name).responses[i])
-  }
-}
-
-// --- Normalization, as in contract/generate.py ---
+// --- Normalization ---
 
 const known = new Set<string>(['f'.repeat(24), 'a0000000-0000-4000-8000-000000000999'])
 collect(fixtures)
-for (const token of Object.values(contractTokens.tokens)) {
-  const sub = /"sub":"([^"]+)"/.exec(Buffer.from(token.split('.')[1]!, 'base64url').toString())
-  if (sub) known.add(sub[1]!)
-}
-
 function collect(value: unknown): void {
   if (Array.isArray(value)) value.forEach(collect)
   else if (typeof value === 'object' && value !== null) Object.values(value).forEach(collect)
@@ -186,6 +123,7 @@ function collect(value: unknown): void {
 }
 
 const PLACEHOLDERS: [RegExp, string][] = [
+  [new RegExp(`^${readVersion().replaceAll('.', '\\.')}$`), '<version>'],
   [/^eyJ[\w-]+\.eyJ[\w-]+\.[\w-]*$/, '<jwt>'],
   [/^[0-9a-f]{24}$/, '<oid>'],
   [/^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/, '<uuid>'],
@@ -201,7 +139,7 @@ export function normalize(value: unknown): unknown {
   return PLACEHOLDERS.find(([pattern]) => pattern.test(value))?.[1] ?? value
 }
 
-// --- Database changes, as in contract/generate.py ---
+// --- Database changes ---
 
 /** What changed in relation to the fixtures, as EJSON with UUIDs of subtype 4 as text. */
 export async function databaseChanges(db: Db): Promise<Record<string, unknown>> {

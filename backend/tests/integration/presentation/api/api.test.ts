@@ -1,15 +1,17 @@
+import { readFileSync } from 'node:fs'
+import { ObjectId } from 'mongodb'
 import request from 'supertest'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import { createTestApp, type TestApp } from '../../../helpers/app.ts'
-import { contractTokens } from '../../../helpers/contract.ts'
 import { useDatabase } from '../../../helpers/database.ts'
+import { tokens } from '../../../helpers/tokens.ts'
 
 const db = useDatabase({ withFixtures: true })
 let context: TestApp
 beforeEach(() => void (context = createTestApp(db())))
 afterEach(() => void vi.useRealTimers())
 
-const as = (name: string) => ({ Authorization: `Bearer ${contractTokens.tokens[name]}` })
+const as = (name: string) => ({ Authorization: `Bearer ${tokens[name]}` })
 const exchange = () => request(context.app).post('/api/v1/users/exchange-token').send({ code: '' })
 
 describe('authorization header', () => {
@@ -177,7 +179,7 @@ test('health tells the state of the database', async () => {
   expect((await request(context.app).get('/api/v1/health')).body).toEqual({
     status: 'healthy',
     database: 'healthy',
-    version: 'peerhub',
+    version: readFileSync(new URL('../../../../../VERSION', import.meta.url), 'utf8').trim(),
   })
 })
 
@@ -194,4 +196,90 @@ test('unexpected failures to sign in are logged, not shown', async () => {
     expect.objectContaining({ message: 'Unexpected error during authentication' }),
   )
   expect(JSON.stringify(lines)).not.toContain('secret-code')
+})
+
+describe('tokens', () => {
+  const account = () => request(context.app).get('/api/v1/account').set(as('alice'))
+
+  test('stop working when the account is deleted, and work again when it comes back', async () => {
+    const accounts = db().collection('accounts')
+    expect((await account()).status).toBe(200)
+    await accounts.updateOne({ username: 'alice' }, { $set: { deleted_at: new Date() } })
+    const refused = await account()
+    expect(refused.status).toBe(401)
+    expect(refused.headers['www-authenticate']).toBe('Bearer')
+    await accounts.updateOne({ username: 'alice' }, { $set: { deleted_at: null } })
+    expect((await account()).status).toBe(200)
+  })
+
+  test('are not refused because the database fails', async () => {
+    vi.spyOn(
+      db().collection('accounts').constructor.prototype as { findOne(): unknown },
+      'findOne',
+    ).mockRejectedValueOnce(new Error('db down'))
+    expect((await account()).status).toBe(500)
+  })
+})
+
+describe('requests at the same time', () => {
+  test('create one review and one watch', async () => {
+    const submit = (comment: string) =>
+      request(context.app)
+        .post('/api/v1/reviews')
+        .set(as('bob'))
+        .send({ reviewed_username: 'neverseen', status: 'approve', comment })
+    const responses = await Promise.all(['a', 'b', 'c', 'd'].map(submit))
+    expect(responses.map((response) => response.status)).toEqual([200, 200, 200, 200])
+    const filter = { reviewed_username: 'neverseen' }
+    expect(await db().collection('reviews').countDocuments(filter)).toBe(1)
+    expect(
+      await db().collection('watchlist').countDocuments({ watched_username: 'neverseen' }),
+    ).toBe(1)
+    expect(context.emails).toHaveLength(1)
+  })
+})
+
+describe('feed', () => {
+  test('goes beyond 100 watched users and 100 reviews, without repeating or missing any', async () => {
+    const [review] = await db()
+      .collection('reviews')
+      .find({ reviewed_username: 'popular' })
+      .toArray()
+    const [watch] = await db().collection('watchlist').find({ watched_username: 'bob' }).toArray()
+    const names = Array.from({ length: 130 }, (_, i) => `many${i}`)
+    await db()
+      .collection('watchlist')
+      .insertMany(
+        names.map((name) => ({
+          ...watch,
+          _id: new ObjectId(),
+          watched_username: name,
+        })),
+      )
+    const fans = await db().collection('accounts').find({ username: /^fan/ }).toArray()
+    await db()
+      .collection('reviews')
+      .insertMany(
+        names.flatMap((name) =>
+          fans.slice(0, 2).map((fan) => ({
+            ...review,
+            _id: new ObjectId(),
+            reviewer_uuid: fan.uuid as unknown,
+            reviewed_username: name,
+          })),
+        ),
+      )
+    const seen: string[] = []
+    for (let offset = 0, more = true; more; offset += 50) {
+      const response = await request(context.app)
+        .get(`/api/v1/account/feed?filter=watching&limit=50&offset=${offset}`)
+        .set(as('alice'))
+      const body = response.body as { items: { review_id: string }[]; has_more: boolean }
+      seen.push(...body.items.map((item) => item.review_id))
+      more = body.has_more
+    }
+    // 130 users with 2 reviews each, and the 2 about dave in the fixtures
+    expect(seen).toHaveLength(262)
+    expect(new Set(seen).size).toBe(262)
+  })
 })

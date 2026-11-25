@@ -1,0 +1,1374 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`is stable 1`] = `
+{
+  "components": {
+    "schemas": {
+      "AccountResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "deleted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+                "type": "string",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "id": {
+            "type": "string",
+          },
+          "is_moderator": {
+            "type": "boolean",
+          },
+          "username": {
+            "type": "string",
+          },
+          "uuid": {
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "uuid",
+          "username",
+          "deleted_at",
+          "is_moderator",
+        ],
+        "type": "object",
+      },
+      "ActivityFeedItemResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "anonymous": {
+            "type": "boolean",
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "comment_hidden": {
+            "type": "boolean",
+          },
+          "comment_hidden_by": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Role",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "created_at": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+            "type": "string",
+          },
+          "review_id": {
+            "type": "string",
+          },
+          "reviewed_user_avatar_url": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "reviewed_username": {
+            "type": "string",
+          },
+          "reviewer_avatar_url": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "reviewer_username": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "reviewer_uuid": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "type": "string",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReviewStatus",
+          },
+          "updated_at": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+            "type": "string",
+          },
+        },
+        "required": [
+          "review_id",
+          "reviewer_uuid",
+          "reviewer_username",
+          "reviewer_avatar_url",
+          "reviewed_username",
+          "reviewed_user_avatar_url",
+          "status",
+          "comment",
+          "anonymous",
+          "comment_hidden",
+          "comment_hidden_by",
+          "created_at",
+          "updated_at",
+        ],
+        "type": "object",
+      },
+      "CreateOrUpdateReviewRequest": {
+        "properties": {
+          "anonymous": {
+            "default": false,
+            "type": "boolean",
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "maxLength": 1024,
+                "type": "string",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "reviewed_username": {
+            "type": "string",
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReviewStatus",
+          },
+        },
+        "required": [
+          "reviewed_username",
+          "status",
+        ],
+        "type": "object",
+      },
+      "ExchangeCodeRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "code",
+        ],
+        "type": "object",
+      },
+      "OAuthUrlResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "url": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "url",
+        ],
+        "type": "object",
+      },
+      "PaginatedActivityFeedResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "has_more": {
+            "type": "boolean",
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ActivityFeedItemResponse",
+            },
+            "type": "array",
+          },
+        },
+        "required": [
+          "items",
+          "has_more",
+        ],
+        "type": "object",
+      },
+      "PaginatedReviewResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "has_more": {
+            "type": "boolean",
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewResponse",
+            },
+            "type": "array",
+          },
+        },
+        "required": [
+          "items",
+          "has_more",
+        ],
+        "type": "object",
+      },
+      "ReviewResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "anonymous": {
+            "type": "boolean",
+          },
+          "comment": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "comment_hidden": {
+            "type": "boolean",
+          },
+          "comment_hidden_by": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Role",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "created_at": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+            "type": "string",
+          },
+          "id": {
+            "type": "string",
+          },
+          "reviewed_username": {
+            "type": "string",
+          },
+          "reviewer_avatar_url": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "reviewer_username": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "reviewer_uuid": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "type": "string",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReviewStatus",
+          },
+          "updated_at": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "reviewer_uuid",
+          "reviewer_username",
+          "reviewer_avatar_url",
+          "reviewed_username",
+          "status",
+          "comment",
+          "anonymous",
+          "comment_hidden",
+          "comment_hidden_by",
+          "created_at",
+          "updated_at",
+        ],
+        "type": "object",
+      },
+      "ReviewStatus": {
+        "enum": [
+          "approve",
+          "request_change",
+          "comment",
+        ],
+        "type": "string",
+      },
+      "ReviewSuggestionResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "avatar_url": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "username": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "username",
+          "avatar_url",
+        ],
+        "type": "object",
+      },
+      "ReviewerSummaryResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "anonymous": {
+            "type": "boolean",
+          },
+          "id": {
+            "type": "string",
+          },
+          "reviewed_username": {
+            "type": "string",
+          },
+          "reviewer_avatar_url": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "reviewer_username": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "reviewer_uuid": {
+            "anyOf": [
+              {
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
+                "type": "string",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReviewStatus",
+          },
+          "updated_at": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "reviewer_uuid",
+          "reviewer_username",
+          "reviewer_avatar_url",
+          "reviewed_username",
+          "status",
+          "anonymous",
+          "updated_at",
+        ],
+        "type": "object",
+      },
+      "Role": {
+        "enum": [
+          "user",
+          "moderator",
+        ],
+        "type": "string",
+      },
+      "ToggleCommentHiddenRequest": {
+        "properties": {
+          "hidden": {
+            "type": "boolean",
+          },
+        },
+        "required": [
+          "hidden",
+        ],
+        "type": "object",
+      },
+      "TokenResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "token": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "token",
+        ],
+        "type": "object",
+      },
+      "UserResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "avatar_url": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "bio": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+                "type": "string",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "deleted_at": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+                "type": "string",
+              },
+              {
+                "type": "null",
+              },
+            ],
+          },
+          "name": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "type": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "username": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "username",
+          "name",
+          "bio",
+          "avatar_url",
+          "type",
+          "created_at",
+          "deleted_at",
+        ],
+        "type": "object",
+      },
+      "UserSearchItem": {
+        "additionalProperties": false,
+        "properties": {
+          "avatar_url": {
+            "type": "string",
+          },
+          "login": {
+            "type": "string",
+          },
+          "type": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+        },
+        "required": [
+          "login",
+          "avatar_url",
+          "type",
+        ],
+        "type": "object",
+      },
+      "UserSearchResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "users": {
+            "items": {
+              "$ref": "#/components/schemas/UserSearchItem",
+            },
+            "type": "array",
+          },
+        },
+        "required": [
+          "users",
+        ],
+        "type": "object",
+      },
+      "WatchRequest": {
+        "properties": {
+          "username": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "username",
+        ],
+        "type": "object",
+      },
+      "WatchResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "created_at": {
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$",
+            "type": "string",
+          },
+          "id": {
+            "type": "string",
+          },
+          "watched_avatar_url": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "watched_name": {
+            "type": [
+              "string",
+              "null",
+            ],
+          },
+          "watched_username": {
+            "type": "string",
+          },
+        },
+        "required": [
+          "id",
+          "watched_username",
+          "watched_avatar_url",
+          "watched_name",
+          "created_at",
+        ],
+        "type": "object",
+      },
+      "WatchStatusResponse": {
+        "additionalProperties": false,
+        "properties": {
+          "is_watching": {
+            "type": "boolean",
+          },
+        },
+        "required": [
+          "is_watching",
+        ],
+        "type": "object",
+      },
+    },
+    "securitySchemes": {
+      "BearerAuth": {
+        "bearerFormat": "JWT",
+        "scheme": "bearer",
+        "type": "http",
+      },
+    },
+  },
+  "info": {
+    "title": "peerhub",
+    "version": "<version>",
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/account": {
+      "delete": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Delete the current account.",
+        "tags": [
+          "account",
+        ],
+      },
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get the current authenticated account.",
+        "tags": [
+          "account",
+        ],
+      },
+    },
+    "/api/v1/account/feed": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "filter",
+            "required": false,
+            "schema": {
+              "default": "all",
+              "enum": [
+                "all",
+                "mine",
+                "watching",
+              ],
+              "type": "string",
+            },
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 16,
+              "maximum": 100,
+              "minimum": 1,
+              "type": "integer",
+            },
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "type": "integer",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedActivityFeedResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get activity feed with reviews.",
+        "tags": [
+          "account",
+        ],
+      },
+    },
+    "/api/v1/account/reviews": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewResponse",
+                  },
+                  "type": "array",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get all reviews made by the current authenticated user.",
+        "tags": [
+          "account",
+        ],
+      },
+    },
+    "/api/v1/health": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string",
+                  },
+                  "propertyNames": {
+                    "type": "string",
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+        },
+        "summary": "Health check endpoint with database connectivity verification.",
+        "tags": [
+          "health",
+        ],
+      },
+    },
+    "/api/v1/reviews": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrUpdateReviewRequest",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Create or update a review for a user.",
+        "tags": [
+          "reviews",
+        ],
+      },
+    },
+    "/api/v1/reviews/suggestions": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 4,
+              "maximum": 16,
+              "minimum": 1,
+              "type": "integer",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewSuggestionResponse",
+                  },
+                  "type": "array",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get review suggestions to visit based on GitHub following list.",
+        "tags": [
+          "reviews",
+        ],
+      },
+    },
+    "/api/v1/reviews/{review_id}/visibility": {
+      "patch": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "review_id",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ToggleCommentHiddenRequest",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Toggle the hidden state of a review comment.",
+        "tags": [
+          "reviews",
+        ],
+      },
+    },
+    "/api/v1/reviews/{username}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Delete your review of a user.",
+        "tags": [
+          "reviews",
+        ],
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 16,
+              "maximum": 128,
+              "minimum": 1,
+              "type": "integer",
+            },
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "type": "integer",
+            },
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ReviewStatus",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedReviewResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get paginated reviews for a user.",
+        "tags": [
+          "reviews",
+        ],
+      },
+    },
+    "/api/v1/reviews/{username}/reviewers": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReviewerSummaryResponse",
+                  },
+                  "type": "array",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get all reviewers for a user (no pagination, for sidebar display).",
+        "tags": [
+          "reviews",
+        ],
+      },
+    },
+    "/api/v1/users/auth": {
+      "get": {
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuthUrlResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+        },
+        "summary": "Get GitHub OAuth login URL.",
+        "tags": [
+          "github",
+        ],
+      },
+    },
+    "/api/v1/users/exchange-token": {
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExchangeCodeRequest",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "summary": "Exchange GitHub OAuth code for access token.",
+        "tags": [
+          "github",
+        ],
+      },
+    },
+    "/api/v1/users/search": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSearchResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Search GitHub users by query.",
+        "tags": [
+          "github",
+        ],
+      },
+    },
+    "/api/v1/users/{username}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get a GitHub user by username.",
+        "tags": [
+          "github",
+        ],
+      },
+    },
+    "/api/v1/users/{username}/refresh": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Force-refresh a GitHub user's data from GitHub.",
+        "tags": [
+          "github",
+        ],
+      },
+    },
+    "/api/v1/watchlist": {
+      "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 100,
+              "maximum": 500,
+              "minimum": 1,
+              "type": "integer",
+            },
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "type": "integer",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/WatchResponse",
+                  },
+                  "type": "array",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Get all watched users for current user.",
+        "tags": [
+          "watchlist",
+        ],
+      },
+      "post": {
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WatchRequest",
+              },
+            },
+          },
+          "required": true,
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string",
+                  },
+                  "propertyNames": {
+                    "type": "string",
+                  },
+                  "type": "object",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Watch a user.",
+        "tags": [
+          "watchlist",
+        ],
+      },
+    },
+    "/api/v1/watchlist/check/{username}": {
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WatchStatusResponse",
+                },
+              },
+            },
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Check if current user is watching a username.",
+        "tags": [
+          "watchlist",
+        ],
+      },
+    },
+    "/api/v1/watchlist/{username}": {
+      "delete": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "username",
+            "required": true,
+            "schema": {
+              "type": "string",
+            },
+          },
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response",
+          },
+          "422": {
+            "description": "Validation Error",
+          },
+        },
+        "security": [
+          {
+            "BearerAuth": [],
+          },
+        ],
+        "summary": "Unwatch a user.",
+        "tags": [
+          "watchlist",
+        ],
+      },
+    },
+  },
+}
+`;

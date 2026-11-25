@@ -9,7 +9,7 @@ import { watchlistEndpoints } from './v1/watchlist/watchlist.ts'
 
 /** Every route of the application. Rate limits are counted per call to this function. */
 export function createRoutes(container: Container): Route[] {
-  const { settings, tokenService } = container
+  const { settings, tokenService, accountService } = container
   const routes = [
     ...healthEndpoints(container),
     ...accountEndpoints(container),
@@ -17,7 +17,9 @@ export function createRoutes(container: Container): Route[] {
     ...reviewEndpoints(container),
     ...watchlistEndpoints(container),
   ]
-    .map((endpoint) => endpoint({ tokenService, clientIpHeader: settings.CLIENT_IP_HEADER }))
+    .map((endpoint) =>
+      endpoint({ tokenService, accountService, clientIpHeader: settings.CLIENT_IP_HEADER }),
+    )
     .map((route) => ({ ...route, path: `${settings.API_V1_STR}${route.path}` }))
   return [...routes, ...docsRoutes(routes, settings)]
 }

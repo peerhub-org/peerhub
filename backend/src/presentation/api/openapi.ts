@@ -1,5 +1,6 @@
 import { z } from 'zod'
 import type { Settings } from '../../infrastructure/shared/config/config.ts'
+import { readVersion } from '../../infrastructure/shared/config/version.ts'
 import type { RouteDocs } from './endpoint.ts'
 import { sendJson } from './responses.ts'
 import type { Route } from './route.ts'
@@ -21,7 +22,7 @@ export function createOpenApi(routes: readonly Route[], title: string): Json {
   }
   return {
     openapi: '3.1.0',
-    info: { title, version: '0.1.0' },
+    info: { title, version: readVersion() },
     paths,
     components: {
       schemas,

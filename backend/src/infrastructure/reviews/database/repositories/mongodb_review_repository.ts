@@ -1,12 +1,18 @@
 import { ObjectId, type Db, type Filter } from 'mongodb'
 import type { Review, ReviewStatus } from '../../../../domain/reviews/entities/review.ts'
-import type { IReviewRepository } from '../../../../domain/reviews/repositories/review_repository.ts'
+import type {
+  IReviewRepository,
+  ReviewFeed,
+} from '../../../../domain/reviews/repositories/review_repository.ts'
 import type { Uuid } from '../../../../domain/shared/uuid.ts'
+import { ACCOUNTS } from '../../../accounts/database/models/account_model.ts'
 import { CASE_INSENSITIVE } from '../../../shared/database/constants.ts'
 import { uuidToBson } from '../../../shared/database/mappers/base_mapper.ts'
 import { BaseRepository } from '../../../shared/database/repositories/base_repository.ts'
 import { reviewMapper } from '../mappers/review_mapper.ts'
 import { REVIEWS, type ReviewDocument } from '../models/review_model.ts'
+
+const OBJECT_ID = /^[0-9a-f]{24}$/i
 
 export class MongoDBReviewRepository
   extends BaseRepository<Review, ReviewDocument>
@@ -17,6 +23,7 @@ export class MongoDBReviewRepository
   }
 
   async getById(reviewId: string): Promise<Review | null> {
+    if (!OBJECT_ID.test(reviewId)) return null
     const document = await this.findById(reviewId)
     return document && reviewMapper.toEntity(document)
   }
@@ -49,6 +56,42 @@ export class MongoDBReviewRepository
     return documents.map((document) => reviewMapper.toEntity(document))
   }
 
+  async getFeed(feed: ReviewFeed, limit: number, offset: number): Promise<Review[]> {
+    const documents = await this.collection
+      .aggregate<ReviewDocument>(
+        [
+          {
+            $match: {
+              $or: [
+                { reviewed_username: { $in: feed.usernames } },
+                {
+                  reviewed_username: { $in: feed.onlyByViewer },
+                  reviewer_uuid: uuidToBson(feed.viewerUuid),
+                },
+              ],
+            },
+          },
+          // The id makes pages stable when dates are equal.
+          { $sort: { updated_at: -1, _id: -1 } },
+          {
+            $lookup: {
+              from: ACCOUNTS,
+              localField: 'reviewer_uuid',
+              foreignField: 'uuid',
+              as: 'reviewer',
+            },
+          },
+          { $match: { reviewer: { $elemMatch: { deleted_at: null } } } },
+          { $skip: offset },
+          { $limit: limit },
+          { $unset: 'reviewer' },
+        ],
+        { collation: CASE_INSENSITIVE },
+      )
+      .toArray()
+    return documents.map((document) => reviewMapper.toEntity(document))
+  }
+
   async getAllByReviewerUuid(reviewerUuid: Uuid, limit: number, offset: number): Promise<Review[]> {
     const documents = await this.collection
       .find({ reviewer_uuid: uuidToBson(reviewerUuid) })
@@ -72,7 +115,7 @@ export class MongoDBReviewRepository
         { collation: CASE_INSENSITIVE },
       )
       .toArray()
-    return new Map(results.map((item) => [item._id, item.count]))
+    return new Map(results.map((item) => [item._id.toLowerCase(), item.count]))
   }
 
   async delete(reviewId: string): Promise<void> {

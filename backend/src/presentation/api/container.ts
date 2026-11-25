@@ -82,7 +82,7 @@ export function createContainer({ settings, db, logger, posthog, overrides }: Co
     logger,
     accountService,
     tokenService: new TokenService(settings),
-    pingDatabase: overrides?.pingDatabase ?? (() => pingDatabase(settings)),
+    pingDatabase: overrides?.pingDatabase ?? (() => pingDatabase(db)),
     useCases: {
       getCurrentAccount: new GetCurrentAccountUseCase(accountService),
       deleteAccount: new DeleteAccountUseCase(accountService, reviewService, watchlistService),

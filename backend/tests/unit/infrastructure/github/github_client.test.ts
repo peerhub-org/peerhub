@@ -121,6 +121,25 @@ describe('fetchUserByUsername', () => {
     })
   })
 
+  test.each(['..', '../user', 'a/b', 'a?b', 'a#b', 'a b', 'a%2Fb', '', 'x'.repeat(101)])(
+    '%j cannot be a user and is not asked for',
+    async (username) => {
+      await expect(client.fetchUserByUsername(username, 'gho')).rejects.toThrow(
+        new UserNotFoundException(username),
+      )
+      expect(requests).toEqual([])
+    },
+  )
+
+  test.each(['octo-cat', 'mona_company', 'Dependabot[bot]'])(
+    '%s can be a user',
+    async (username) => {
+      reply('get', `${API}/users/:username`, 200, { login: username })
+      expect(await client.fetchUserByUsername(username, 'gho')).toMatchObject({ username })
+      expect(requests[0]!.url).toBe(`${API}/users/${encodeURIComponent(username)}`)
+    },
+  )
+
   test('tells unknown users from failures', async () => {
     reply('get', `${API}/users/bob`, 404, {})
     await expect(client.fetchUserByUsername('bob', 'gho')).rejects.toThrow(

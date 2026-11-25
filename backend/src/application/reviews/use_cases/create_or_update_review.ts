@@ -35,13 +35,15 @@ export class CreateOrUpdateReviewUseCase {
   }
 
   async execute(input: CreateOrUpdateReview): Promise<ReviewWithUsername> {
+    // Before storing anything: reviews by inactive accounts are not shown anywhere.
+    await this.#accountService.getActiveAccountByUuid(input.reviewerUuid)
     const { review, isNew } = await this.#reviewService.createOrUpdateReview(input)
 
     if (isNew) await this.#notify(input)
     await this.#watch(input)
 
     const [enriched] = await this.#enrichmentService.enrichReviews([review])
-    // Task 50: happens after the review is stored, when the reviewer has no active account.
+    // Only if the account was deleted in the meantime
     if (!enriched) throw new Error('Reviewer has no active account')
     return enriched
   }

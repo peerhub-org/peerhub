@@ -33,7 +33,7 @@ export function usersEndpoints(container: Container): Endpoint[] {
       summary: 'Get GitHub OAuth login URL.',
       response: oauthUrlResponse,
       async handler() {
-        // Task 46: there is no "state" parameter.
+        // The frontend adds the "state" parameter, which it checks when the user comes back.
         const url =
           GITHUB_OAUTH_AUTHORIZE_URL +
           `?client_id=${settings.GITHUB_CLIENT_ID}` +

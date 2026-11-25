@@ -253,7 +253,12 @@
     {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "alice", "body": {"hidden": false}},
     {"method": "PATCH", "path": "/api/v1/reviews/{bob_on_alice}/visibility", "as": "modtwo", "body": {"hidden": false}}]},
   {"name": "reviews hide case mismatch owner", "db": true, "steps": [
-    {"method": "PATCH", "path": "/api/v1/reviews/{modtwo_on_ALICE}/visibility", "as": "alice", "body": {"hidden": true}}]},
+    {"method": "PATCH", "path": "/api/v1/reviews/{moddy_on_carol}/visibility", "as": "carol", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{moddy_on_carol}/visibility", "as": "carol", "body": {"hidden": false}}]},
+  {"name": "reviews hide over moderation", "db": true, "steps": [
+    {"method": "PATCH", "path": "/api/v1/reviews/{modtwo_on_ALICE}/visibility", "as": "alice", "body": {"hidden": true}},
+    {"method": "PATCH", "path": "/api/v1/reviews/{modtwo_on_ALICE}/visibility", "as": "alice", "body": {"hidden": false}},
+    {"method": "GET", "path": "/api/v1/reviews/alice?limit=2", "as": "alice"}]},
   {"name": "reviews hide anonymous", "db": true, "steps": [
     {"method": "PATCH", "path": "/api/v1/reviews/{carol_on_alice_anon}/visibility", "as": "alice", "body": {"hidden": true}}]},
   {"name": "reviews hide errors", "db": true, "steps": [

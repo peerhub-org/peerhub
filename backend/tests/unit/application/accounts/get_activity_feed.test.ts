@@ -1,7 +1,5 @@
-import { randomUUID } from 'node:crypto'
 import { beforeEach, describe, expect, test } from 'vitest'
 import { GetActivityFeedUseCase } from '../../../../src/application/accounts/use_cases/get_activity_feed.ts'
-import type { Review } from '../../../../src/domain/reviews/entities/review.ts'
 import { AccountNotFoundException } from '../../../../src/domain/shared/exceptions.ts'
 import { User } from '../../../../src/domain/users/entities/user.ts'
 import {
@@ -15,140 +13,123 @@ import {
 
 const bob = makeAccount({ id: 'a1', username: 'Bob' })
 const alice = makeAccount({ id: 'a2', username: 'alice' })
-const day = (n: number) => new Date(PAST.getTime() + n * 24 * 60 * 60 * 1000)
 const avatar = (username: string) =>
   new User({ username, avatarUrl: `https://example.com/${username}.png` })
+const received = makeReview({ reviewerUuid: alice.uuid, reviewedUsername: 'bob' })
 
 let domain: ReturnType<typeof createDomain>
-let reviewsByUsername: Record<string, Review[]>
+let featureFlags: ReturnType<typeof flags>
 
 beforeEach(() => {
   domain = createDomain()
-  reviewsByUsername = {}
+  featureFlags = flags(true)
   const { accounts, users, reviews } = domain.repositories
   accounts.getByUuid.mockResolvedValue(bob)
-  accounts.getByUuids.mockResolvedValue([alice, bob])
+  accounts.getByUuids.mockResolvedValue([alice])
   accounts.getByUsernames.mockResolvedValue([bob])
   users.getByUsernames.mockResolvedValue([avatar('alice'), avatar('bob')])
-  reviews.getAllForUsername.mockImplementation(async (name) => reviewsByUsername[name] ?? [])
+  reviews.getFeed.mockResolvedValue([received])
 })
 
-const feed = (filter: 'all' | 'mine' | 'watching' = 'mine', open = false, limit = 50, offset = 0) =>
+const feed = (filter: 'all' | 'mine' | 'watching' = 'mine') =>
   new GetActivityFeedUseCase(
     domain.watchlistService,
     domain.reviewService,
     domain.accountService,
     domain.userService,
-    flags(open),
-  ).execute(bob.uuid, filter, limit, offset)
+    featureFlags,
+  ).execute(bob.uuid, filter, 10, 5)
 
-const ids = async (...args: Parameters<typeof feed>) =>
-  (await feed(...args)).map((item) => item.review.id)
-
-const received = (props: Partial<Review> = {}) =>
-  makeReview({ reviewerUuid: alice.uuid, reviewedUsername: 'bob', ...props })
-
-test('resolves names and avatars, whatever the case', async () => {
-  reviewsByUsername.Bob = [received()]
-  expect(await feed()).toEqual([
-    {
-      review: reviewsByUsername.Bob[0],
-      reviewerUsername: 'alice',
-      reviewerAvatarUrl: 'https://example.com/alice.png',
-      reviewedUserAvatarUrl: 'https://example.com/bob.png',
-    },
-  ])
-})
-
-test('does not reveal who wrote an anonymous review', async () => {
-  reviewsByUsername.Bob = [received({ anonymous: true })]
-  expect(await feed()).toMatchObject([
-    {
-      reviewerUsername: null,
-      reviewerAvatarUrl: null,
-      reviewedUserAvatarUrl: 'https://example.com/bob.png',
-    },
-  ])
-})
-
-test('accepts missing profiles', async () => {
-  domain.repositories.users.getByUsernames.mockResolvedValue([])
-  reviewsByUsername.Bob = [received()]
-  expect(await feed()).toMatchObject([
-    { reviewerUsername: 'alice', reviewerAvatarUrl: null, reviewedUserAvatarUrl: null },
-  ])
-})
-
-describe('filters', () => {
-  beforeEach(() => {
-    domain.repositories.watchlist.getAllByWatcher.mockResolvedValue([
-      makeWatch({ watchedUsername: 'carol' }),
-      makeWatch({ watchedUsername: 'dave' }),
+describe('items', () => {
+  test('have names and avatars, whatever the case', async () => {
+    expect(await feed()).toEqual([
+      {
+        review: received,
+        reviewerUsername: 'alice',
+        reviewerAvatarUrl: 'https://example.com/alice.png',
+        reviewedUserAvatarUrl: 'https://example.com/bob.png',
+      },
     ])
-    domain.repositories.accounts.getByUsernames.mockResolvedValue([
-      bob,
-      makeAccount({ username: 'carol' }),
-      makeAccount({ username: 'dave' }),
+  })
+
+  test('do not reveal who wrote an anonymous review', async () => {
+    domain.repositories.reviews.getFeed.mockResolvedValue([
+      makeReview({ reviewerUuid: alice.uuid, reviewedUsername: 'bob', anonymous: true }),
     ])
-    reviewsByUsername = {
-      Bob: [received({ id: 'mine', updatedAt: day(2) })],
-      carol: [received({ id: 'carol', reviewedUsername: 'carol', updatedAt: day(3) })],
-      dave: [received({ id: 'dave', reviewedUsername: 'dave', updatedAt: day(1) })],
-    }
+    expect(await feed()).toMatchObject([
+      {
+        reviewerUsername: null,
+        reviewerAvatarUrl: null,
+        reviewedUserAvatarUrl: 'https://example.com/bob.png',
+      },
+    ])
   })
 
-  test.each([
-    ['all', ['carol', 'mine', 'dave']],
-    ['mine', ['mine']],
-    ['watching', ['carol', 'dave']],
-  ] as const)('%s, most recently updated first', async (filter, expected) => {
-    expect(await ids(filter)).toEqual(expected)
+  test('may lack profiles', async () => {
+    domain.repositories.users.getByUsernames.mockResolvedValue([])
+    expect(await feed()).toMatchObject([
+      { reviewerUsername: 'alice', reviewerAvatarUrl: null, reviewedUserAvatarUrl: null },
+    ])
   })
 
-  test('pages', async () => {
-    expect(await ids('all', false, 2, 0)).toEqual(['carol', 'mine'])
-    expect(await ids('all', false, 2, 2)).toEqual(['dave'])
-    expect(await ids('all', false, 2, 3)).toEqual([])
-  })
-})
-
-describe('what is left out', () => {
-  // Task 54: they still take a place in the page, as in the Python backend.
-  test('reviews by deleted reviewers, only after paging', async () => {
-    const ghost = makeAccount({ deletedAt: PAST })
-    domain.repositories.accounts.getByUuids.mockResolvedValue([alice, ghost])
-    reviewsByUsername.Bob = [
-      received({ id: 'ghost', reviewerUuid: ghost.uuid, updatedAt: day(2) }),
-      received({ id: 'alice', updatedAt: day(1) }),
-    ]
-    expect(await ids('mine', false, 1, 0)).toEqual([])
-    expect(await ids('mine', false, 2, 0)).toEqual(['alice'])
-  })
-
-  test('reviews by deleted or unknown reviewers', async () => {
+  test('need an active reviewer, even if deleted in the meantime', async () => {
     domain.repositories.accounts.getByUuids.mockResolvedValue([
       makeAccount({ uuid: alice.uuid, deletedAt: PAST }),
     ])
-    reviewsByUsername.Bob = [received(), received({ reviewerUuid: randomUUID() })]
-    expect(await ids()).toEqual([])
+    expect(await feed()).toEqual([])
+    domain.repositories.accounts.getByUuids.mockResolvedValue([])
+    expect(await feed()).toEqual([])
   })
 
-  test('reviews of deleted profiles, even when drafts are open', async () => {
-    domain.repositories.accounts.getByUsernames.mockResolvedValue([
-      makeAccount({ username: 'bob', deletedAt: PAST }),
-    ])
-    reviewsByUsername.Bob = [received()]
-    expect(await ids('mine', true)).toEqual([])
+  test('may be none', async () => {
+    domain.repositories.reviews.getFeed.mockResolvedValue([])
+    expect(await feed()).toEqual([])
+  })
+})
+
+describe('profiles in the feed', () => {
+  const carol = makeAccount({ username: 'Carol' })
+  const ghost = makeAccount({ username: 'ghost', deletedAt: PAST })
+  const asked = () => domain.repositories.reviews.getFeed.mock.calls.at(-1)!
+
+  beforeEach(() => {
+    domain.repositories.accounts.getByUsernames.mockResolvedValue([bob, carol, ghost])
+    domain.repositories.watchlist.getAllByWatcher.mockResolvedValue(
+      ['carol', 'GHOST', 'draft'].map((name) => makeWatch({ watchedUsername: name })),
+    )
   })
 
-  test('reviews of drafts by others, unless drafts are open', async () => {
-    domain.repositories.accounts.getByUsernames.mockResolvedValue([])
-    reviewsByUsername.Bob = [
-      received({ id: 'others' }),
-      received({ id: 'own', reviewerUuid: bob.uuid }),
-    ]
-    expect(await ids('mine', false)).toEqual(['own'])
-    expect(await ids('mine', true)).toEqual(['others', 'own'])
+  test.each([
+    ['all', ['Bob', 'carol', 'draft']],
+    ['mine', ['Bob']],
+    ['watching', ['carol', 'draft']],
+  ] as const)('%s, without deleted ones', async (filter, usernames) => {
+    await feed(filter)
+    expect(asked()).toEqual([{ usernames, onlyByViewer: [], viewerUuid: bob.uuid }, 10, 5])
+  })
+
+  test('when drafts are closed, only with what the viewer wrote about drafts', async () => {
+    featureFlags = flags(false)
+    await feed('all')
+    expect(asked()[0]).toEqual({
+      usernames: ['Bob', 'carol'],
+      onlyByViewer: ['draft'],
+      viewerUuid: bob.uuid,
+    })
+  })
+
+  test('are all the watched ones', async () => {
+    await feed('watching')
+    expect(domain.repositories.watchlist.getAllByWatcher).toHaveBeenCalledExactlyOnceWith(
+      bob.uuid,
+      0,
+      0,
+    )
+  })
+
+  test('the flag is only asked for when there are drafts', async () => {
+    await feed('mine')
+    expect(featureFlags.getFeatureFlags).not.toHaveBeenCalled()
   })
 })
 

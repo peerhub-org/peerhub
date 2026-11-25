@@ -112,7 +112,8 @@ describe('useInfiniteReviews', () => {
       await result.current.handleToggleHidden('r1', true, 'user')
     })
 
-    expect(result.current.reviews[0].comment_hidden).toBe(true)
+    // React Query notifies on a timer, so the hook may only render after act() returns.
+    await waitFor(() => expect(result.current.reviews[0].comment_hidden).toBe(true))
     expect(result.current.reviews[1].comment_hidden).toBe(false)
   })
 

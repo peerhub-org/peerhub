@@ -7,7 +7,7 @@ import { makeWatch, PAST } from '../../../helpers/domain.ts'
 
 const ALICE = 'a0000000-0000-4000-8000-000000000001'
 
-describe('documents written by the Python backend', () => {
+describe('existing documents', () => {
   const db = useDatabase({ withFixtures: true })
   const repository = () => new MongoDBWatchlistRepository(db())
   const list = async (limit = 100, offset = 0) =>
@@ -41,7 +41,7 @@ describe('documents written by the Python backend', () => {
 describe('new documents', () => {
   const db = useDatabase()
 
-  test('have the format of the Python backend', async () => {
+  test('have the format of the existing ones', async () => {
     const repository = new MongoDBWatchlistRepository(db())
     const created = await repository.create(makeWatch({ id: null }))
     const stored = await db().collection('watchlist').findOne({})

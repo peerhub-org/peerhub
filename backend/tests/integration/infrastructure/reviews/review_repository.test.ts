@@ -5,11 +5,12 @@ import { MongoDBReviewRepository } from '../../../../src/infrastructure/reviews/
 import { fixtures, useDatabase } from '../../../helpers/database.ts'
 import { makeReview, PAST } from '../../../helpers/domain.ts'
 
+const ALICE = 'a0000000-0000-4000-8000-000000000001'
 const BOB = 'a0000000-0000-4000-8000-000000000002'
 const CAROL = 'a0000000-0000-4000-8000-000000000003'
 const ids = fixtures.review_ids
 
-describe('documents written by the Python backend', () => {
+describe('existing documents', () => {
   const db = useDatabase({ withFixtures: true })
   const repository = () => new MongoDBReviewRepository(db())
   const list = async (username: string, limit = 100, offset = 0, status: string | null = null) =>
@@ -31,9 +32,12 @@ describe('documents written by the Python backend', () => {
     expect(await repository().getById('f'.repeat(24))).toBeNull()
   })
 
-  test.each(['not-an-id', 'twelve chars'])('%j is not an id', async (id) => {
-    await expect(repository().getById(id)).rejects.toThrow()
-  })
+  test.each(['not-an-id', 'twelve chars', '', `${'f'.repeat(24)}0`])(
+    '%j is not an id, so it is not found',
+    async (id) => {
+      expect(await repository().getById(id)).toBeNull()
+    },
+  )
 
   test('may lack newer fields', async () => {
     expect(await repository().getById(ids.legacy_on_alice!)).toMatchObject({
@@ -74,20 +78,77 @@ describe('documents written by the Python backend', () => {
     expect(reviews.map((review) => review.id)).toEqual([ids.bob_on_popularmixed, ids.bob_on_carol])
   })
 
-  test('are counted under one of the spellings', async () => {
+  test('are counted by lowercase username', async () => {
     const counts = await repository().getReviewCountsForUsernames([
       'ALICE',
       'popularmixed',
       'nobody',
     ])
-    expect(new Map([...counts].map(([name, n]) => [name.toLowerCase(), n]))).toEqual(
+    expect(counts).toEqual(
       new Map([
         ['alice', 6],
         ['popularmixed', 1],
       ]),
     )
-    // Task 52: keys keep the stored spelling, as in the Python backend.
-    expect(counts.get('PopularMixed')).toBe(1)
+  })
+
+  describe('in a feed', () => {
+    const feed = async (
+      usernames: string[],
+      onlyByViewer: string[] = [],
+      limit = 100,
+      offset = 0,
+    ) =>
+      (
+        await repository().getFeed({ usernames, onlyByViewer, viewerUuid: ALICE }, limit, offset)
+      ).map((review) => review.id)
+
+    test('come most recently updated first, whatever the case, without deleted reviewers', async () => {
+      expect(await feed(['Alice', 'DAVE'])).toEqual([
+        ids.carol_on_dave,
+        ids.alice_on_dave,
+        ids.modtwo_on_ALICE,
+        ids.moddy_on_alice,
+        ids.carol_on_alice_anon,
+        ids.bob_on_alice,
+        ids.legacy_on_alice,
+      ])
+    })
+
+    test('may be restricted to the ones by the viewer', async () => {
+      expect(await feed([], ['DAVE'])).toEqual([ids.alice_on_dave])
+      expect(await feed(['ghost'], ['dave'])).toEqual([ids.bob_on_ghost, ids.alice_on_dave])
+      expect(await feed([], [])).toEqual([])
+    })
+
+    test('are paged after leaving out deleted reviewers', async () => {
+      expect(await feed(['alice'], [], 2)).toEqual([ids.modtwo_on_ALICE, ids.moddy_on_alice])
+      expect(await feed(['alice'], [], 2, 2)).toEqual([ids.carol_on_alice_anon, ids.bob_on_alice])
+    })
+
+    test('are left out when the reviewer is unknown', async () => {
+      await db().collection('accounts').deleteOne({ username: 'bob' })
+      expect(await feed(['alice'])).not.toContain(ids.bob_on_alice)
+    })
+
+    test('are complete entities', async () => {
+      const [review] = await repository().getFeed(
+        { usernames: ['dave'], onlyByViewer: [], viewerUuid: ALICE },
+        1,
+        0,
+      )
+      expect(review).toEqual(await repository().getById(ids.carol_on_dave!))
+    })
+
+    test('keep their order between pages when dates are equal', async () => {
+      await db()
+        .collection('reviews')
+        .updateMany({ reviewed_username: 'popular' }, { $set: { updated_at: PAST } })
+      const pages: (string | null)[] = []
+      for (let offset = 0; offset < 18; offset += 5)
+        pages.push(...(await feed(['popular'], [], 5, offset)))
+      expect(new Set(pages).size).toBe(18)
+    })
   })
 
   test('are updated', async () => {
@@ -113,7 +174,7 @@ describe('new documents', () => {
   const db = useDatabase()
   const repository = () => new MongoDBReviewRepository(db())
 
-  test('have the format of the Python backend', async () => {
+  test('have the format of the existing ones', async () => {
     const created = await repository().create(makeReview({ id: null, comment: null }))
     const stored = await db().collection('reviews').findOne({})
     expect(stored).toEqual({
